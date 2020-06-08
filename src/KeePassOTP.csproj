@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- KeePass PLGX Compiler only can build csharp projects up to csharp version 5 -->
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PlgxKeePassVersion>2.42</PlgxKeePassVersion>
+    <PlgXOS>
+    </PlgXOS>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1C0A49D8-C358-4B2E-B367-CC38003BE484}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KeePassOTP</RootNamespace>
+    <AssemblyName>KeePassOTP</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <TargetFrameworkProfile />
+    <NoWin32Manifest>False</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\_KeePass_Debug\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleasePlgx|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CheckedGroupBox.cs" />
+    <Compile Include="DAO\OTPDAO_DB.cs" />
+    <Compile Include="DAO\OTPDAO_Entry.cs" />
+    <Compile Include="DAO\OTPDAO.cs" />
+    <Compile Include="HotkeyManager.cs" />
+    <Compile Include="Migration.cs" />
+    <Compile Include="QRCode\QRCode.cs" />
+    <Compile Include="QRCode\QRCodeData.cs" />
+    <Compile Include="QRCode\QRCodeGenerator.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="KeePassOTP.cs" />
+    <Compile Include="KeePassOTPColumnProvider.cs" />
+    <Compile Include="KeePassOTPExt.cs" />
+    <Compile Include="KeePassOTPSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeePassOTPSetup.Designer.cs">
+      <DependentUpon>KeePassOTPSetup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Options.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PluginTools.cs" />
+    <Compile Include="PluginTranslation.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DAO\TFASites.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>KeePassOTP</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\KeePassOTP_setup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\_KeePass_Source\KeePass\KeePass.csproj">
+      <Project>{10938016-dee2-4a25-9a5a-8fd3444379ca}</Project>
+      <Name>KeePass</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">
+    <Exec Command="..\translationcopy.cmd $(Configuration)" />
+  </Target>
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'ReleasePlgx' ">
+    <Exec Command="..\translationcopy.cmd $(Configuration)" />
+    <Exec Command="..\plgxcreate.cmd $(TargetFrameworkVersion.Replace('v', '')) $(PlgxKeePassVersion) $(PlgXOS)" />
+  </Target>
+</Project>

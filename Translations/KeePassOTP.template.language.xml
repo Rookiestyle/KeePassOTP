@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <TranslationVersion>0</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KPOTP - No entries available</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>KPOTP auto-type ([Ctrl] to copy)</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>N/A Uuid: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>group: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>OTP setup...</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>Copy OTP</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>ERROR</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>Title: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>User: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>Seed settings</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Seed: </value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>Use advanced options</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>Format: </value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>OTP settings</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>Type:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>Length:</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>Hash:</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>Timestep:</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>Counter:</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Time correction - TOTP only</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Diff: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>No time correction</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>Use entry's URL</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>Use fixed URL</value>
+  </item>
+  <item>
+    <key>SetupTFA</key>
+    <value>Setup 2FA</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>Open OTP database - {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>All secrets will be stored in a separate database which will be included within the main database containing the entries as such.
+
+Please provide the masterkey for your OTP secrects in the next form.</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>Indicate if 2FA usage is possible</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>OTP settings (db specific)</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>Save OTP secrets in a separate database</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>Auto-open OTP database when main database is opened</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>Entry -&gt; DB</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>Move OTP secrets to separate DB</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>DB -&gt; Entry</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>Move OTP secrets to respective entries</value>
+  </item>
+  <item>
+    <key>MoveError</key>
+    <value>Error when trying to move OTP secrets. Is the OTP database open?</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} OTP secret(s) move auccessfully</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP will download a list of sites supporting two factor authentication from https://twofactorauth.org/
+This list is then compared it with all URLs defined in the database, your URLs will not be sent.
+
+The OTP column will show whether 2FA is possible but not yet configured.
+Doubleclicking this hint will open the 2FA setup page.</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Stores new OTP secrets in a separate database that can be encrypted using a different masterkey.
+This database will be stored within the main database containing the entries as such.
+While this increases security by adding a second masterkey for your OTP secrets, it will potentially prevent other ports like KeePass2Android to directly show OTP.
+
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Open the OTP database when opening the main database.
+Deactivate this option to open the OTP database only on demand =&gt; As soon as an OTP is actually requested
+The OTP database will be opened everytime the main database is synchronized - otherwise changes of the OTP database would not get synchronized and local changes would get lost.
+
+&gt;&gt; OTP migration &lt;&lt;
+Depening on above options, OTP secrets are stored either within the respective entry or within a separate database.
+'{Options_Migrate2DB}' und '{Options_Migrate2Entries}' can be used to move the OTP secrets between those two locations.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>Migrate from / to other plugins</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>Remove {0} settings for successfully migrated entries?</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{0} out of {1} entries were migrated successfully</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>KeePassOTP hotkey:</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>The database was synchronized.
+Please unlock the OTP database to ensure proper synchronization of OTP data.
+
+If the OTP database is not unlocked, OTP data cannot be synchronized and might result in data loss.</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>Opening OTP database...</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>Synchronizing OTP database...</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>Saving OTP database...</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>Show QR code...</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>The KeePassOTP placeholder was changed and the previous placeholder is no longer valid.
+
+Old value: {0}
+New value: {1}
+
+All occurrences of {0} need to be replaced by {1} for Auto-Type to work.
+Replace now in currently loaded databases?</value>
+  </item>
+</Translation>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <TranslationVersion>6</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KPOTP - Keine Einträge vorhanden</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>KPOTP Auto-Type ([Strg] zum Kopieren)</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>N/A Uuid: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>Gruppe: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>OTP Setup...</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>OTP kopieren</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>FEHLER</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>Titel: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>Benutzer: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>OTP-Schlüssel</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Schlüssel: </value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>Expertenoptionen nutzen</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>Format: </value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>OTP Konfiguration</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>Typ:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>Länge:</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>Hash:</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>Schrittweite:</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>Zähler:</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Zeitversatz ausgleichen - TOTP spezifisch</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Diff: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>Zeitversatz nicht ausgleichen</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>Aktuelle URL</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>Feste URL</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>OTP Datenbank öffnen - {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>Alle OTP-Schlüssel werden in einer seperaten Datenbank gespeichert. Diese Datenbank wird Bestandteil der Hauptdatenbank, die die eigentlichen Einträge enthält.
+
+Bitte definiere den Hauptschlüssel für diese Datenbank im nächsten Fenster.</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>Weise auf möglich 2FA-Nutzung hin</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>OTP Einstellungen (Datenbank spezifisch)</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>OTP-Schlüssel in einer seperaten Datenbank speichern</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>Öffne OTP-Datenbank zusammen mit Hauptdatenbank</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>Eintrag -&gt; DB</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>OTP-Schlüssel in OTP-Datenbank verschieben</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>DB -&gt; Eintrag</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>OTP-Schlüssel in jeweiligen Eintrag verschieben</value>
+  </item>
+  <item>
+    <key>MoveError</key>
+    <value>Fehler beim Verschieben der OTP-Schlüssel.
+Ist die OTP-Datenbank geöffnet?</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} OTP-Schlüssel wurde(n) verschoben</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP lädt eine Liste Seiten von https://twofactorauth.org/, die 2FA (Zwei Faktor Authentifizierung) unterstützen.
+Im Anschluss daran, wird jede URL der Datenbank mit der Liste abgeglichen.
+Die OTP-Spalte wird darauf hinweisen, wenn 2FA möglich ist, aber noch nicht konfiguriert. Ein Doppelklick auf den Hinweis öffnet die jeweilige 2FA-Seite.
+
+Die in der Datenbank gespeicherten URLs werden NICHT versendet!</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Neue OTP-Schlüssel werden in einer seperaten Datenbank gespeichert, die mit einem eigenen Hauptschlüssel gesichert wird.
+Diese Datenbank wird Bestandteil der Hauptdatenbank, die die eigentlichen Einträge enthält.
+Die OTP-Schlüssel sind damit besonders gesichert, allerdings können andere Programme und Apps wie bspw. KeePass2Android keine OTP mehr anzeigen.
+
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Öffnet die OTP-Datenbank direkt beim Öffnen der Hauptdatenbank.
+Ist diese Option nicht aktiv, dann wird die OTP-Datenbank erst bei der ersten tatsächlichen Verwendung geöffnet.
+Die OTP-Datenbank wird immer geöffnet, wenn die Hauptdatenbank synchronisiert wird - anderenfalls können Änderung an der OTP-Datenbank nicht synchronisiert werden.
+
+&gt;&gt; OTP migration &lt;&lt;
+Abhängig von den obigen Optionen werden OTP-Schlüssel entweder als Feld im jeweiligen Eintrag oder in einer seperaten Datenbank gespeichert.
+'{Options_Migrate2DB}' und '{Options_Migrate2Entries}' können zum Verschieben der OTP-Schlüssel zwischen diesen beiden Orten genutzt werden.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>Migration von / zu anderen Plugins</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>{0} Einstellungen nach erfolgreicher Migration löschen?</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{0} von{1} Einträgen wurden erfolgreich migriert</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>KeePassOTP hotkey:</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>Die Datenbank wurde synchronisiert.
+Zum Synchronisieren der OTP-Daten bitte die OTP-Datenbank entsperren.
+
+Wenn die OTP-Datenbank nicht entsperrt wird, können keine OTP-Daten synchronisiert werden.
+Das kann zu Datenverlust führen.</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>Öffne OTP-Datenbank...</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>Synchronisiere OTP-Datenbank...</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>Speichere OTP-Datenbank...</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>Zeige QR code...</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>Der KeePassOTP wurde geändert und der vorher verwendete Platzhalter ist nicht mehr gültig.
+
+Alter Platzhalter: {0}
+Neuer Platzhalter: {1}
+
+Damit Auto-Type weiterhin vollumfänglich genutzt werden kann, muss {0} überall durch {1} ersetzt werden..
+Soll diese Ersetzung jetzt in allen geladenen Datenbanken durchgeführt werden?</value>
+  </item>
+</Translation>

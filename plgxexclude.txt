@@ -1,0 +1,8 @@
+bin\
+obj\
+.vs
+.git
+.user
+.sln
+.suo
+.pdb

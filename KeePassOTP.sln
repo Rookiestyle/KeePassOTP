@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeePassOTP", "src\KeePassOTP.csproj", "{1C0A49D8-C358-4B2E-B367-CC38003BE484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeePass", "..\_KeePass_Source\KeePass\KeePass.csproj", "{10938016-DEE2-4A25-9A5A-8FD3444379CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B33AC69F-DAE5-4591-8343-4AB5FA003FD7}"
+	ProjectSection(SolutionItems) = preProject
+		plgxcreate.cmd = plgxcreate.cmd
+		version.info = version.info
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		ReleasePlgx|Any CPU = ReleasePlgx|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C0A49D8-C358-4B2E-B367-CC38003BE484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C0A49D8-C358-4B2E-B367-CC38003BE484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C0A49D8-C358-4B2E-B367-CC38003BE484}.ReleasePlgx|Any CPU.ActiveCfg = ReleasePlgx|Any CPU
+		{1C0A49D8-C358-4B2E-B367-CC38003BE484}.ReleasePlgx|Any CPU.Build.0 = ReleasePlgx|Any CPU
+		{10938016-DEE2-4A25-9A5A-8FD3444379CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10938016-DEE2-4A25-9A5A-8FD3444379CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10938016-DEE2-4A25-9A5A-8FD3444379CA}.ReleasePlgx|Any CPU.ActiveCfg = Release|Any CPU
+		{10938016-DEE2-4A25-9A5A-8FD3444379CA}.ReleasePlgx|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37B22B9D-4382-40C5-A7E7-B985A11E5ACA}
+	EndGlobalSection
+EndGlobal
