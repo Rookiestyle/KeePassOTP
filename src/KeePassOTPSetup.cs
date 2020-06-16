@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 using KeePassLib.Security;
+using KeePassLib.Utility;
 using PluginTranslation;
 
 namespace KeePassOTP
@@ -221,6 +223,140 @@ namespace KeePassOTP
 				|| (OTP.Encoding != KPOTPEncoding.BASE32)
 				|| (OTP.Hash != KPOTPHash.SHA1)
 				|| (!string.IsNullOrEmpty(OTP.TimeCorrectionUrl) && !OTP.TimeCorrectionUrlOwn);
+		}
+
+		private void pbQR_DragDrop(object sender, DragEventArgs e)
+		{
+			// Drag&Drop is different depending on the source
+			// Try different options and stop when a valid otpauth string is found
+			// 
+			//
+			// 1. local file / network file
+			// 2. Bitmap
+			// 3. img-tag (html)
+			// 4. String
+			// 5. Text
+
+			ProtectedString otp = ProtectedString.EmptyEx;
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				var f = e.Data.GetData(DataFormats.FileDrop) as string[];
+				if (f != null) otp = ParseFromImageFile(f[0]);
+			}
+			if (!IsValidOtpAuth(otp))
+			{
+				otp = ParseFromImage(e.Data.GetData(DataFormats.Bitmap) as System.Drawing.Bitmap);
+			}
+			if (!IsValidOtpAuth(otp))
+			{
+				otp = ParseFromTextHtml(e.Data.GetData("text/html"));
+			}
+			if (!IsValidOtpAuth(otp))
+			{
+				otp = new ProtectedString(true, e.Data.GetData(DataFormats.StringFormat) as string);
+			}
+			if (!IsValidOtpAuth(otp))
+			{
+				otp = new ProtectedString(true, e.Data.GetData(DataFormats.Text) as string);
+			}
+			if (IsValidOtpAuth(otp))
+			{
+				OTP.OTPAuthString = otp;
+				InitSettings(true);
+			}
+		}
+
+		private bool IsValidOtpAuth(ProtectedString otp)
+		{
+			if (otp == null) return false;
+			if (otp.Length < 11) return false;
+			KPOTP check = new KPOTP();
+			check.OTPAuthString = otp;
+			return check.Valid;
+		}
+
+		private ProtectedString ParseFromTextHtml(object obj)
+		{
+			string html = string.Empty;
+			if (obj is string)
+			{
+				html = (string)obj;
+			}
+			else if (obj is System.IO.MemoryStream)
+			{
+				System.IO.MemoryStream ms = (System.IO.MemoryStream)obj;
+				byte[] buffer = new byte[ms.Length];
+				ms.Read(buffer, 0, (int)ms.Length);
+				if (buffer[1] == (byte)0)  // Detecting unicode
+				{
+					html = Encoding.Unicode.GetString(buffer);
+				}
+				else
+				{
+					html = Encoding.ASCII.GetString(buffer);
+				}
+			}
+			var match = new System.Text.RegularExpressions.Regex(@"<img.* src=""([^""]*)""").Match(html);
+			if (match.Success)
+			{
+				return ParseImageFromUrl(match.Groups[1].Value);
+			}
+			else return ParseImageFromUrl(html);
+		}
+
+		private ProtectedString ParseFromImageFile(string sFile)
+		{
+			using (var fileStream = System.IO.File.OpenRead(sFile))
+			{
+				byte[] buffer = new byte[fileStream.Length];
+				fileStream.Read(buffer, 0, (int)fileStream.Length);
+				return ParseFromImageByteArray(buffer);
+			}
+		}
+
+		private ProtectedString ParseImageFromUrl(string url)
+		{
+			if (url.ToLowerInvariant().StartsWith("data:"))
+			{
+				string[] x = url.Split(new char[] { ';', ',' });
+				byte[] b = Convert.FromBase64String(x[2]);
+				return ParseFromImageByteArray(b);
+			}
+			else
+			{
+				var s = KeePassLib.Serialization.IOConnection.OpenRead(new KeePassLib.Serialization.IOConnectionInfo() { Path = url });
+				System.Collections.Generic.List<byte> lByte = new System.Collections.Generic.List<byte>();
+				byte[] bImage = MemUtil.Read(s);
+				return ParseFromImageByteArray(bImage);
+			}
+		}
+
+		private ProtectedString ParseFromImageByteArray(byte[] buffer)
+		{
+			System.IO.MemoryStream memstr = new System.IO.MemoryStream(buffer);
+			System.Drawing.Bitmap img = System.Drawing.Image.FromStream(memstr) as System.Drawing.Bitmap;
+			return ParseFromImage(img);
+		}
+
+		private ProtectedString ParseFromImage(System.Drawing.Bitmap bitmap)
+		{
+			if (bitmap == null) return ProtectedString.EmptyEx;
+			QRDecoder.QRDecoder decoder = new QRDecoder.QRDecoder();
+			byte[][] DataByteArray = decoder.ImageDecoder(bitmap);
+			if ((DataByteArray == null) || (DataByteArray.Length < 1)) return ProtectedString.EmptyEx;
+			ProtectedString psResult = new ProtectedString(true, DataByteArray[0]);
+			MemUtil.ZeroByteArray(DataByteArray[0]);
+			return psResult;
+		}
+
+		private void pbQR_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = DragDropEffects.All | DragDropEffects.Link;
+		}
+
+		private void KeePassOTPSetup_Shown(object sender, EventArgs e)
+		{
+			((Control)pbQR).AllowDrop = true;
 		}
 	}
 }
