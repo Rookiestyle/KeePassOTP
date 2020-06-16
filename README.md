@@ -38,7 +38,8 @@ You'll find more details in the [Wiki](https://github.com/rookiestyle/keepassotp
 
 ## Maintain OTP data  
 Use the context menu to setup/change OTP data.  
-In the setup form, simply enter the OTP secret (sometimes referred to as seed) and you're ready to go.  
+
+In the setup form, you can drag&drop the QR code image and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as seed) and you're ready to go.  
 
 Got a string like this one?  
 `otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example`  
