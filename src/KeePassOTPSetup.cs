@@ -297,38 +297,16 @@ namespace KeePassOTP
 				}
 			}
 			var match = new System.Text.RegularExpressions.Regex(@"<img.* src=""([^""]*)""").Match(html);
-			if (match.Success)
-			{
-				return ParseImageFromUrl(match.Groups[1].Value);
-			}
-			else return ParseImageFromUrl(html);
+			if (match.Success) return ParseFromImageFile(match.Groups[1].Value);
+			else return ParseFromImageFile(html);
 		}
 
 		private ProtectedString ParseFromImageFile(string sFile)
 		{
-			using (var fileStream = System.IO.File.OpenRead(sFile))
-			{
-				byte[] buffer = new byte[fileStream.Length];
-				fileStream.Read(buffer, 0, (int)fileStream.Length);
-				return ParseFromImageByteArray(buffer);
-			}
-		}
-
-		private ProtectedString ParseImageFromUrl(string url)
-		{
-			if (url.ToLowerInvariant().StartsWith("data:"))
-			{
-				string[] x = url.Split(new char[] { ';', ',' });
-				byte[] b = Convert.FromBase64String(x[2]);
-				return ParseFromImageByteArray(b);
-			}
-			else
-			{
-				var s = KeePassLib.Serialization.IOConnection.OpenRead(new KeePassLib.Serialization.IOConnectionInfo() { Path = url });
-				System.Collections.Generic.List<byte> lByte = new System.Collections.Generic.List<byte>();
-				byte[] bImage = MemUtil.Read(s);
-				return ParseFromImageByteArray(bImage);
-			}
+			KeePassLib.Serialization.IOConnectionInfo iocInfo = new KeePassLib.Serialization.IOConnectionInfo();
+			iocInfo.Path = sFile;
+			byte[] buffer = KeePassLib.Serialization.IOConnection.ReadFile(iocInfo);
+			return ParseFromImageByteArray(buffer);
 		}
 
 		private ProtectedString ParseFromImageByteArray(byte[] buffer)

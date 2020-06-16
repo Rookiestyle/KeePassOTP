@@ -254,30 +254,36 @@ namespace KeePassOTP
 				IStatusLogger dlgStatus = new OnDemandStatusDialog(true, Program.MainForm);
 
 				dlgStatus.StartLogging(text, false);
-				dlgStatus.SetText(text, LogStatusType.Info);
-
-				PwDatabase pwImp;
-				pwImp = new PwDatabase();
-				pwImp.New(new IOConnectionInfo(), targetdb.MasterKey);
-				pwImp.MemoryProtection = targetdb.MemoryProtection.CloneDeep();		
-				pwImp.MasterKey = targetdb.MasterKey;
-
-				dlgStatus.SetText(text, LogStatusType.Info);
-
-				using (var s = new MemoryStream(bDecrypted))
+				try
 				{
-					fmtImp.Import(pwImp, s, null);
+					dlgStatus.SetText(text, LogStatusType.Info);
+
+					PwDatabase pwImp;
+					pwImp = new PwDatabase();
+					pwImp.New(new IOConnectionInfo(), targetdb.MasterKey);
+					pwImp.MemoryProtection = targetdb.MemoryProtection.CloneDeep();
+					pwImp.MasterKey = targetdb.MasterKey;
+
+					dlgStatus.SetText(text, LogStatusType.Info);
+
+					using (var s = new MemoryStream(bDecrypted))
+					{
+						fmtImp.Import(pwImp, s, null);
+					}
+					targetdb.KdfParameters = pwImp.KdfParameters;
+					targetdb.DataCipherUuid = pwImp.DataCipherUuid;
+					targetdb.HistoryMaxItems = pwImp.HistoryMaxItems;
+					targetdb.HistoryMaxSize = pwImp.HistoryMaxSize;
+
+					PwMergeMethod mm = PwMergeMethod.Synchronize;
+					targetdb.MergeIn(pwImp, mm, dlgStatus);
 				}
-				targetdb.KdfParameters = pwImp.KdfParameters;
-				targetdb.DataCipherUuid = pwImp.DataCipherUuid;
-				targetdb.HistoryMaxItems = pwImp.HistoryMaxItems;
-				targetdb.HistoryMaxSize = pwImp.HistoryMaxSize;
-
-				PwMergeMethod mm = PwMergeMethod.Synchronize;
-				targetdb.MergeIn(pwImp, mm, dlgStatus);
-
-				dlgStatus.EndLogging();
-				return;
+				catch (Exception ex)
+				{
+					PluginDebug.AddError("Error loading OTP db", 0, ex.Message);
+					throw ex;
+				}
+				finally { dlgStatus.EndLogging(); }
 			}
 			#endregion
 
