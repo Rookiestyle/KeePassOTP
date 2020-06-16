@@ -85,13 +85,16 @@ namespace KeePassOTP
 			this.tbTOTPTimeCorrectionURL = new System.Windows.Forms.TextBox();
 			this.lURL = new System.Windows.Forms.Label();
 			this.cbAdvanced = new System.Windows.Forms.CheckBox();
+			this.pbQR = new System.Windows.Forms.PictureBox();
 			this.gSeed.SuspendLayout();
 			this.gOTP.SuspendLayout();
 			this.gTime.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbQR)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// gSeed
 			// 
+			this.gSeed.Controls.Add(this.pbQR);
 			this.gSeed.Controls.Add(this.pbTOTPLifetime);
 			this.gSeed.Controls.Add(this.otpPreviewNext);
 			this.gSeed.Controls.Add(this.otpPreview);
@@ -100,7 +103,7 @@ namespace KeePassOTP
 			this.gSeed.Dock = System.Windows.Forms.DockStyle.Top;
 			this.gSeed.Location = new System.Drawing.Point(5, 5);
 			this.gSeed.Name = "gSeed";
-			this.gSeed.Size = new System.Drawing.Size(528, 127);
+			this.gSeed.Size = new System.Drawing.Size(528, 146);
 			this.gSeed.TabIndex = 2;
 			this.gSeed.TabStop = false;
 			this.gSeed.Text = "Seed data";
@@ -167,7 +170,7 @@ namespace KeePassOTP
 			this.gOTP.Controls.Add(this.lLength);
 			this.gOTP.Controls.Add(this.lType);
 			this.gOTP.Dock = System.Windows.Forms.DockStyle.Top;
-			this.gOTP.Location = new System.Drawing.Point(5, 156);
+			this.gOTP.Location = new System.Drawing.Point(5, 175);
 			this.gOTP.Name = "gOTP";
 			this.gOTP.Size = new System.Drawing.Size(528, 176);
 			this.gOTP.TabIndex = 3;
@@ -299,7 +302,7 @@ namespace KeePassOTP
 			// 
 			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Location = new System.Drawing.Point(316, 463);
+			this.buttonOK.Location = new System.Drawing.Point(316, 486);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(100, 30);
 			this.buttonOK.TabIndex = 10;
@@ -310,7 +313,7 @@ namespace KeePassOTP
 			// 
 			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonCancel.Location = new System.Drawing.Point(433, 463);
+			this.buttonCancel.Location = new System.Drawing.Point(433, 486);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(100, 30);
 			this.buttonCancel.TabIndex = 11;
@@ -326,7 +329,7 @@ namespace KeePassOTP
 			this.gTime.Controls.Add(this.tbTOTPTimeCorrectionURL);
 			this.gTime.Controls.Add(this.lURL);
 			this.gTime.Dock = System.Windows.Forms.DockStyle.Top;
-			this.gTime.Location = new System.Drawing.Point(5, 332);
+			this.gTime.Location = new System.Drawing.Point(5, 351);
 			this.gTime.Name = "gTime";
 			this.gTime.Size = new System.Drawing.Size(528, 120);
 			this.gTime.TabIndex = 10;
@@ -389,7 +392,7 @@ namespace KeePassOTP
 			this.cbAdvanced.Checked = true;
 			this.cbAdvanced.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.cbAdvanced.Dock = System.Windows.Forms.DockStyle.Top;
-			this.cbAdvanced.Location = new System.Drawing.Point(5, 132);
+			this.cbAdvanced.Location = new System.Drawing.Point(5, 151);
 			this.cbAdvanced.Name = "cbAdvanced";
 			this.cbAdvanced.Size = new System.Drawing.Size(528, 24);
 			this.cbAdvanced.TabIndex = 11;
@@ -397,13 +400,25 @@ namespace KeePassOTP
 			this.cbAdvanced.UseVisualStyleBackColor = true;
 			this.cbAdvanced.CheckedChanged += new System.EventHandler(this.cbAdvanced_CheckedChanged);
 			// 
+			// pbQR
+			// 
+			this.pbQR.Image = global::KeePassOTP.Properties.Resources.qr_code;
+			this.pbQR.Location = new System.Drawing.Point(8, 53);
+			this.pbQR.Name = "pbQR";
+			this.pbQR.Size = new System.Drawing.Size(80, 80);
+			this.pbQR.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbQR.TabIndex = 14;
+			this.pbQR.TabStop = false;
+			this.pbQR.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbQR_DragDrop);
+			this.pbQR.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbQR_DragEnter);
+			// 
 			// KeePassOTPSetup
 			// 
 			this.AcceptButton = this.buttonOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.buttonCancel;
-			this.ClientSize = new System.Drawing.Size(538, 502);
+			this.ClientSize = new System.Drawing.Size(538, 525);
 			this.Controls.Add(this.gTime);
 			this.Controls.Add(this.gOTP);
 			this.Controls.Add(this.cbAdvanced);
@@ -418,12 +433,14 @@ namespace KeePassOTP
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "KeePassOTPSetup";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
+			this.Shown += new System.EventHandler(this.KeePassOTPSetup_Shown);
 			this.gSeed.ResumeLayout(false);
 			this.gSeed.PerformLayout();
 			this.gOTP.ResumeLayout(false);
 			this.gOTP.PerformLayout();
 			this.gTime.ResumeLayout(false);
 			this.gTime.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbQR)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -435,5 +452,6 @@ namespace KeePassOTP
 		internal System.Windows.Forms.ComboBox cbOTPFormat;
 		private System.Windows.Forms.Label lFormat;
 		private System.Windows.Forms.CheckBox cbAdvanced;
+		private System.Windows.Forms.PictureBox pbQR;
 	}
 }
