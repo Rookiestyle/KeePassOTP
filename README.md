@@ -7,10 +7,10 @@
 KeePassOTP allows you to generate one time passwords (OTP). Both TOTP and HOTP are supported.
 
 Once maintained, you can copy or auto-type the OTP.  
-You may also create a QR code and scan it with an OTP app of your liking, e, g. andOTP, Google Authenticator, ...
-
+You may also create a QR code and scan it with an OTP app of your liking, e, g. andOTP, Google Authenticator, ...  
 
 Functionality provided:
+- Drag&Drop QR codes to add OTP
 - Auto-Type placeholder
 - Configurable hotkey to invoke Auto-Type OTP
 - Column to display OTP or to indicate possible 2FA usage
