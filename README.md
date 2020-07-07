@@ -62,10 +62,10 @@ There are multiple convenient ways to use the one time passwords.
   - using KeePass' tray icon
  
 # Translations
-KeePassOTP is provided with english language built-in and allow usage of translation files.
+KeePassOTP is provided with english language built-in and allows usage of translation files.
 These translation files need to be placed in a folder called *Translations* inside in your plugin folder.
 If a text is missing in the translation file, it is backfilled with the english text.
-You're welcome to add additional translation files by creating a pull request.
+You're welcome to add additional translation files by creating a pull request as described in the [wiki](https://github.com/Rookiestyle/KeePassOTP/wiki/Create---Update-translations).
 
 Naming convention for translation files: `keepassotp.<language identifier>.language.xml`\
 Example: `keepassotp.de.language.xml`
