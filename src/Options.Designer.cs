@@ -33,6 +33,7 @@
 			this.tpDatabases = new System.Windows.Forms.TabPage();
 			this.tlp = new System.Windows.Forms.TableLayoutPanel();
 			this.pButtons = new System.Windows.Forms.Panel();
+			this.cbDBAction = new System.Windows.Forms.ComboBox();
 			this.bDBSettings = new System.Windows.Forms.Button();
 			this.bExport = new System.Windows.Forms.Button();
 			this.bChangeMasterKey = new System.Windows.Forms.Button();
@@ -48,6 +49,7 @@
 			this.cbUseDBForSeeds = new System.Windows.Forms.CheckBox();
 			this.tpGeneral = new System.Windows.Forms.TabPage();
 			this.cgbCheckTFA = new RookieUI.CheckedGroupBox();
+			this.tb2FAHelp = new System.Windows.Forms.TextBox();
 			this.gbAutotype = new System.Windows.Forms.GroupBox();
 			this.pPlaceholder = new System.Windows.Forms.Panel();
 			this.tbPlaceholder = new System.Windows.Forms.TextBox();
@@ -58,7 +60,6 @@
 			this.tpHelp = new System.Windows.Forms.TabPage();
 			this.tbHelp = new System.Windows.Forms.TextBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.tb2FAHelp = new System.Windows.Forms.TextBox();
 			this.tabControl1.SuspendLayout();
 			this.tpDatabases.SuspendLayout();
 			this.tlp.SuspendLayout();
@@ -118,17 +119,27 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.pButtons.AutoSize = true;
+			this.pButtons.Controls.Add(this.cbDBAction);
 			this.pButtons.Controls.Add(this.bDBSettings);
 			this.pButtons.Controls.Add(this.bExport);
 			this.pButtons.Controls.Add(this.bChangeMasterKey);
 			this.pButtons.Controls.Add(this.bCreateOpen);
 			this.pButtons.Controls.Add(this.bMigrate2Entry);
 			this.pButtons.Controls.Add(this.bMigrate2DB);
-			this.pButtons.Location = new System.Drawing.Point(435, 0);
+			this.pButtons.Location = new System.Drawing.Point(354, 0);
 			this.pButtons.Margin = new System.Windows.Forms.Padding(0);
 			this.pButtons.Name = "pButtons";
-			this.pButtons.Size = new System.Drawing.Size(317, 180);
+			this.pButtons.Size = new System.Drawing.Size(398, 180);
 			this.pButtons.TabIndex = 2;
+			// 
+			// cbDBAction
+			// 
+			this.cbDBAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbDBAction.FormattingEnabled = true;
+			this.cbDBAction.Location = new System.Drawing.Point(0, 0);
+			this.cbDBAction.Name = "cbDBAction";
+			this.cbDBAction.Size = new System.Drawing.Size(340, 28);
+			this.cbDBAction.TabIndex = 75;
 			// 
 			// bDBSettings
 			// 
@@ -138,7 +149,7 @@
 			this.bDBSettings.Location = new System.Drawing.Point(0, 60);
 			this.bDBSettings.Margin = new System.Windows.Forms.Padding(0);
 			this.bDBSettings.Name = "bDBSettings";
-			this.bDBSettings.Size = new System.Drawing.Size(314, 30);
+			this.bDBSettings.Size = new System.Drawing.Size(395, 30);
 			this.bDBSettings.TabIndex = 74;
 			this.bDBSettings.Text = "bDBSettings";
 			this.bDBSettings.UseVisualStyleBackColor = true;
@@ -152,7 +163,7 @@
 			this.bExport.Location = new System.Drawing.Point(0, 90);
 			this.bExport.Margin = new System.Windows.Forms.Padding(0);
 			this.bExport.Name = "bExport";
-			this.bExport.Size = new System.Drawing.Size(314, 30);
+			this.bExport.Size = new System.Drawing.Size(395, 30);
 			this.bExport.TabIndex = 73;
 			this.bExport.Text = "bExport";
 			this.bExport.UseVisualStyleBackColor = true;
@@ -166,7 +177,7 @@
 			this.bChangeMasterKey.Location = new System.Drawing.Point(0, 30);
 			this.bChangeMasterKey.Margin = new System.Windows.Forms.Padding(0);
 			this.bChangeMasterKey.Name = "bChangeMasterKey";
-			this.bChangeMasterKey.Size = new System.Drawing.Size(314, 30);
+			this.bChangeMasterKey.Size = new System.Drawing.Size(395, 30);
 			this.bChangeMasterKey.TabIndex = 72;
 			this.bChangeMasterKey.Text = "bChangeMasterKey";
 			this.bChangeMasterKey.UseVisualStyleBackColor = true;
@@ -174,15 +185,13 @@
 			// 
 			// bCreateOpen
 			// 
-			this.bCreateOpen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.bCreateOpen.AutoSize = true;
-			this.bCreateOpen.Location = new System.Drawing.Point(0, 0);
+			this.bCreateOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.bCreateOpen.Location = new System.Drawing.Point(345, 0);
 			this.bCreateOpen.Margin = new System.Windows.Forms.Padding(0);
 			this.bCreateOpen.Name = "bCreateOpen";
-			this.bCreateOpen.Size = new System.Drawing.Size(314, 30);
+			this.bCreateOpen.Size = new System.Drawing.Size(50, 30);
 			this.bCreateOpen.TabIndex = 71;
-			this.bCreateOpen.Text = "bCreateOpen";
+			this.bCreateOpen.Text = "C/O";
 			this.bCreateOpen.UseVisualStyleBackColor = true;
 			this.bCreateOpen.Click += new System.EventHandler(this.bCreateOpen_Click);
 			// 
@@ -194,7 +203,7 @@
 			this.bMigrate2Entry.Location = new System.Drawing.Point(0, 120);
 			this.bMigrate2Entry.Margin = new System.Windows.Forms.Padding(0);
 			this.bMigrate2Entry.Name = "bMigrate2Entry";
-			this.bMigrate2Entry.Size = new System.Drawing.Size(314, 30);
+			this.bMigrate2Entry.Size = new System.Drawing.Size(395, 30);
 			this.bMigrate2Entry.TabIndex = 70;
 			this.bMigrate2Entry.Text = "bMigrate2Entry";
 			this.bMigrate2Entry.UseVisualStyleBackColor = true;
@@ -208,7 +217,7 @@
 			this.bMigrate2DB.Location = new System.Drawing.Point(0, 150);
 			this.bMigrate2DB.Margin = new System.Windows.Forms.Padding(0);
 			this.bMigrate2DB.Name = "bMigrate2DB";
-			this.bMigrate2DB.Size = new System.Drawing.Size(314, 30);
+			this.bMigrate2DB.Size = new System.Drawing.Size(395, 30);
 			this.bMigrate2DB.TabIndex = 34;
 			this.bMigrate2DB.Text = "bMigrate2DB";
 			this.bMigrate2DB.UseVisualStyleBackColor = true;
@@ -221,7 +230,7 @@
 			this.lbDB.ItemHeight = 20;
 			this.lbDB.Location = new System.Drawing.Point(3, 3);
 			this.lbDB.Name = "lbDB";
-			this.lbDB.Size = new System.Drawing.Size(429, 174);
+			this.lbDB.Size = new System.Drawing.Size(348, 174);
 			this.lbDB.TabIndex = 20;
 			this.lbDB.SelectedIndexChanged += new System.EventHandler(this.lbDB_SelectedIndexChanged);
 			// 
@@ -322,6 +331,17 @@
 			this.cgbCheckTFA.TabIndex = 10;
 			this.cgbCheckTFA.Text = "cgbCheckTFA";
 			// 
+			// tb2FAHelp
+			// 
+			this.tb2FAHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tb2FAHelp.Location = new System.Drawing.Point(3, 22);
+			this.tb2FAHelp.Multiline = true;
+			this.tb2FAHelp.Name = "tb2FAHelp";
+			this.tb2FAHelp.ReadOnly = true;
+			this.tb2FAHelp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.tb2FAHelp.Size = new System.Drawing.Size(746, 257);
+			this.tb2FAHelp.TabIndex = 14;
+			// 
 			// gbAutotype
 			// 
 			this.gbAutotype.Controls.Add(this.pPlaceholder);
@@ -410,17 +430,6 @@
 			this.tbHelp.Size = new System.Drawing.Size(752, 382);
 			this.tbHelp.TabIndex = 0;
 			// 
-			// tb2FAHelp
-			// 
-			this.tb2FAHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tb2FAHelp.Location = new System.Drawing.Point(3, 22);
-			this.tb2FAHelp.Multiline = true;
-			this.tb2FAHelp.Name = "tb2FAHelp";
-			this.tb2FAHelp.ReadOnly = true;
-			this.tb2FAHelp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tb2FAHelp.Size = new System.Drawing.Size(746, 257);
-			this.tb2FAHelp.TabIndex = 14;
-			// 
 			// Options
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -486,5 +495,6 @@
 		internal KeePass.UI.HotKeyControlEx hkcKPOTP;
 		private System.Windows.Forms.Label lHotkey;
 		private System.Windows.Forms.TextBox tb2FAHelp;
+		private System.Windows.Forms.ComboBox cbDBAction;
 	}
 }

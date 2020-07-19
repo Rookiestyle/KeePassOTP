@@ -134,7 +134,18 @@ namespace KeePassOTP
 				}
 
 				OTPDB_Load();
+				if (OTPDB_Opened) OTPDB.Modified = false;
 				m_bOpening = false;
+			}
+
+			public void OTPDB_Close()
+			{
+				if (!Valid) return;
+				if (!OTPDB_Opened) return;
+
+				OTPDB_Save();
+				OTPDB.Close();
+				OTPDB_Opened = false;
 			}
 
 			public void OTPDB_Remove()
@@ -342,6 +353,13 @@ namespace KeePassOTP
 			#endregion
 
 			#region Handle PwEntry
+			public bool HasEntries()
+			{
+				if (!Valid) return false;
+				if (!OTPDB_Exists) return false;
+				if (!OTPDB_Opened) return false;
+				return (OTPDB.RootGroup != null) && (OTPDB.RootGroup.GetEntriesCount(true) > 0);
+			}
 			public override bool EnsureOTPSetupPossible(PwEntry pe)
 			{
 				if (!Valid) return false;
