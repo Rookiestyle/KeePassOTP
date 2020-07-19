@@ -38,7 +38,7 @@ namespace KeePassOTP
 					}
 					UpdateOTPBuffer(pe, otp);
 				}
-				if (otp.ValidTo == DateTime.MaxValue)
+				if ((otp.ValidTo == DateTime.MaxValue) ||(otp.kpotp.Type == KPOTPType.HOTP))
 					return otp.ReadableOTP;
 				else
 				{

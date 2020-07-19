@@ -394,6 +394,7 @@ namespace KeePassOTP
 				if ((!otp.Loaded && Config.UseDBForOTPSeeds(otp.db)) || (otp.ValidTo == DateTime.MaxValue))
 					return otp.ReadableOTP;
 
+				if (otp.kpotp.Type == KPOTPType.HOTP) return otp.ReadableOTP;
 				int r = (otp.ValidTo - DateTime.UtcNow).Seconds;
 				return otp.ReadableOTP + (r < 6 ? " (" + r.ToString() + ")" : string.Empty);
 			}
