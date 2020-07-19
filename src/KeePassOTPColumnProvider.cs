@@ -89,6 +89,7 @@ namespace KeePassOTP
 		}
 
 		private bool m_bUpdateInProgress = false;
+		public static bool ForceUpdate = false;
 		private void OnTimerTick(object sender, EventArgs e)
 		{
 			if (m_bUpdateInProgress)
@@ -101,14 +102,14 @@ namespace KeePassOTP
 				if (KeePass.Program.MainForm.UIIsInteractionBlocked()) return;
 				if (!KeePass.Program.MainForm.Visible) return;
 				if (!KeePass.Program.MainForm.ActiveDatabase.IsOpen) return;
-				if (KeePass.Program.Config.MainWindow.EntryListColumns.Find(x => x.CustomName == KeePassOTPColumnProvider.KPOTPColumnName) == null) return;
+				if (KeePass.Program.Config.MainWindow.EntryListColumns.Find(x => x.CustomName == KPOTPColumnName) == null) return;
 				PwGroup pg = KeePass.Program.MainForm.GetSelectedGroup();
 				if (pg == null) return;
 				bool bRefresh = pg.GetEntries(KeePass.Program.Config.MainWindow.ShowEntriesOfSubGroups).FirstOrDefault(x => OTPDAO.OTPDefined(x) == OTPDAO.OTPDefinition.Complete) != null;
-				if (!bRefresh) return;
+				if (!bRefresh && !ForceUpdate) return; //Update entry list if OTP DB was closed / deleted
+				if (ForceUpdate) ForceUpdate = false;
 				bool LVPossible = LV_DirectUpdate();
-				if (!LVPossible)
-					KeePass.Program.MainForm.RefreshEntriesList();
+				if (!LVPossible) KeePass.Program.MainForm.RefreshEntriesList();
 			}
 			finally { m_bUpdateInProgress = false; }
 		}

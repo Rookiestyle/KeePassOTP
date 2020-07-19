@@ -21,15 +21,31 @@ namespace KeePassOTP
 			public bool UseOTPDB;
 			public bool Preload;
 		}
+		private class DBAction
+		{
+			internal int Action = -1;
+			internal DBAction(int action)
+			{
+				Action = action;
+			}
 
+			public override string ToString()
+			{
+				if (Action == ACTION_CREATE) return KPRes.CreateNewDatabase2;
+				if (Action == ACTION_OPEN) return KPRes.OpenDatabase;
+				if (Action == ACTION_CLOSE) return KPRes.Close;
+				if (Action == ACTION_DELETE) return KPRes.Delete;
+				return string.Empty;
+			}
+		}
 		public Dictionary<PwDatabase, DBSettings> OTPDBSettings {  get { return m_dDB; } }
 		private Dictionary<PwDatabase, DBSettings> m_dDB = new Dictionary<PwDatabase, DBSettings>();
 
+		private const int ACTION_NONE = 0;
 		private const int ACTION_CREATE = 1;
 		private const int ACTION_OPEN = 2;
-		private const int ACTION_MASTERKEY = 3;
-		private const int ACTION_EXPORT = 4;
-		private const int ACTION_SETTINGS = 5;
+		private const int ACTION_CLOSE = 3;
+		private const int ACTION_DELETE = 4;
 
 		private Dictionary<string, MigrationBase> m_dMigration = new Dictionary<string, MigrationBase>();
 		private bool m_bReadingConfig = false;
@@ -58,7 +74,7 @@ namespace KeePassOTP
 			cbUseDBForSeeds.Text = PluginTranslate.Options_UseOTPDB;
 			cbPreloadOTP.Text = PluginTranslate.Options_PreloadOTPDB;
 
-			bCreateOpen.Text = KPRes.CreateNewDatabase2;
+			bCreateOpen.Text = KPRes.Ok;
 			bChangeMasterKey.Text = KPRes.ChangeMasterKey;
 			bDBSettings.Text = KPRes.DatabaseSettings;
 			bExport.Text = KPRes.Export;
@@ -102,14 +118,25 @@ namespace KeePassOTP
 			if (db == null)
 			{
 				tpDatabases.Enabled = false;
-				bCreateOpen.Text = KPRes.CreateNewDatabase2;
+				//bCreateOpen.Text = KPRes.CreateNewDatabase2;
 				return;
 			}
 			RefreshHandler(db);
-			bCreateOpen.Enabled = !m_handler.OTPDB_Exists || !m_handler.OTPDB_Opened;
-			if (m_handler.OTPDB_Exists) bCreateOpen.Text = KPRes.OpenDatabase;
-			else bCreateOpen.Text = KPRes.CreateNewDatabase2;
-			bCreateOpen.Enabled = !m_handler.OTPDB_Opened;
+			int i = cbDBAction.SelectedIndex;
+			cbDBAction.Items.Clear();
+			cbDBAction.Items.Add(new DBAction(ACTION_NONE));
+			if (!m_handler.OTPDB_Exists) cbDBAction.Items.Add(new DBAction(ACTION_CREATE));
+			else
+			{
+				if (!m_handler.OTPDB_Opened) cbDBAction.Items.Add(new DBAction(ACTION_OPEN));
+				else cbDBAction.Items.Add(new DBAction(ACTION_CLOSE));
+				cbDBAction.Items.Add(new DBAction(ACTION_DELETE));
+			}
+			if (i < cbDBAction.Items.Count) cbDBAction.SelectedIndex = i;
+			//bCreateOpen.Enabled = !m_handler.OTPDB_Exists || !m_handler.OTPDB_Opened;
+			//if (m_handler.OTPDB_Exists) bCreateOpen.Text = KPRes.OpenDatabase;
+			//else bCreateOpen.Text = KPRes.CreateNewDatabase2;
+			//bCreateOpen.Enabled = !m_handler.OTPDB_Opened;
 			bChangeMasterKey.Enabled = m_handler.OTPDB_Opened;
 			bExport.Enabled = m_handler.OTPDB_Opened;
 			bDBSettings.Enabled = m_handler.OTPDB_Opened;
@@ -155,6 +182,45 @@ namespace KeePassOTP
 		private void cbUseDBForSeeds_CheckedChanged(object sender, EventArgs e)
 		{
 			PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
+			if (!cbUseDBForSeeds.Checked)
+			{
+				OTPDAO.OTPHandler_DB h = OTPDAO.GetOTPHandler(db);
+				if ((h != null) && h.OTPDB_Exists)
+				{
+					DialogResult dr = DialogResult.None;
+					if (!h.HasEntries())
+					{
+						dr = DialogResult.Yes;
+					}
+					else
+					{
+						dr = MessageBox.Show(string.Format(PluginTranslate.ConfirmOTPDBDelete, DialogResult.Yes.ToString(), DialogResult.No.ToString()),
+							PluginTranslate.PluginName,
+							MessageBoxButtons.YesNoCancel, 
+							MessageBoxIcon.Question,
+							MessageBoxDefaultButton.Button2);
+					}
+					if (dr == DialogResult.Cancel)
+					{
+						cbUseDBForSeeds.CheckedChanged -= cbUseDBForSeeds_CheckedChanged;
+						cbUseDBForSeeds.Checked = true;
+						cbUseDBForSeeds.CheckedChanged += cbUseDBForSeeds_CheckedChanged;
+						return;
+					}
+					if (dr == DialogResult.Yes)
+					{
+						h.OTPDB_Remove();
+						OTPDAO.RemoveHandler(db.IOConnectionInfo.Path, true);
+						OTPDAO.InitEntries(db);
+					}
+					else if (dr == DialogResult.No)
+					{
+						h.OTPDB_Close();
+						OTPDAO.RemoveHandler(db.IOConnectionInfo.Path, true);
+						OTPDAO.InitEntries(db);
+					}
+				}
+			}
 			m_dDB[db].UseOTPDB = cbUseDBForSeeds.Checked;
 			cbPreloadOTP.Enabled = cbUseDBForSeeds.Checked;
 			DBAction_Init(db);
@@ -188,7 +254,9 @@ namespace KeePassOTP
 			cbUseDBForSeeds.Checked = true;
 			PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
 			RefreshHandler(db);
-			if (!m_handler.OTPDB_Exists)
+			DBAction dba = cbDBAction.SelectedItem as DBAction;
+			if (dba == null) return;
+			if ((dba.Action == ACTION_CREATE) || !m_handler.OTPDB_Exists)
 			{
 				m_handler.OTPDB_Create();
 				if (m_handler.OTPDB_Exists)
@@ -196,8 +264,24 @@ namespace KeePassOTP
 					bDBSettings_Click(sender, e);
 				}
 			}
-			else if (!m_handler.OTPDB_Opened)
+			else if (dba.Action == ACTION_OPEN)
 				m_handler.SetDB(db, true);
+			else if (dba.Action == ACTION_CLOSE)
+			{
+				m_handler.OTPDB_Close();
+				OTPDAO.RemoveHandler(db.IOConnectionInfo.Path, true);
+				OTPDAO.GetOTPHandler(db);
+				OTPDAO.InitEntries(db);
+				KeePassOTPColumnProvider.ForceUpdate = true;
+			}
+			else if (dba.Action == ACTION_DELETE)
+			{
+				m_handler.OTPDB_Remove();
+				OTPDAO.RemoveHandler(db.IOConnectionInfo.Path, true);
+				OTPDAO.InitEntries(db);
+				KeePassOTPColumnProvider.ForceUpdate = true;
+			}
+
 			if (m_handler.OTPDB_Opened)
 			{
 				cbUseDBForSeeds.Checked = true;
@@ -249,11 +333,16 @@ namespace KeePassOTP
 			MessageService.ExternalIncrementMessageCount();
 			ShowWarningsLogger swLogger = KeePass.Program.MainForm.CreateShowWarningsLogger();
 			swLogger.StartLogging(KPRes.ExportingStatusMsg, true);
-
-			ExportUtil.Export(pwInfo, swLogger);
-			swLogger.SetText(string.Empty, KeePassLib.Interfaces.LogStatusType.Info);
-			swLogger.EndLogging();
-			MessageService.ExternalDecrementMessageCount();
+			try
+			{
+				ExportUtil.Export(pwInfo, swLogger);
+				swLogger.SetText(string.Empty, KeePassLib.Interfaces.LogStatusType.Info);
+			}
+			finally
+			{
+				swLogger.EndLogging();
+				MessageService.ExternalDecrementMessageCount();
+			}
 		}
 
 		private void cbPreloadOTP_CheckedChanged(object sender, EventArgs e)
@@ -318,7 +407,12 @@ namespace KeePassOTP
 			tlp.ColumnStyles[1].SizeType = SizeType.Absolute;
 			tlp.ColumnStyles[1].Width = w;
 			foreach (Control c in pButtons.Controls)
-				c.Width = pButtons.ClientSize.Width;
+			{
+				if ((c != bCreateOpen) && (c != cbDBAction))
+					c.Width = pButtons.ClientSize.Width;
+			}
+			cbDBAction.Width = bDBSettings.Width - bCreateOpen.Width - 5;
+			cbDBAction.DropDownWidth = pButtons.ClientSize.Width;
 		}
 
 		private void bMigrate_Click(object sender, EventArgs e)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>6</TranslationVersion>
+  <TranslationVersion>7</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -225,5 +225,13 @@ Neuer Platzhalter: {1}
 
 Damit Auto-Type weiterhin vollumfänglich genutzt werden kann, muss {0} überall durch {1} ersetzt werden..
 Soll diese Ersetzung jetzt in allen geladenen Datenbanken durchgeführt werden?</value>
+  </item>
+    <item>
+	<kye>ConfirmOTPDBDelete</key>
+	<value>Diese Aktion deaktiviert die OTP-Datenbank.
+Die OTP-Datenbank wird dadurch NICHT gelöscht.
+
+Klicke '{0}' um die OTP-Datenbank zu deaktivieren und zu löschen.
+Klicke '{1}' um die OTP-Datenbank zu deaktivieren und nicht zu löschen.</value>
   </item>
 </Translation>
