@@ -115,6 +115,12 @@ It will NOT delete the KeePassOTP database.
 
 Click '{0}' to deactivate AND delete KeePassOTP database.
 Click '{1}' to deactivate but not delete KeePassOTP database.";
+		public static readonly string OTPBackupDone = @"Unlocking the existing OTP database failed and its content has been overwritten.
+A backup was saved as attachment in the following entry:
+{0}
+
+Open it anytime to check the previous content.
+Restoring the data needs to be done manually.";
 		#endregion
 
 		#region NO changes in this area

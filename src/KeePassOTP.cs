@@ -327,12 +327,16 @@ namespace KeePassOTP
 
 		private string Encode(string s, bool PathEncode)
 		{
-			return PathEncode ? System.Web.HttpUtility.UrlPathEncode(s) : System.Web.HttpUtility.UrlEncode(s);
+			//UrlPathEncode required to encode issue and label within the 'path'
+			//special handling required, if # is contained
+			//
+			//This will not be processed by UrlPathEncode, but will break creating an Uri instance for parsing the otpauth string
+			return PathEncode ? System.Web.HttpUtility.UrlPathEncode(s).Replace("#", "%23") : System.Web.HttpUtility.UrlEncode(s);
 		}
 
 		private string Decode(string s)
 		{
-			return System.Web.HttpUtility.UrlDecode(s);
+			return System.Web.HttpUtility.UrlDecode(s.Replace("%23", "#"));
 		}
 
 		private int MigrateInt(string v, int def)

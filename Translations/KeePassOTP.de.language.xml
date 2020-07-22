@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>7</TranslationVersion>
+  <TranslationVersion>8</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -227,11 +227,20 @@ Damit Auto-Type weiterhin vollumfänglich genutzt werden kann, muss {0} überall
 Soll diese Ersetzung jetzt in allen geladenen Datenbanken durchgeführt werden?</value>
   </item>
     <item>
-	<kye>ConfirmOTPDBDelete</key>
+	<key>ConfirmOTPDBDelete</key>
 	<value>Diese Aktion deaktiviert die OTP-Datenbank.
 Die OTP-Datenbank wird dadurch NICHT gelöscht.
 
 Klicke '{0}' um die OTP-Datenbank zu deaktivieren und zu löschen.
 Klicke '{1}' um die OTP-Datenbank zu deaktivieren und nicht zu löschen.</value>
+  </item>
+    <item>
+	<key>OTPBackupDone</key>
+	<value>Das Entsperren der OTP-Datenbank ist fehlgeschlagen, die OTP-Datenbank wurde überschrieben.
+Ein Backup wurde als Attachmemt in folgendem Eintrag gespeichert:
+{0}
+
+Das Backup kann jederzeit geöffnet werden, um auf die darin gespeicherten Daten zuzugreifen.
+Die Daten müssen manuell wiederhergestellt werden.</value>
   </item>
 </Translation>

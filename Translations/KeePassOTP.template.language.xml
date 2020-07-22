@@ -229,11 +229,20 @@ All occurrences of {0} need to be replaced by {1} for Auto-Type to work.
 Replace now in currently loaded databases?</value>
   </item>
   <item>
-	<kye>ConfirmOTPDBDelete</key>
+	<key>ConfirmOTPDBDelete</key>
 	<value>This will deactivate the OTP database. 
 It will NOT delete the OTP database.
 
 Click '{0}' to deactivate AND delete OTP database.
 Click '{1}' to deactivate but not delete OTP database.</value>
+  </item>
+  <item>
+	<key>OTPBackupDone</key>
+	<value>Unlocking the existing OTP database failed and its content has been overwritten.
+A backup was saved as attachment in the following entry:
+{0}
+
+Open it anytime to check the previous content.
+Restoring the data needs to be done manually.</value>
   </item>
 </Translation>

@@ -177,7 +177,24 @@ namespace KeePassOTP
 		internal static PwDatabase GetDB(this PwEntry pe)
 		{
 			if (pe == null) return null;
-			return Program.MainForm.DocumentManager.FindContainerOf(pe);
+			//return Program.MainForm.DocumentManager.FindContainerOf(pe);
+			//FindContainerOf will search all entries in all open databases in case
+			//the requested entry is an OTP-DB entry
+			//
+			//This is 'FindContainerOf' without calling 'SlowFindContainerOf' as fallback
+
+			PwGroup pg = pe.ParentGroup;
+			if (pg == null) return null;
+			while (pg.ParentGroup != null) pg = pg.ParentGroup;
+
+			foreach (KeePass.UI.PwDocument ds in KeePass.Program.MainForm.DocumentManager.Documents)
+			{
+				PwDatabase pd = ds.Database;
+				if ((pd == null) || !pd.IsOpen) continue;
+
+				if (object.ReferenceEquals(pd.RootGroup, pg))	return pd;
+			}
+			return null;
 		}
 
 		internal static void UpdateOTPBuffer(PwEntry pe, EntryOTP otp)

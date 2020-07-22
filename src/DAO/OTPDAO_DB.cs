@@ -207,6 +207,7 @@ namespace KeePassOTP
 				OTPDB.RootGroup = new PwGroup();
 				FlagChanged(true);
 				if (bCreateOpened) OTPDB.New(new IOConnectionInfo(), new CompositeKey());
+				OTPDB.RootGroup.LastModificationTime = INITTIME;
 				OTPDB.MasterKeyChangeRec = -1;
 				OTPDB.MasterKeyChangeForce = -1;
 				OTPDB.MasterKeyChangeForceOnce = false;
@@ -231,8 +232,22 @@ namespace KeePassOTP
 					else if (!OTPDB_Opened)
 					{
 						if (Config.ShowHintSyncRequiresUnlock) Tools.ShowInfo(PluginTranslate.HintSyncRequiresUnlock);
-						if (!EnsureOTPSetupPossible(null)) return false;
-
+						while (!EnsureOTPSetupPossible(null))
+						{
+							if (Tools.AskYesNo(PluginTranslate.HintSyncRequiresUnlock) == DialogResult.No)
+							{
+								PwEntry peOTPDBBackup = new PwEntry(true, true);
+								string sTitle = DBNAME + " Backup " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+								peOTPDBBackup.Strings.Set(PwDefs.TitleField, new ProtectedString(false, sTitle));
+								if (!string.IsNullOrEmpty(m_sInitialOTPDB))
+									peOTPDBBackup.Binaries.Set(DBNAME + ".kdbx", new ProtectedBinary(true, ConvertFromCustomData(m_sInitialOTPDB)));
+								DB.RootGroup.AddEntry(peOTPDBBackup, true);
+								peOTPDBBackup.Expires = false;
+								FlagChanged(false);
+								Tools.ShowInfo(string.Format(PluginTranslate.OTPBackupDone, sTitle));
+								break;
+							}
+						}
 						//DB was not opened yet
 						//Try loading initially remembered database
 						//This is required to not lose local changes during a sync
@@ -287,7 +302,10 @@ namespace KeePassOTP
 					targetdb.HistoryMaxSize = pwImp.HistoryMaxSize;
 
 					PwMergeMethod mm = PwMergeMethod.Synchronize;
+
+					targetdb.RootGroup.Uuid = pwImp.RootGroup.Uuid;
 					targetdb.MergeIn(pwImp, mm, dlgStatus);
+					CleanupSyncedDB(targetdb);
 				}
 				catch (Exception ex)
 				{
@@ -295,6 +313,40 @@ namespace KeePassOTP
 					throw ex;
 				}
 				finally { dlgStatus.EndLogging(); }
+			}
+
+			private void CleanupSyncedDB(PwDatabase targetdb)
+			{
+				//Previous versions of KeePassOTP added the synchronized rootgroup
+				//as subgroup into the rootgroup of the new OTP database
+				if (RemoveEmptyGroups(targetdb.RootGroup) > 0)
+				{
+					targetdb.SettingsChanged = DateTime.UtcNow;
+					targetdb.Modified = true;
+				}
+			}
+
+			private int RemoveEmptyGroups(PwGroup pg)
+			{
+				int removed = 0;
+				if (pg == null) return removed;
+				for (int i = pg.Groups.Count() - 1; i >= 0; i--)
+				{
+					PwGroup g = pg.Groups.GetAt((uint)i);
+					removed += RemoveEmptyGroups(g);
+					if ((g.Groups.UCount > 0) || (g.Entries.UCount > 0))
+					{
+						PluginDebug.AddError("Invalid group in OTP database", 0,
+							"Group uuid: " + g.Uuid.ToHexString(),
+							"Group name: " + g.Name,
+							"Subgroups: " + g.Groups.UCount.ToString(),
+							"Entries" + g.Entries.UCount.ToString());
+						continue;
+					}
+					pg.Groups.Remove(g);
+					removed++;
+				}
+				return removed;
 			}
 			#endregion
 
@@ -360,6 +412,7 @@ namespace KeePassOTP
 				if (!OTPDB_Opened) return false;
 				return (OTPDB.RootGroup != null) && (OTPDB.RootGroup.GetEntriesCount(true) > 0);
 			}
+
 			public override bool EnsureOTPSetupPossible(PwEntry pe)
 			{
 				if (!Valid) return false;
