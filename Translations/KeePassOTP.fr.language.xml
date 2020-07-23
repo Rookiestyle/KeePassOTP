@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Translation>
-<TranslationVersion>1</TranslationVersion>
+<TranslationVersion>2</TranslationVersion>
 <item>
 <key>OTPCopyTrayNoEntries</key>
 <value>KPOTP - Aucune entrée disponible</value>
@@ -220,5 +220,13 @@ Ancienne valeur : {0}
 Nouvelle valeur : {1}
 Toutes les occurrences de {0} doivent être remplacées par {1} pour que la Saisie Automatique fonctionne.
 Replacer maintenant dans les bases actuellement ouvertes ?</value>
+</item>
+<item>
+<key>ConfirmOTPDBDelete</key>
+<value>Cette action va désactiver la base OTP. Cela NE supprimera PAS la base OTP. Cliquez sur '{0}' pour désactiver ET supprimer la base OTP. Cliquez sur '{1}' pour désactiver sans supprimer la base OTP.</value>
+</item>
+<item>
+<key>OTPBackupDone</key>
+<value>Le déverrouillage de la base OTP existante a échoué et son contenu a été écrasé. Une sauvegarde a été réalisé et attachée à l'entrée suivante : {0} Vous pouvez y accéder pour vérifier le contenu historique. La restoration des données doit être faite manuellement.</value>
 </item>
 </Translation>
