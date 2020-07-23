@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+<TranslationVersion>2</TranslationVersion>
+<item>
+<key>OTPCopyTrayNoEntries</key>
+<value>KPOTP - Aucune entrée disponible</value>
+</item>
+<item>
+<key>OTPCopyTrayEntries</key>
+<value>Saisie automatique KPOTP ([Ctrl] pour copier)</value>
+</item>
+<item>
+<key>Empty</key>
+<value>N/A Uuid: {0}</value>
+</item>
+<item>
+<key>Group</key>
+<value>groupe: {0}</value>
+</item>
+<item>
+<key>OTPSetup</key>
+<value>Configuration OTP...</value>
+</item>
+<item>
+<key>OTPCopy</key>
+<value>Copier OTP</value>
+</item>
+<item>
+<key>Error</key>
+<value>ERREUR</value>
+</item>
+<item>
+<key>Title</key>
+<value>Titre: {0}</value>
+</item>
+<item>
+<key>User</key>
+<value>Utilisateur: {0}</value>
+</item>
+<item>
+<key>SeedSettings</key>
+<value>Paramètres du secret</value>
+</item>
+<item>
+<key>Seed</key>
+<value>Secret: </value>
+</item>
+<item>
+<key>AdvancedOptions</key>
+<value>Utiliser les options avancées</value>
+</item>
+<item>
+<key>Format</key>
+<value>Format: </value>
+</item>
+<item>
+<key>OTPSettings</key>
+<value>Paramètres OTP</value>
+</item>
+<item>
+<key>OTPType</key>
+<value>Type:</value>
+</item>
+<item>
+<key>OTPLength</key>
+<value>Longueur:</value>
+</item>
+<item>
+<key>OTPHash</key>
+<value>Hash:</value>
+</item>
+<item>
+<key>OTPTimestep</key>
+<value>Intervalle (s):</value>
+</item>
+<item>
+<key>OTPCounter</key>
+<value>Compteur:</value>
+</item>
+<item>
+<key>TimeCorrection</key>
+<value>Correction de temps - seulement pour TOTP</value>
+</item>
+<item>
+<key>URL</key>
+<value>Adresse URL: </value>
+</item>
+<item>
+<key>TimeDiff</key>
+<value>Diff: </value>
+</item>
+<item>
+<key>TimeCorrectionOff</key>
+<value>Aucune correction de temps</value>
+</item>
+<item>
+<key>TimeCorrectionEntry</key>
+<value>Utiliser l'adresse URL de l'entrée</value>
+</item>
+<item>
+<key>TimeCorrectionFixed</key>
+<value>Utiliser l'adresse URL suivante</value>
+</item>
+<item>
+<key>SetupTFA</key>
+<value>Paramétrer l'authenfication à 2 facteurs (2FA)</value>
+</item>
+<item>
+<key>OTP_OpenDB</key>
+<value>Ouvrir la base OTP - {0}</value>
+</item>
+<item>
+<key>OTP_CreateDB_PWHint</key>
+<value>Tous les secrets seront stockés dans une base de données séparée, intégrée à la base principale contenant les entrées.
+Veuillez fournir dans le prochain formulaire la clé principale pour vos secrets OTP.</value>
+</item>
+<item>
+<key>Options_CheckTFA</key>
+<value>Vérifier si l'authentification à 2 facteurs (2FA) est disponible</value>
+</item>
+<item>
+<key>Options_OTPSettings</key>
+<value>Paramètres OTP (spécifiques à la base)</value>
+</item>
+<item>
+<key>Options_UseOTPDB</key>
+<value>Sauvegarder les secrets OTP dans une base séparée</value>
+</item>
+<item>
+<key>Options_PreloadOTPDB</key>
+<value>Ouvrir automatiquement la base OTP quand la base principale est ouverte</value>
+</item>
+<item>
+<key>Options_Migrate2DB</key>
+<value>Entrée -&gt; Base</value>
+</item>
+<item>
+<key>Options_Migrate2DBHint</key>
+<value>Migrer les secrets OTP vers une base séparée</value>
+</item>
+<item>
+<key>Options_Migrate2Entries</key>
+<value>Base -&gt; Entrée</value>
+</item>
+<item>
+<key>Options_Migrate2EntriesHint</key>
+<value>Migrer les secrets OTP vers les entrées respectives</value>
+</item>
+<item>
+<key>MoveError</key>
+<value>Erreur lors de la migration des secrets OTP. La base OTP est-elle ouverte ?</value>
+</item>
+<item>
+<key>EntriesMoved</key>
+<value>{0} secret(s) OTP migrés avec succès</value>
+</item>
+<item>
+<key>Options_Check2FA_Help</key>
+<value>KeePassOTP téléchargera une liste de sites supportant l'authentification à facteurs depuis https://twofactorauth.org/
+Cette liste est ensuite comparée à toutes les adresses URLs présentes dans la base, vos adresses URLs ne sont pas envoyées.
+La colonne OTP affichera si l'authentification à 2 facteurs (2FA) est possible mais pas encore configurée.
+Double-cliquer sur cette information affichera la page de configuration de l'authentification à 2 facteurs.</value>
+</item>
+<item>
+<key>Options_Help</key>
+<value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Stocke les nouveaux secrets OTP dans une base séparée qui peut être chiffrée avec une clé principale différente.
+Cette base sera stockée dans la base principale contenant les entrées.
+Bien qu'augmentant le niveau de sécurité en ajoutant une seconde clé principale pour vos secrets OTP, cela peut empêcher d'autres applications telles que KeePass2Android d'afficher directement les codes OTP.
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Ouvrir la base OTP quand la base principale est ouverte.
+Désactiver cette option pour ouvrir la base OTP uniquement à la demande =&gt; dès qu'un code OTP est demandé.
+La base OTP sera ouverte à chaque fois que la base principale est synchronisée - autrement, les modifications de la base OTP ne seraient pas synchronisées et les modifications locales seraient perdues.
+&gt;&gt; Migration OTP &lt;&lt;
+Selon les options ci-dessus, les secrets OTP sont stockés soit dans les entrées respectives, soit dans une base séparée.
+'{Options_Migrate2DB}' et '{Options_Migrate2Entries}' peuvent être utilisés pour migrer les secrets OTP de l'un à l'autre.</value>
+</item>
+<item>
+<key>MigrateOtherPlugins</key>
+<value>Migrer depuis / vers d'autres greffons</value>
+</item>
+<item>
+<key>MigrateOtherPlugins_Delete</key>
+<value>Supprimer {0} paramètres pour les entrées migrées avec succès ?</value>
+</item>
+<item>
+<key>MigrateOtherPlugins_Result</key>
+<value>{0} entrées sur {1} ont été migrées avec succès.</value>
+</item>
+<item>
+<key>Hotkey</key>
+<value>Raccourci KeePassOTP :</value>
+</item>
+<item>
+<key>HintSyncRequiresUnlock</key>
+<value>La base a été synchronisée.
+Veuillez déverrouiller la base OTP pour permettre la synchronisation des données OTP.
+Si la base OTP est verrouillée, les données OTP ne peuvent pas être synchronisées et des données peuvent être perdues.</value>
+</item>
+<item>
+<key>OTPDB_Opening</key>
+<value>Ouverture de la base OTP...</value>
+</item>
+<item>
+<key>OTPDB_Sync</key>
+<value>Synchronisation de la base OTP...</value>
+</item>
+<item>
+<key>OTPDB_Save</key>
+<value>Sauvegarde de la base OTP...</value>
+</item>
+<item>
+<key>OTPQRCode</key>
+<value>Afficher le QR code...</value>
+</item>
+<item>
+<key>MigratePlaceholder</key>
+<value>Le caractère de remplacement (Placeholder) KeePassOTP a été changé et le caractère de remplacement précédent n'est plus valide.
+Ancienne valeur : {0}
+Nouvelle valeur : {1}
+Toutes les occurrences de {0} doivent être remplacées par {1} pour que la Saisie Automatique fonctionne.
+Replacer maintenant dans les bases actuellement ouvertes ?</value>
+</item>
+-<item>
+<key>ConfirmOTPDBDelete</key>
+<value>Cette action va désactiver la base OTP. Cela NE supprimera PAS la base OTP. Cliquez sur '{0}' pour désactiver ET supprimer la base OTP. Cliquez sur '{1}' pour désactiver sans supprimer la base OTP.</value>
+</item>
+-<item>
+<key>OTPBackupDone</key>
+<value>Le déverrouillage de la base OTP existante a échoué et son contenu a été écrasé. Une sauvegarde a été réalisé et attachée à l'entrée suivante : {0} Vous pouvez y accéder pour vérifier le contenu historique. La restoration des données doit être faite manuellement.</value>
+</item>
+</Translation>
