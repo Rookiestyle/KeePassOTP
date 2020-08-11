@@ -34,10 +34,13 @@ In the database-specific area you can chose the working mode of KeePassOTP.
 The general area let's you define settings that are valid for all databases.
 
 # Usage
-You'll find more details in the [Wiki](https://github.com/rookiestyle/keepassotp/wiki)
+OTP settings are entry-specific.  
+To setup, change, copy or auto-type the OTP, you may use the respective entry's context menu.
 
-## Maintain OTP data  
-Use the context menu to setup/change OTP data.  
+If you're interested in migration instructions to move from (or to) other OTP plugins or if you want to know more about some of the technical details, please have a look at the [Wiki](https://github.com/rookiestyle/keepassotp/wiki).
+
+## Setup OTP data / Change OTP data  
+Use the entry's context menu to setup/change OTP data.  
 
 In the setup form, you can drag&drop the QR code image and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as seed) and you're ready to go.  
 
