@@ -7,7 +7,7 @@
 KeePassOTP allows you to generate one time passwords (OTP). Both TOTP and HOTP are supported.
 
 Once maintained, you can copy or auto-type the OTP.  
-You may also create a QR code and scan it with an OTP app of your liking, e, g. andOTP, Google Authenticator, ...  
+You may also create a QR code and scan it with an OTP app of your liking, e.g. andOTP, Google Authenticator, ...  
 
 Functionality provided:
 - Drag&Drop QR codes to add OTP
@@ -28,21 +28,21 @@ Functionality provided:
 # Configuration
 KeePassOTP integrates into KeePass' options form.\
 <img src="images/KeePassOTP%20-%20options.png" alt="Options" height="50%" width="50%"/>  
-In the database-specific area you can chose the working mode of KeePassOTP.  
+In the database-specific area you can choose the working mode of KeePassOTP.  
 
 <img src="images/KeePassOTP%20-%20options%202.png" alt="Options 2" height="50%" width="50%"/>
-The general area let's you define settings that are valid for all databases.
+The general area lets you define settings that are valid for all databases.
 
 # Usage
 OTP settings are entry-specific.  
-To setup, change, copy or auto-type the OTP, you may use the respective entry's context menu.
+To setup, change, copy or auto-type the OTP, you may use the context menu of the respective entry.
 
 If you're interested in migration instructions to move from (or to) other OTP plugins or if you want to know more about some of the technical details, please have a look at the [Wiki](https://github.com/rookiestyle/keepassotp/wiki).
 
 ## Setup OTP data / Change OTP data  
 Use the entry's context menu to setup/change OTP data.  
 
-In the setup form, you can drag&drop the QR code image and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as seed) and you're ready to go.  
+In the setup form, you can drag&drop the QR code image and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as a seed) and you're ready to go.  
 
 Got a string like this one?  
 `otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example`  
@@ -55,19 +55,19 @@ As almost all sites require you to enter an OTP as part of the activation proces
 There are multiple convenient ways to use the one time passwords.
 
 - Copy OTP 
-  - using the entry's context menu
+  - using the context menu of the entry
   - doubleclicking the OTP displayed in the optional KPOTP column
   - using KeePass' tray icon
 - Auto-Type
-  - using the entry's context menu - *Show additional auto-type menu commands* needs to be active
+  - using the context menu of the entry - *Show additional auto-type menu commands* needs to be active
   - using a configurable placeholder - default placeholder: `{KPOTP}`
   - using a configurable hotkey working inside and outside KeePass
   - using KeePass' tray icon
  
 # Translations
-KeePassOTP is provided with english language built-in and allows usage of translation files.
-These translation files need to be placed in a folder called *Translations* inside in your plugin folder.
-If a text is missing in the translation file, it is backfilled with the english text.
+KeePassOTP is provided with English language built-in and allows usage of translation files.
+These translation files need to be placed in a folder called *Translations* inside your plugin folder.
+If a text is missing in the translation file, it is backfilled with English text.
 You're welcome to add additional translation files by creating a pull request as described in the [wiki](https://github.com/Rookiestyle/KeePassOTP/wiki/Create-or-update-translations).
 
 Naming convention for translation files: `KeePassOTP.<language identifier>.language.xml`\
