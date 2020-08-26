@@ -52,6 +52,7 @@
 			this.tb2FAHelp = new System.Windows.Forms.TextBox();
 			this.gbAutotype = new System.Windows.Forms.GroupBox();
 			this.pPlaceholder = new System.Windows.Forms.Panel();
+			this.cbAutoSubmit = new System.Windows.Forms.CheckBox();
 			this.tbPlaceholder = new System.Windows.Forms.TextBox();
 			this.lPlaceholder = new System.Windows.Forms.Label();
 			this.pHotkey = new System.Windows.Forms.Panel();
@@ -325,9 +326,9 @@
 			this.cgbCheckTFA.Controls.Add(this.tb2FAHelp);
 			this.cgbCheckTFA.DisableControlsIfUnchecked = false;
 			this.cgbCheckTFA.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.cgbCheckTFA.Location = new System.Drawing.Point(10, 110);
+			this.cgbCheckTFA.Location = new System.Drawing.Point(10, 140);
 			this.cgbCheckTFA.Name = "cgbCheckTFA";
-			this.cgbCheckTFA.Size = new System.Drawing.Size(752, 282);
+			this.cgbCheckTFA.Size = new System.Drawing.Size(752, 252);
 			this.cgbCheckTFA.TabIndex = 10;
 			this.cgbCheckTFA.Text = "cgbCheckTFA";
 			// 
@@ -339,7 +340,7 @@
 			this.tb2FAHelp.Name = "tb2FAHelp";
 			this.tb2FAHelp.ReadOnly = true;
 			this.tb2FAHelp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tb2FAHelp.Size = new System.Drawing.Size(746, 257);
+			this.tb2FAHelp.Size = new System.Drawing.Size(746, 227);
 			this.tb2FAHelp.TabIndex = 14;
 			// 
 			// gbAutotype
@@ -349,20 +350,32 @@
 			this.gbAutotype.Dock = System.Windows.Forms.DockStyle.Top;
 			this.gbAutotype.Location = new System.Drawing.Point(10, 10);
 			this.gbAutotype.Name = "gbAutotype";
-			this.gbAutotype.Size = new System.Drawing.Size(752, 100);
+			this.gbAutotype.Size = new System.Drawing.Size(752, 130);
 			this.gbAutotype.TabIndex = 12;
 			this.gbAutotype.TabStop = false;
 			this.gbAutotype.Text = "gbAutotype";
 			// 
 			// pPlaceholder
 			// 
+			this.pPlaceholder.Controls.Add(this.cbAutoSubmit);
 			this.pPlaceholder.Controls.Add(this.tbPlaceholder);
 			this.pPlaceholder.Controls.Add(this.lPlaceholder);
 			this.pPlaceholder.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pPlaceholder.Location = new System.Drawing.Point(3, 57);
 			this.pPlaceholder.Name = "pPlaceholder";
-			this.pPlaceholder.Size = new System.Drawing.Size(746, 35);
+			this.pPlaceholder.Size = new System.Drawing.Size(746, 65);
 			this.pPlaceholder.TabIndex = 13;
+			// 
+			// cbAutoSubmit
+			// 
+			this.cbAutoSubmit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbAutoSubmit.AutoSize = true;
+			this.cbAutoSubmit.Location = new System.Drawing.Point(294, 31);
+			this.cbAutoSubmit.Name = "cbAutoSubmit";
+			this.cbAutoSubmit.Size = new System.Drawing.Size(165, 24);
+			this.cbAutoSubmit.TabIndex = 2;
+			this.cbAutoSubmit.Text = "Placholder + Enter";
+			this.cbAutoSubmit.UseVisualStyleBackColor = true;
 			// 
 			// tbPlaceholder
 			// 
@@ -371,6 +384,7 @@
 			this.tbPlaceholder.Name = "tbPlaceholder";
 			this.tbPlaceholder.Size = new System.Drawing.Size(260, 26);
 			this.tbPlaceholder.TabIndex = 1;
+			this.tbPlaceholder.TextChanged += new System.EventHandler(this.tbPlaceholder_TextChanged);
 			// 
 			// lPlaceholder
 			// 
@@ -496,5 +510,6 @@
 		private System.Windows.Forms.Label lHotkey;
 		private System.Windows.Forms.TextBox tb2FAHelp;
 		private System.Windows.Forms.ComboBox cbDBAction;
+		internal System.Windows.Forms.CheckBox cbAutoSubmit;
 	}
 }

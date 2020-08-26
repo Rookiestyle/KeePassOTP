@@ -121,6 +121,8 @@ A backup was saved as attachment in the following entry:
 
 Open it anytime to check the previous content.
 Restoring the data needs to be done manually.";
+		public static readonly string Placeholder = @"Placeholder:";
+		public static readonly string PlaceholderAutoSubmit = @"{0} + Enter";
 		#endregion
 
 		#region NO changes in this area

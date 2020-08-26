@@ -23,6 +23,7 @@ namespace KeePassOTP
 		private const string Config_CheckTFA = "KeePassOTP.CheckTFA";
 		private const string Config_Hotkey = "KeePassOTP.Hotkey";
 		private const string Config_Placeholder = "KeePassOTP.Placeholder";
+		private const string Config_KPOTPAutoSubmit = "KeePassOTP.KPOTPAutoSubmit";
 		private const string Config_ShowHintSyncRequiresUnlock = "KeePassOTP.ShowHintSyncRequiresUnlock";
 		private static int HotkeyID = -1;
 
@@ -34,6 +35,12 @@ namespace KeePassOTP
 		internal static void Cleanup()
 		{
 			PTHotKeyManager.UnregisterHotKey(HotkeyID);
+		}
+
+		internal static bool KPOTPAutoSubmit
+		{
+			get { return Program.Config.CustomConfig.GetBool(Config_KPOTPAutoSubmit, false); }
+			set { Program.Config.CustomConfig.SetBool(Config_KPOTPAutoSubmit, value); }
 		}
 
 		internal static bool ShowHintSyncRequiresUnlock

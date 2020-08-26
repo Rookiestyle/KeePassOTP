@@ -245,4 +245,12 @@ A backup was saved as attachment in the following entry:
 Open it anytime to check the previous content.
 Restoring the data needs to be done manually.</value>
   </item>
+  <item>
+    <key>Placeholder</key>
+	<value>Placeholder:</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+	<value>{0} + Enter</value>
+  </item>
 </Translation>

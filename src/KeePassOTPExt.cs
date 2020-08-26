@@ -18,6 +18,8 @@ using PluginTools;
 using KeePassLib.Serialization;
 using KeePass.DataExchange;
 using KeePassLib.Collections;
+using KeePass.UI;
+using KeePass.Forms;
 
 namespace KeePassOTP
 {
@@ -41,7 +43,7 @@ namespace KeePassOTP
 		private ToolStripMenuItem m_Options;
 		private static Image Icon_Setup = GfxUtil.ScaleImage(Resources.KeePassOTP_setup, 16, 16);
 
-		MethodInfo m_miAutoType = null;
+		private MethodInfo m_miAutoType = null;
 
 		//column handling
 		private KeePassOTPColumnProvider m_columnOTP = null;
@@ -88,9 +90,64 @@ namespace KeePassOTP
 			PTHotKeyManager.HotKeyPressed += PTHotKeyManager_HotKeyPressed;
 			m_host.MainWindow.FileOpened += MainWindow_FileOpened;
 
+			GlobalWindowManager.WindowAdded += GlobalWindowManager_WindowAdded;
+
 			return true;
 		}
 
+		private void GlobalWindowManager_WindowAdded(object sender, GwmWindowEventArgs e)
+		{
+			if (!m_bOTPHotkeyPressed) return;
+			if (!(e.Form is AutoTypeCtxForm)) return;
+
+			PluginDebug.AddInfo("Auto-Type entry selection window added", 0);
+
+			List<AutoTypeCtx> lCtx = (List<AutoTypeCtx>)Tools.GetField("m_lCtxs", e.Form);
+			if (lCtx == null) return;
+
+			//Adjust sequence to show correct auto-type sequence
+			//Remove lines that don't have KPOTP defined
+			int PrevCount = lCtx.Count;
+			lCtx.RemoveAll(x => OTPDAO.OTPDefined(x.Entry) == OTPDAO.OTPDefinition.None);
+			PluginDebug.AddInfo("Removed sequences without valid OTP settings", 0,
+				"Before: " + PrevCount.ToString(),
+				"After: " + lCtx.Count.ToString());
+
+			//If now 0 or 1 entries remain, we need to hook the Shown event
+			//simply to close it
+			//We do not want to display an entry selection form with less then 2 entries
+			if (lCtx.Count < 2) e.Form.Shown += OnAutoTypeFormShown;
+		}
+
+		private void OnAutoTypeFormShown(object sender, EventArgs e)
+		{
+			AutoTypeCtxForm f = sender as AutoTypeCtxForm;
+			ListView lv = Tools.GetControl("m_lvItems", f) as ListView;
+			PluginDebug.AddInfo("Auto-Type entry selection window shown", 0);
+			if ((lv != null) && (lv.Items.Count == 0) && !Program.Config.Integration.AutoTypeAlwaysShowSelDialog)
+			{
+				PluginDebug.AddInfo("Auto-Type Entry Selection window closed", 0, "Reason: No entries to display");
+				f.Close();
+				return;
+			}
+			if ((lv != null) && (lv.Items.Count == 1) && !Program.Config.Integration.AutoTypeAlwaysShowSelDialog)
+			{
+				lv.Items[0].Selected = true;
+				try
+				{
+					MethodInfo miPIS = f.GetType().GetMethod("ProcessItemSelection", BindingFlags.NonPublic | BindingFlags.Instance);
+					miPIS.Invoke(f, null);
+					PluginDebug.AddInfo("Auto-Type Entry Selection window closed", 0, "Reason: Only one entry to be shown");
+				}
+				catch (Exception ex)
+				{
+					PluginDebug.AddError("Auto-Type Entry Selection window NOT closed", 0, "Reason: Could not process entry", "Details: " + ex.Message);
+				}
+				return;
+			}
+		}
+
+		private bool m_bOTPHotkeyPressed = false;
 		private void PTHotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
 		{
 			//Check whether KeePass is in foreground
@@ -107,7 +164,11 @@ namespace KeePassOTP
 				}
 			}
 			if (m_miAutoType != null)
-				m_miAutoType.Invoke(m_host.MainWindow, new object[] { Config.Placeholder });
+			{
+				m_bOTPHotkeyPressed = true;
+				m_miAutoType.Invoke(m_host.MainWindow, new object[] { Config.Placeholder + (Config.KPOTPAutoSubmit ? "{ENTER}" : string.Empty) });
+				m_bOTPHotkeyPressed = false;
+			}
 		}
 
 		private void MainWindow_FileOpened(object sender, KeePass.Forms.FileOpenedEventArgs e)
@@ -315,14 +376,18 @@ namespace KeePassOTP
 
 		private void OptionsFormShown(object sender, Tools.OptionsFormsEventArgs e)
 		{
+			PluginDebug.AddInfo("Prepare options page", 0);
 			Options options = new Options();
 			options.cgbCheckTFA.Checked = Config.CheckTFA;
 			options.hkcKPOTP.HotKey = Config.Hotkey;
+			options.cbAutoSubmit.Checked = Config.KPOTPAutoSubmit;
 			options.tbPlaceholder.Text = Config.Placeholder;
 			Dictionary<PwDatabase, Options.DBSettings> dDB = new Dictionary<PwDatabase, Options.DBSettings>();
 			foreach (PwDatabase db in m_host.MainWindow.DocumentManager.GetOpenDatabases())
 				dDB[db] = new Options.DBSettings { UseOTPDB = db.UseDBForOTPSeeds(), Preload = db.PreloadOTPDB() };
+			PluginDebug.AddInfo("Options page prepared, " + dDB.Count.ToString() + " open databases found", 0);
 			options.InitEx(dDB, m_host.Database);
+			PluginDebug.AddInfo(dDB.Count.ToString() + " open databases added to options page", 0);
 			Tools.AddPluginToOptionsForm(this, options);
 		}
 
@@ -344,6 +409,7 @@ namespace KeePassOTP
 			Config.CheckTFA = options.cgbCheckTFA.Checked;
 			Config.Hotkey = options.hkcKPOTP.HotKey;
 			string sOldPlaceholder = Config.Placeholder;
+			Config.KPOTPAutoSubmit = options.cbAutoSubmit.Checked;
 			Config.Placeholder = options.tbPlaceholder.Text;
 			if ((sOldPlaceholder != Config.Placeholder)
 				&& (Tools.AskYesNo(string.Format(PluginTranslate.MigratePlaceholder, sOldPlaceholder, Config.Placeholder)) == DialogResult.Yes))

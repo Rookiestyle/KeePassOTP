@@ -83,7 +83,6 @@ namespace PluginTools
 			}
 			return lItems.ToArray();
 		}
-
 		#endregion
 
 		#region Plugin options and instance
@@ -121,7 +120,16 @@ namespace PluginTools
 				while (PluginIterator.MoveNext())
 				{
 					object result = GetField("m_pluginInterface", PluginIterator.Current);
-					dPlugins[result.GetType().FullName] = result.GetType().Assembly.GetName().Version;
+					var x = result.GetType().Assembly;
+					object[] v = x.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), true);
+					Version ver = null;
+					if ((v != null) && (v.Length > 0))
+						ver = new Version(((AssemblyFileVersionAttribute)v[0]).Version);
+					else
+						ver = result.GetType().Assembly.GetName().Version;
+					if (ver.Build < 0) ver = new Version(ver.Major, ver.Minor, 0, 0);
+					if (ver.Revision < 0) ver = new Version(ver.Major, ver.Minor, ver.Build, 0);
+					dPlugins[result.GetType().FullName] = ver;
 				}
 			}
 			catch (Exception) { }
@@ -151,6 +159,7 @@ namespace PluginTools
 			uc.Dock = DockStyle.Fill;
 			uc.Padding = new Padding(15, 10, 15, 10);
 			tPlugin.Controls.Add(uc);
+			PluginDebug.AddInfo("Adding/Searching " + c_tabControlRookiestyle);
 			TabControl tcPlugins = AddPluginTabContainer();
 			int i = 0;
 			bool insert = false;
@@ -163,7 +172,12 @@ namespace PluginTools
 					break;
 				}
 			}
-			if (!insert) i = tcPlugins.TabPages.Count;
+			if (!insert)
+			{
+				i = tcPlugins.TabPages.Count;
+				PluginDebug.AddInfo(p.GetType().Name + " tab index : " + i.ToString() + " - insert!", 0);
+			}
+			else PluginDebug.AddInfo(p.GetType().Name + " tab index : " + i.ToString(), 0);
 			tcPlugins.TabPages.Insert(i, tPlugin);
 			AddPluginToOverview(tPlugin.Name.Replace(c_tabRookiestyle, string.Empty), tcPlugins);
 			if (p.SmallIcon != null)
@@ -191,6 +205,7 @@ namespace PluginTools
 			{
 				tpOverview = tcPlugins.TabPages[sTabName];
 				lv = (ListView)tpOverview.Controls.Find(sListViewName, true)[0];
+				PluginDebug.AddInfo("Found " + sTabName, 0, "Listview: " + (lv == null ? "null" : lv.Items.Count.ToString() + " /" + lv.Name.ToString()));
 			}
 			else
 			{
@@ -224,13 +239,15 @@ namespace PluginTools
 			lvi.Text = DefaultCaption;
 			Version v = new Version(0, 0);
 			GetLoadedPluginsName().TryGetValue(sPluginName.Replace("Ext", string.Empty) + "." + sPluginName, out v);
-			string ver = v.ToString();
+			if (v == null) PluginDebug.AddError("Could not get loaded plugins' data", 0);
+			string ver = (v == null) ? "???" : v.ToString();
 			if (ver.EndsWith(".0")) ver = ver.Substring(0, ver.Length - 2);
 			else ver += " (Dev)";
 			lvi.SubItems.Add(ver);
 			lv.Items.Add(lvi);
 			tcPlugins.TabPages.Remove(tpOverview);
 			tcPlugins.TabPages.Add(tpOverview);
+			PluginDebug.AddInfo("Added " + sTabName, 0, "Listview: " + (lv == null ? "null" : lv.Items.Count.ToString() + " /" + lv.Name.ToString()));
 		}
 
 		private static void TpOverview_Layout(object sender, LayoutEventArgs e)
@@ -373,14 +390,30 @@ namespace PluginTools
 
 		private static TabControl AddPluginTabContainer()
 		{
+			if (m_of == null)
+			{
+				PluginDebug.AddError("Could not identify KeePass options form", 0);
+				return null;
+			}
 			TabControl tcMain = Tools.GetControl("m_tabMain", m_of) as TabControl;
+			if (tcMain == null)
+			{
+				PluginDebug.AddError("Could not locate m_tabMain", 0);
+				return null;
+			}
 			TabPage tPlugins = null;
 			TabControl tcPlugins = null;
 			if (tcMain.TabPages.ContainsKey(c_tabRookiestyle))
 			{
 				tPlugins = tcMain.TabPages[c_tabRookiestyle];
 				tcPlugins = (TabControl)tPlugins.Controls[c_tabControlRookiestyle];
+				if (tcPlugins == null)
+				{
+					PluginDebug.AddError("Could not locate " + c_tabControlRookiestyle, 0);
+					return null;
+				}
 				tcPlugins.Multiline = false; //Older version of PluginTools might still be used by other plugins
+				PluginDebug.AddInfo("Found " + c_tabControlRookiestyle, 0);
 				return tcPlugins;
 			}
 			tPlugins = new TabPage(KeePass.Resources.KPRes.Plugin + " " + m_of.Text);
@@ -390,6 +423,7 @@ namespace PluginTools
 			{
 				while (tcMain.TabCount > 0)
 					tcMain.TabPages.RemoveAt(0);
+				PluginDebug.AddInfo("Removed tab pages from KeePass options form", 0);
 			}
 			tcMain.TabPages.Add(tPlugins);
 			tcPlugins = new TabControl();
@@ -400,6 +434,7 @@ namespace PluginTools
 			if (tcPlugins.ImageList == null)
 				tcPlugins.ImageList = new ImageList();
 			tPlugins.Controls.Add(tcPlugins);
+			PluginDebug.AddInfo("Added " + c_tabControlRookiestyle, 0);
 			return tcPlugins;
 		}
 
@@ -470,22 +505,6 @@ namespace PluginTools
 		#endregion
 	}
 
-	public static class DPIAwareness
-	{
-		public static readonly Size Size16 = new Size(DpiUtil.ScaleIntX(16), DpiUtil.ScaleIntY(16));
-
-		public static Image Scale16x16(Image img)
-		{
-			return Scale(img, 16, 16);
-		}
-
-		public static Image Scale(Image img, int x, int y)
-		{
-			if (img == null) return null;
-			return GfxUtil.ScaleImage(img, DpiUtil.ScaleIntX(x), DpiUtil.ScaleIntY(y));
-		}
-	}
-
 	public static class PluginDebug
 	{
 		[Flags]
@@ -512,14 +531,7 @@ namespace PluginTools
 		public static bool DebugMode
 		{
 			get { return m_DebugMode; }
-			set
-			{
-				if (m_DebugMode == value) return;
-				bool b = m_DebugMode;
-				m_DebugMode = true;
-				AddInfo("DebugMode changed", "Old: " + b.ToString(), "New: " + value.ToString());
-				m_DebugMode = value;
-			}
+			set { m_DebugMode = value; }
 		}
 		private static Dictionary<string, Version> m_plugins = new Dictionary<string, Version>();
 		public static Version DotNetVersion { get; private set; }
@@ -535,10 +547,13 @@ namespace PluginTools
 
 			ulong uInst = KeePass.Util.WinUtil.GetMaxNetFrameworkVersion();
 			DotNetVersion = new Version(StrUtil.VersionToString(uInst));
-			RegistryKey rkRel = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full", false);
-			try { m_DotNetRelease = (int)rkRel.GetValue("Release"); }
+			try
+			{
+				RegistryKey rkRel = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full", false);
+				m_DotNetRelease = (int)rkRel.GetValue("Release");
+				if (rkRel != null) rkRel.Close();
+			}
 			catch { }
-			if (rkRel != null) rkRel.Close();
 
 			DebugFile = System.IO.Path.GetTempPath() + "Debug_" + PluginName + "_" + m_Start.ToString("yyyyMMddTHHmmssZ") + ".xml";
 

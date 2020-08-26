@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>8</TranslationVersion>
+  <TranslationVersion>9</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -242,5 +242,9 @@ Ein Backup wurde als Attachmemt in folgendem Eintrag gespeichert:
 
 Das Backup kann jederzeit geöffnet werden, um auf die darin gespeicherten Daten zuzugreifen.
 Die Daten müssen manuell wiederhergestellt werden.</value>
+  </item>
+  <item>
+    <key>Placeholder</key>
+	<value>Platzhalter:</value>
   </item>
 </Translation>

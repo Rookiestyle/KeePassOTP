@@ -68,7 +68,7 @@ namespace KeePassOTP
 				aLines[i] = aLines[i].Replace("{Options_Migrate2Entries}", PluginTranslate.Options_Migrate2Entries);
 			}
 			tb2FAHelp.Lines = aLines;
-
+			lPlaceholder.Text = PluginTranslate.Placeholder;
 
 			tpDatabases.Text = PluginTranslate.Options_OTPSettings;
 			cbUseDBForSeeds.Text = PluginTranslate.Options_UseOTPDB;
@@ -413,6 +413,7 @@ namespace KeePassOTP
 			}
 			cbDBAction.Width = bDBSettings.Width - bCreateOpen.Width - 5;
 			cbDBAction.DropDownWidth = pButtons.ClientSize.Width;
+			cbAutoSubmit.Left = hkcKPOTP.Left;
 		}
 
 		private void bMigrate_Click(object sender, EventArgs e)
@@ -456,6 +457,12 @@ namespace KeePassOTP
 		private void cbMigrate_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			bMigrate.Enabled = (cbMigrate.SelectedIndex > -1) && ((cbMigrate.SelectedIndex + 1) % 3 != 0);
+		}
+
+		private void tbPlaceholder_TextChanged(object sender, EventArgs e)
+		{
+			cbAutoSubmit.Enabled = tbPlaceholder.Text.StartsWith("{") && tbPlaceholder.Text.EndsWith("}");
+			cbAutoSubmit.Text = string.Format(PluginTranslate.PlaceholderAutoSubmit, tbPlaceholder.Text);
 		}
 	}
 }
