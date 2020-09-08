@@ -254,12 +254,16 @@ namespace KeePassOTP
 			None = 0,
 			Entry2CustomData = 1,
 			KeePassOTP2OtpAuth = 2,
-			SanitizeSeed = 4
+			SanitizeSeed = 4,
+			OTPAuthFormatCorrection = 8,
 		}
 
 		public static bool CheckAndMigrate(PwDatabase db)
 		{
-			return CheckAndMigrate(db, OTP_Migrations.Entry2CustomData | OTP_Migrations.KeePassOTP2OtpAuth | OTP_Migrations.SanitizeSeed);
+			//Do NOT create a 'ALL' flag as this will be stored as 'ALL' and by that, no additional migrations would be done
+			OTP_Migrations m = OTP_Migrations.None;
+			foreach (var v in Enum.GetValues(typeof(OTP_Migrations))) m |= (OTP_Migrations)v;
+			return CheckAndMigrate(db, m);
 		}	
 
 		/// <summary>
@@ -312,6 +316,13 @@ namespace KeePassOTP
 				if (r >= 0) omStatusNew |= OTP_Migrations.SanitizeSeed;
 			}
 
+			if (MigrationRequired(OTP_Migrations.OTPAuthFormatCorrection, omFlags, omStatusOld))
+			{
+				int r = OTPAuthFormatCorrection(db);
+				bMigrated |= r > 0;
+				if (r >= 0) omStatusNew |= OTP_Migrations.OTPAuthFormatCorrection;
+			}
+
 			if ((omStatusNew != omStatusOld) || bMigrated)
 			{
 				db.CustomData.Set(sMigrationStatus, omStatusNew.ToString());
@@ -351,6 +362,52 @@ namespace KeePassOTP
 					pe.CreateBackup(otpdb);
 					pe.Strings.Set(Config.OTPFIELD, otp.OTPAuthString);
 				}
+			}
+			return i;
+		}
+
+		private static List<char[]> lOTPAuthStart = new List<char[]>() { "otpauth://totp?".ToCharArray(), "otpauth://hotp?".ToCharArray() };
+		private static int OTPAuthFormatCorrection(PwDatabase db)
+		{
+			//Get DB to work on
+			PwDatabase otpdb = db;
+			OTPDAO.OTPHandler_DB h = GetOTPHandler(db);
+			if (h != null)
+			{
+				if (!h.EnsureOTPUsagePossible(null)) return -1;
+				otpdb = h.OTPDB;
+			}
+			int i = 0;
+			foreach (PwEntry pe in otpdb.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)))
+			{
+				//Don't compare strings because strings are not protected and will remain in memory
+				char[] ps = pe.Strings.Get(Config.OTPFIELD).ReadChars();
+				try
+				{
+					if (ps.Length < 15) continue;
+					bool bConvert = false;
+					foreach (char[] check in lOTPAuthStart)
+					{
+						if (check.Length > ps.Length) continue;
+						bConvert = true;
+						for (int j = 0; j < check.Length; j++)
+						{
+							if (Char.ToLowerInvariant(check[j]) != Char.ToLowerInvariant(ps[j]))
+							{
+								bConvert = false;
+								break;
+							}
+						}
+						if (bConvert) break;
+					}
+					if (!bConvert) break;
+					KPOTP otp = OTPDAO.GetOTP(pe);
+					if (!otp.Valid) continue;
+					i++;
+					pe.CreateBackup(otpdb);
+					pe.Strings.Set(Config.OTPFIELD, otp.OTPAuthString);
+				}
+				finally { MemUtil.ZeroArray(ps); }
 			}
 			return i;
 		}

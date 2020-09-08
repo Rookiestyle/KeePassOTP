@@ -194,11 +194,11 @@ namespace KeePassOTP
 
 		private ProtectedString GetOTPAuthString()
 		{
-			string otpPrefix = "otpauth://" + (Type == KPOTPType.HOTP ? "hotp" : "totp");
+			string otpPrefix = "otpauth://" + (Type == KPOTPType.HOTP ? "hotp" : "totp") + "/";
 			if (!string.IsNullOrEmpty(Issuer) && !string.IsNullOrEmpty(Label))
-				otpPrefix += "/" + Encode(Issuer, true) + ":" + Encode(Label, true);
+				otpPrefix += Encode(Issuer, true) + ":" + Encode(Label, true);
 			else if (string.IsNullOrEmpty(Issuer))
-				otpPrefix += "/" + Encode(Label, true);
+				otpPrefix += Encode(Label, true);
 			//else if (string.IsNullOrEmpty(Label))
 			//	otpPrefix += "/" + Encode(Issuer, true);
 			otpPrefix += "?secret=";
