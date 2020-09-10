@@ -324,7 +324,12 @@ namespace KeePassOTP
 			PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
 			RefreshHandler(db);
 			//if (!m_handler.SetDB(db, false)) return;
-			if (!AppPolicy.Current.ExportNoKey && !m_handler.ReAskKey()) return;
+			//If configured, KeePass 2.46 will ask for the masterkey during the export
+			//No need to ask here
+			if (Tools.KeePassVersion < new Version(2, 46))
+			{
+				if (!AppPolicy.Current.ExportNoKey && !m_handler.ReAskKey()) return;
+			}
 
 			db = m_handler.OTPDB;
 			PwGroup pg = db.RootGroup;
