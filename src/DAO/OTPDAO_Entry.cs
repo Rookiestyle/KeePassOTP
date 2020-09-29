@@ -42,7 +42,7 @@ namespace KeePassOTP
 					return otp.ReadableOTP;
 				else
 				{
-					int r = (otp.ValidTo - DateTime.UtcNow).Seconds;
+					int r = (otp.ValidTo - DateTime.UtcNow).Seconds + 1;
 					return otp.ReadableOTP + (r < 6 ? " (" + r.ToString() + ")" : string.Empty);
 				}
 			}

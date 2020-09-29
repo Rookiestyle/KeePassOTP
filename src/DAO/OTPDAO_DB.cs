@@ -466,7 +466,7 @@ namespace KeePassOTP
 					return otp.ReadableOTP;
 
 				if (otp.kpotp.Type == KPOTPType.HOTP) return otp.ReadableOTP;
-				int r = (otp.ValidTo - DateTime.UtcNow).Seconds;
+				int r = (otp.ValidTo - DateTime.UtcNow).Seconds + 1;
 				return otp.ReadableOTP + (r < 6 ? " (" + r.ToString() + ")" : string.Empty);
 			}
 
