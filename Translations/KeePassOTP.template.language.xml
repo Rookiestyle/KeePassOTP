@@ -79,7 +79,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Time correction - TOTP only</value>
+    <value>Time correction - TOTP && Steam only</value>
   </item>
   <item>
     <key>URL</key>

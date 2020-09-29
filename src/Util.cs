@@ -20,6 +20,8 @@ namespace KeePassOTP
 		internal const string DBUsage = "KeePassOTP.UseDBForOTPSeeds";
 		internal const string DBPreload = "KeePassOTP.PreloadOTP";
 
+		internal const int TOTPSoonExpiring = 5;
+
 		private const string Config_CheckTFA = "KeePassOTP.CheckTFA";
 		private const string Config_Hotkey = "KeePassOTP.Hotkey";
 		private const string Config_Placeholder = "KeePassOTP.Placeholder";

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>9</TranslationVersion>
+  <TranslationVersion>10</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -79,7 +79,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Zeitversatz ausgleichen - TOTP spezifisch</value>
+    <value>Zeitversatz ausgleichen - Nur für TOTP && Steam</value>
   </item>
   <item>
     <key>URL</key>
