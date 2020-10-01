@@ -144,7 +144,7 @@ namespace KeePassOTP
 			this.tbOTPSeed.Location = new System.Drawing.Point(100, 26);
 			this.tbOTPSeed.Name = "tbOTPSeed";
 			this.tbOTPSeed.Size = new System.Drawing.Size(400, 26);
-			this.tbOTPSeed.TabIndex = 1;
+			this.tbOTPSeed.TabIndex = 100;
 			this.tbOTPSeed.Leave += new System.EventHandler(this.OnValueChanged);
 			// 
 			// lSeed
@@ -182,18 +182,18 @@ namespace KeePassOTP
 			this.cbOTPFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPFormat.FormattingEnabled = true;
 			this.cbOTPFormat.Items.AddRange(new object[] {
-            "BASE32",
-            "BASE64",
-            "HEX",
-            "UTF8"});
-			this.cbOTPFormat.Location = new System.Drawing.Point(100, 20);
+						"BASE32",
+						"BASE64",
+						"HEX",
+						"UTF8"});
+			this.cbOTPFormat.Location = new System.Drawing.Point(100, 58);
 			this.cbOTPFormat.Name = "cbOTPFormat";
 			this.cbOTPFormat.Size = new System.Drawing.Size(121, 28);
-			this.cbOTPFormat.TabIndex = 8;
+			this.cbOTPFormat.TabIndex = 230;
 			// 
 			// lFormat
 			// 
-			this.lFormat.Location = new System.Drawing.Point(8, 26);
+			this.lFormat.Location = new System.Drawing.Point(8, 62);
 			this.lFormat.Name = "lFormat";
 			this.lFormat.Size = new System.Drawing.Size(90, 23);
 			this.lFormat.TabIndex = 9;
@@ -201,15 +201,15 @@ namespace KeePassOTP
 			// 
 			// tbTOTPTimestep
 			// 
-			this.tbTOTPTimestep.Location = new System.Drawing.Point(380, 58);
+			this.tbTOTPTimestep.Location = new System.Drawing.Point(380, 20);
 			this.tbTOTPTimestep.Name = "tbTOTPTimestep";
 			this.tbTOTPTimestep.Size = new System.Drawing.Size(100, 26);
-			this.tbTOTPTimestep.TabIndex = 4;
+			this.tbTOTPTimestep.TabIndex = 210;
 			this.tbTOTPTimestep.Leave += new System.EventHandler(this.OnValueChanged);
 			// 
 			// lTimestep
 			// 
-			this.lTimestep.Location = new System.Drawing.Point(250, 62);
+			this.lTimestep.Location = new System.Drawing.Point(250, 24);
 			this.lTimestep.Name = "lTimestep";
 			this.lTimestep.Size = new System.Drawing.Size(120, 23);
 			this.lTimestep.TabIndex = 7;
@@ -217,15 +217,15 @@ namespace KeePassOTP
 			// 
 			// tbHOTPCounter
 			// 
-			this.tbHOTPCounter.Location = new System.Drawing.Point(380, 58);
+			this.tbHOTPCounter.Location = new System.Drawing.Point(380, 20);
 			this.tbHOTPCounter.Name = "tbHOTPCounter";
 			this.tbHOTPCounter.Size = new System.Drawing.Size(100, 26);
-			this.tbHOTPCounter.TabIndex = 5;
+			this.tbHOTPCounter.TabIndex = 5220;
 			this.tbHOTPCounter.TextChanged += new System.EventHandler(this.OnValueChanged);
 			// 
 			// lCounter
 			// 
-			this.lCounter.Location = new System.Drawing.Point(250, 62);
+			this.lCounter.Location = new System.Drawing.Point(250, 26);
 			this.lCounter.Name = "lCounter";
 			this.lCounter.Size = new System.Drawing.Size(120, 23);
 			this.lCounter.TabIndex = 7;
@@ -236,13 +236,13 @@ namespace KeePassOTP
 			this.cbOTPHashFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPHashFunc.FormattingEnabled = true;
 			this.cbOTPHashFunc.Items.AddRange(new object[] {
-            "SHA1",
-            "SHA256",
-            "SHA512"});
+						"SHA1",
+						"SHA256",
+						"SHA512"});
 			this.cbOTPHashFunc.Location = new System.Drawing.Point(100, 134);
 			this.cbOTPHashFunc.Name = "cbOTPHashFunc";
 			this.cbOTPHashFunc.Size = new System.Drawing.Size(121, 28);
-			this.cbOTPHashFunc.TabIndex = 7;
+			this.cbOTPHashFunc.TabIndex = 250;
 			this.cbOTPHashFunc.SelectedIndexChanged += new System.EventHandler(this.OnValueChanged);
 			// 
 			// cbOTPLength
@@ -250,15 +250,15 @@ namespace KeePassOTP
 			this.cbOTPLength.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPLength.FormattingEnabled = true;
 			this.cbOTPLength.Items.AddRange(new object[] {
-            "6",
-            "7",
-            "8",
-            "9",
-            "10"});
+						"6",
+						"7",
+						"8",
+						"9",
+						"10"});
 			this.cbOTPLength.Location = new System.Drawing.Point(100, 96);
 			this.cbOTPLength.Name = "cbOTPLength";
 			this.cbOTPLength.Size = new System.Drawing.Size(121, 28);
-			this.cbOTPLength.TabIndex = 6;
+			this.cbOTPLength.TabIndex = 240;
 			this.cbOTPLength.SelectedIndexChanged += new System.EventHandler(this.OnValueChanged);
 			// 
 			// cbOTPType
@@ -266,12 +266,13 @@ namespace KeePassOTP
 			this.cbOTPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPType.FormattingEnabled = true;
 			this.cbOTPType.Items.AddRange(new object[] {
-            "HOTP",
-            "TOTP"});
-			this.cbOTPType.Location = new System.Drawing.Point(100, 58);
+						"HOTP",
+						"TOTP",
+						"Steam"});
+			this.cbOTPType.Location = new System.Drawing.Point(100, 20);
 			this.cbOTPType.Name = "cbOTPType";
 			this.cbOTPType.Size = new System.Drawing.Size(121, 28);
-			this.cbOTPType.TabIndex = 3;
+			this.cbOTPType.TabIndex = 200;
 			this.cbOTPType.SelectedIndexChanged += new System.EventHandler(this.OnValueChanged);
 			// 
 			// lHash
@@ -292,7 +293,7 @@ namespace KeePassOTP
 			// 
 			// lType
 			// 
-			this.lType.Location = new System.Drawing.Point(6, 62);
+			this.lType.Location = new System.Drawing.Point(6, 24);
 			this.lType.Name = "lType";
 			this.lType.Size = new System.Drawing.Size(90, 23);
 			this.lType.TabIndex = 0;
@@ -305,7 +306,7 @@ namespace KeePassOTP
 			this.buttonOK.Location = new System.Drawing.Point(316, 486);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(100, 30);
-			this.buttonOK.TabIndex = 10;
+			this.buttonOK.TabIndex = 400;
 			this.buttonOK.Text = "OK";
 			this.buttonOK.UseVisualStyleBackColor = true;
 			// 
@@ -316,7 +317,7 @@ namespace KeePassOTP
 			this.buttonCancel.Location = new System.Drawing.Point(433, 486);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(100, 30);
-			this.buttonCancel.TabIndex = 11;
+			this.buttonCancel.TabIndex = 410;
 			this.buttonCancel.Text = "Cancel";
 			this.buttonCancel.UseVisualStyleBackColor = true;
 			// 
@@ -334,7 +335,7 @@ namespace KeePassOTP
 			this.gTime.Size = new System.Drawing.Size(528, 120);
 			this.gTime.TabIndex = 10;
 			this.gTime.TabStop = false;
-			this.gTime.Text = "Time correction - TOTP only";
+			this.gTime.Text = "Time correction - TOTP && Steam only";
 			// 
 			// totpTimeCorrectionValue
 			// 
@@ -368,7 +369,7 @@ namespace KeePassOTP
 			this.totpTimeCorrectionType.Location = new System.Drawing.Point(100, 29);
 			this.totpTimeCorrectionType.Name = "totpTimeCorrectionType";
 			this.totpTimeCorrectionType.Size = new System.Drawing.Size(400, 28);
-			this.totpTimeCorrectionType.TabIndex = 8;
+			this.totpTimeCorrectionType.TabIndex = 300;
 			this.totpTimeCorrectionType.SelectedIndexChanged += new System.EventHandler(this.OnValueChanged);
 			// 
 			// tbTOTPTimeCorrectionURL
@@ -376,7 +377,7 @@ namespace KeePassOTP
 			this.tbTOTPTimeCorrectionURL.Location = new System.Drawing.Point(100, 63);
 			this.tbTOTPTimeCorrectionURL.Name = "tbTOTPTimeCorrectionURL";
 			this.tbTOTPTimeCorrectionURL.Size = new System.Drawing.Size(400, 26);
-			this.tbTOTPTimeCorrectionURL.TabIndex = 9;
+			this.tbTOTPTimeCorrectionURL.TabIndex = 310;
 			// 
 			// lURL
 			// 

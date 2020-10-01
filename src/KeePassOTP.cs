@@ -13,7 +13,8 @@ namespace KeePassOTP
 	public enum KPOTPType : int
 	{
 		HOTP = 0,
-		TOTP
+		TOTP,
+		STEAM
 	}
 
 	public enum KPOTPHash : int
@@ -39,14 +40,29 @@ namespace KeePassOTP
 		private static Dictionary<string, TimeSpan> m_timeCorrectionUrls = new Dictionary<string, TimeSpan>();
 
 		public KPOTPHash Hash = KPOTPHash.SHA1;
-		public KPOTPType Type = KPOTPType.TOTP;
+		private KPOTPType m_Type = KPOTPType.TOTP;
+		public KPOTPType Type
+		{
+			get { return m_Type; }
+			set
+			{
+				m_Type = value;
+				if (m_Type == KPOTPType.STEAM) Length = 5;
+				else Length = Length; // Ensure proper length (Steam = 5 digits)
+			}
+		}
+
 		public KPOTPEncoding Encoding = KPOTPEncoding.BASE32;
 
 		public int m_length = 6;
 		public int Length
 		{
 			get { return m_length; }
-			set { m_length = Math.Min(10, Math.Max(value, 6)); }
+			set
+			{
+				if (Type == KPOTPType.STEAM) m_length = 5;
+				else m_length = Math.Min(10, Math.Max(value, 6));
+			}
 		}
 
 		private int m_timestep = 30;
@@ -79,7 +95,7 @@ namespace KeePassOTP
 			get { return m_url; }
 			set { SetURL(value); }
 		}
-		
+
 		public string Issuer;
 		public string Label;
 		public ProtectedString OTPAuthString
@@ -113,10 +129,10 @@ namespace KeePassOTP
 
 		static KPOTP()
 		{
-			miConfigureWebClient = typeof(IOConnection).GetMethod("ConfigureWebClient", 
-				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic, 
-				null, 
-				new Type[] { typeof(System.Net.WebClient) }, 
+			miConfigureWebClient = typeof(IOConnection).GetMethod("ConfigureWebClient",
+				System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic,
+				null,
+				new Type[] { typeof(System.Net.WebClient) },
 				null);
 		}
 
@@ -131,18 +147,19 @@ namespace KeePassOTP
 			//List of time correction data is filled asynchronously
 			//Call it synchronously as it is required now!
 			if (CheckTime) GetTimeCorrection(m_url);
-			byte[] data =(Type == KPOTPType.TOTP) ? GetTOTPData(ShowNext) : GetHOTPData(ShowNext);
+			byte[] data = (Type == KPOTPType.HOTP) ? GetHOTPData(ShowNext) : GetTOTPData(ShowNext);
 			byte[] hash = ComputeHash(data);
 			MemUtil.ZeroByteArray(data);
 			int offset = hash[hash.Length - 1] & 0xF;
 
 			int binary = ((hash[offset] & 0x7F) << 24) |
-						   ((hash[offset + 1] & 0xFF) << 16) |
-						   ((hash[offset + 2] & 0xFF) << 8) |
-						   (hash[offset + 3] & 0xFF);
+							 ((hash[offset + 1] & 0xFF) << 16) |
+							 ((hash[offset + 2] & 0xFF) << 8) |
+							 (hash[offset + 3] & 0xFF);
 
-			string result = (binary % (int)Math.Pow(10, Length)).ToString().PadLeft(Length, '0');
-
+			string result = string.Empty;
+			if (Type != KPOTPType.STEAM) result = (binary % (int)Math.Pow(10, Length)).ToString().PadLeft(Length, '0');
+			else result = GetSteamData(binary);
 
 			return result + (string.IsNullOrEmpty(m_url) || m_timeCorrectionUrls.ContainsKey(m_url) ? string.Empty : "*");
 		}
@@ -166,6 +183,24 @@ namespace KeePassOTP
 		private byte[] GetTOTPData(bool showNext)
 		{
 			return GetOTPData(showNext, Ticks);
+		}
+
+		/// <summary>
+		/// Character set for authenticator code
+		/// </summary>
+		private static readonly char[] aSteamChars = new char[] { '2', '3', '4', '5',
+			'6', '7', '8', '9', 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P',
+			'Q', 'R', 'T', 'V', 'W', 'X', 'Y' };
+		private string GetSteamData(int binary)
+		{
+			string result = string.Empty;
+			for (int i = 0; i < Length; i++)
+			{
+				result += aSteamChars[binary % aSteamChars.Length];
+				binary /= aSteamChars.Length;
+			}
+
+			return result;
 		}
 
 		private byte[] GetOTPData(bool showNext, long value)
@@ -215,6 +250,8 @@ namespace KeePassOTP
 				otpSuffix += "&encoder=" + Encoding.ToString();
 			if (!string.IsNullOrEmpty(Issuer))
 				otpSuffix += "&issuer=" + Encode(Issuer, false);
+			if (Type == KPOTPType.STEAM)
+				otpSuffix += "&encoder=steam";
 			return new ProtectedString(true, otpPrefix) + m_seed + new ProtectedString(true, otpSuffix);
 		}
 
@@ -296,15 +333,19 @@ namespace KeePassOTP
 			else if (hash == "sha512") Hash = KPOTPHash.SHA512;
 			Length = MigrateInt(parameters.Get("digits"), 6);
 
+			string encoding = parameters.Get("encoding");
+			if (!string.IsNullOrEmpty(encoding)) encoding = encoding.ToLowerInvariant();
+			if (encoding == "base64") Encoding = KPOTPEncoding.BASE64;
+			else if (encoding == "hex") Encoding = KPOTPEncoding.HEX;
+			else if (encoding == "utf8") Encoding = KPOTPEncoding.UTF8;
+
 			string encoder = parameters.Get("encoder");
-			if (!string.IsNullOrEmpty(encoder)) encoder = encoder.ToLowerInvariant();
-			if (encoder == "base64") Encoding = KPOTPEncoding.BASE64;
-			else if (encoder == "hex") Encoding = KPOTPEncoding.HEX;
-			else if (encoder == "utf8") Encoding = KPOTPEncoding.UTF8;
+			KPOTPType tType = Type;
+			if (Enum.TryParse(encoder, true, out tType))
+				Type = tType;
 
 			string sIssuerParameter = parameters.Get("issuer");
 			if (!string.IsNullOrEmpty(sIssuerParameter)) Issuer = Decode(sIssuerParameter);
-
 
 			//Remove %3d / %3D at the end of the seed
 			c = seed.ReadChars();
@@ -453,7 +494,7 @@ namespace KeePassOTP
 			{
 				if (!string.IsNullOrEmpty(value) && !bKeyFound)
 					PluginDebug.AddError("OTP time correction", 0, "Invalid URL: " + value, "Time correction: " + TimeSpan.Zero.ToString());
-				lock (m_timeCorrectionUrls)	{ m_timeCorrectionUrls[value] = TimeSpan.Zero; }
+				lock (m_timeCorrectionUrls) { m_timeCorrectionUrls[value] = TimeSpan.Zero; }
 				return m_timeCorrectionUrls[value];
 			}
 
@@ -551,10 +592,10 @@ namespace KeePassOTP
 
 			if (!otp1.OTPSeed.Equals(otp2.OTPSeed, false)) return false;
 			if (otp1.SanitizeChanged || otp2.SanitizeChanged) return false;
-			if (otp1.Encoding != otp2.Encoding)	return false;
-			if (otp1.Hash != otp2.Hash)	return false;
-			if (otp1.Type != otp2.Type)	return false;
-			if (otp1.Length != otp2.Length)	return false;
+			if (otp1.Encoding != otp2.Encoding) return false;
+			if (otp1.Hash != otp2.Hash) return false;
+			if (otp1.Type != otp2.Type) return false;
+			if (otp1.Length != otp2.Length) return false;
 			if ((otp1.Type == KPOTPType.TOTP) && (otp1.TOTPTimestep != otp2.TOTPTimestep)) return false;
 			if ((otp1.Type == KPOTPType.TOTP) && (otp1.TimeCorrectionUrlOwn != otp2.TimeCorrectionUrlOwn)) return false;
 			if (otp1.TimeCorrectionUrlOwn && (otp1.Type == KPOTPType.TOTP))

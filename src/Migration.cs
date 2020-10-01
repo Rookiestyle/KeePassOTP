@@ -112,7 +112,7 @@ namespace KeePassOTP
 			m_EntryIndex++;
 			uint percentage = (uint)(100 * m_EntryIndex / m_EntryCount);
 			m_sl.SetProgress(percentage);
-			m_sl.SetText(percentage.ToString() +"% - " + m_EntryIndex.ToString() + " / " + m_EntryCount.ToString(), LogStatusType.Info);
+			m_sl.SetText(percentage.ToString() + "% - " + m_EntryIndex.ToString() + " / " + m_EntryCount.ToString(), LogStatusType.Info);
 		}
 
 		protected void EndLogger()
@@ -295,14 +295,24 @@ namespace KeePassOTP
 
 	public class MigrationTraytotp : MigrationBase
 	{
-		private const string OtherPluginPlaceholder = "{TOTP}";
+		private string m_OtherPluginPlaceholder = "TOTP";
+		private string m_TOTP_Seed = "TOTP Seed";
+		private string m_TOTP_Settings = "TOTP Settings";
+
+		public MigrationTraytotp()
+		{
+			m_OtherPluginPlaceholder = "{" + KeePass.Program.Config.CustomConfig.GetString("autotype_fieldname", m_OtherPluginPlaceholder) + "}";
+			m_TOTP_Seed = KeePass.Program.Config.CustomConfig.GetString("totpseed_stringname", m_TOTP_Seed);
+			m_TOTP_Settings = KeePass.Program.Config.CustomConfig.GetString("totpsettings_stringname", m_TOTP_Settings);
+		}
+
 		public override void MigrateToKeePassOTP(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
 		{
 			EntriesOverall = EntriesMigrated = -1;
 			if (!m_bInitialized) return;
 			EntriesOverall = EntriesMigrated = 0;
 
-			List<PwEntry> lEntries = m_db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists("TOTP Seed")).ToList();
+			List<PwEntry> lEntries = m_db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(m_TOTP_Seed)).ToList();
 			EntriesOverall = lEntries.Count;
 			if (lEntries.Count == 0) return;
 
@@ -314,8 +324,8 @@ namespace KeePassOTP
 				foreach (PwEntry pe in lEntries)
 				{
 					IncreaseLogger();
-					string seed = pe.Strings.ReadSafe("TOTP Seed");
-					string settings = pe.Strings.ReadSafe("TOTP Settings");
+					string seed = pe.Strings.ReadSafe(m_TOTP_Seed);
+					string settings = pe.Strings.ReadSafe(m_TOTP_Settings);
 					if (string.IsNullOrEmpty(settings))
 					{
 						PluginDebug.AddError("Migration of entry failed",
@@ -334,15 +344,19 @@ namespace KeePassOTP
 					var otp = OTPDAO.GetOTP(pe);
 					otp.OTPSeed = new ProtectedString(true, MigrateString(seed));
 					otp.TOTPTimestep = MigrateInt(parameters[0], 30);
-					int l = MigrateInt(parameters[1], -1);
-					if (l == -1)
+					if (parameters[1].ToLowerInvariant() == "s") otp.Type = KPOTPType.STEAM;
+					else
 					{
-						PluginDebug.AddError("Migration of entry failed",
-							"Uuid: " + pe.Uuid.ToHexString(),
-							"OTP data: " + settings);
-						continue;
+						int l = MigrateInt(parameters[1], -1);
+						if (l == -1)
+						{
+							PluginDebug.AddError("Migration of entry failed",
+								"Uuid: " + pe.Uuid.ToHexString(),
+								"OTP data: " + settings);
+							continue;
+						}
+						otp.Length = l;
 					}
-					otp.Length = l;
 					if ((parameters.Count() > 2) && !string.IsNullOrEmpty(parameters[2]))
 						otp.TimeCorrectionUrl = parameters[2];
 					if (otp.Valid)
@@ -356,8 +370,8 @@ namespace KeePassOTP
 						finally { handler.IgnoreBuffer = false; }
 						if (bRemove)
 						{
-							pe.Strings.Remove("TOTP Seed");
-							pe.Strings.Remove("TOTP Settings");
+							pe.Strings.Remove(m_TOTP_Seed);
+							pe.Strings.Remove(m_TOTP_Settings);
 						}
 					}
 					else
@@ -381,7 +395,7 @@ namespace KeePassOTP
 			{
 				EndLogger();
 			}
-			MigratePlaceholder(OtherPluginPlaceholder, Config.Placeholder, false);
+			MigratePlaceholder(m_OtherPluginPlaceholder, Config.Placeholder, false);
 		}
 
 		public override void MigrateFromKeePassOTP(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
@@ -420,20 +434,20 @@ namespace KeePassOTP
 							"Hash not supported: " + otp.Hash.ToString());
 						continue;
 					}
-					if (otp.Type != KPOTPType.TOTP)
+					if (otp.Type == KPOTPType.HOTP)
 					{
 						PluginDebug.AddError("Migration of entry failed",
 							"Uuid: " + pe.Uuid.ToHexString(),
 							"Type not supported: " + otp.Type.ToString());
 						continue;
 					}
-					string settings = otp.TOTPTimestep.ToString() + ";" + otp.Length.ToString();
+					string settings = otp.TOTPTimestep.ToString() + ";" + (otp.Type == KPOTPType.TOTP ? otp.Length.ToString() : "S");
 					if (otp.TimeCorrectionUrlOwn)
 						settings += ";" + pe.Strings.ReadSafe(PwDefs.UrlField);
 					else if (!string.IsNullOrEmpty(otp.TimeCorrectionUrl))
 						settings += ";" + otp.TimeCorrectionUrl;
-					pe.Strings.Set("TOTP Seed", otp.OTPSeed);
-					pe.Strings.Set("TOTP Settings", new ProtectedString(false, settings));
+					pe.Strings.Set(m_TOTP_Seed, otp.OTPSeed);
+					pe.Strings.Set(m_TOTP_Settings, new ProtectedString(false, settings));
 					EntriesMigrated++;
 					if (bRemove)
 					{
@@ -448,7 +462,7 @@ namespace KeePassOTP
 				}
 			}
 			finally { EndLogger(); }
-			MigratePlaceholder(Config.Placeholder, OtherPluginPlaceholder, false);
+			MigratePlaceholder(Config.Placeholder, m_OtherPluginPlaceholder, false);
 		}
 	}
 }

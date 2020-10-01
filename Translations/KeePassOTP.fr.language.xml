@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Translation>
-<TranslationVersion>2</TranslationVersion>
+<TranslationVersion>3</TranslationVersion>
 <item>
 <key>OTPCopyTrayNoEntries</key>
 <value>KPOTP - Aucune entrée disponible</value>
@@ -79,7 +79,7 @@
 </item>
 <item>
 <key>TimeCorrection</key>
-<value>Correction de temps - seulement pour TOTP</value>
+<value>Correction de temps - seulement pour TOTP et Steam</value>
 </item>
 <item>
 <key>URL</key>

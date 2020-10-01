@@ -100,7 +100,7 @@ namespace KeePassOTP
 
 		private bool SettingsChanged()
 		{
-			return !KPOTP.Equals(OTP, m_OTPInitial);			
+			return !KPOTP.Equals(OTP, m_OTPInitial);
 		}
 
 		private void UpdatePreview()
@@ -111,8 +111,7 @@ namespace KeePassOTP
 				OTP.OTPAuthString = new ProtectedString(true, tbOTPSeed.Text);
 				InitSettings(true);
 			}
-			else
-				OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
+			else OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
 
 			if (cbOTPFormat.SelectedIndex == 0) OTP.Encoding = KPOTPEncoding.BASE32;
 			if (cbOTPFormat.SelectedIndex == 1) OTP.Encoding = KPOTPEncoding.BASE64;
@@ -130,12 +129,26 @@ namespace KeePassOTP
 			if (cbOTPHashFunc.SelectedIndex == 2) OTP.Hash = KPOTPHash.SHA512;
 
 			if (cbOTPType.SelectedIndex == 0) OTP.Type = KPOTPType.HOTP;
-			if (cbOTPType.SelectedIndex == 1) OTP.Type = KPOTPType.TOTP;
+			else if (cbOTPType.SelectedIndex == 1) OTP.Type = KPOTPType.TOTP;
+			else if (cbOTPType.SelectedIndex == 2) OTP.Type = KPOTPType.STEAM;
 
 			pbTOTPLifetime.Maximum = OTP.TOTPTimestep;
 			pbTOTPLifetime.Value = OTP.RemainingSeconds;
-			gTime.Enabled = pbTOTPLifetime.Visible = tbTOTPTimestep.Visible = lTimestep.Visible = OTP.Type == KPOTPType.TOTP;
+			gTime.Enabled = tbTOTPTimestep.Visible = lTimestep.Visible = OTP.Type == KPOTPType.TOTP;
+			pbTOTPLifetime.Visible = OTP.Type != KPOTPType.HOTP;
 			tbHOTPCounter.Visible = lCounter.Visible = OTP.Type == KPOTPType.HOTP;
+
+			cbOTPLength.Enabled = OTP.Type != KPOTPType.STEAM;
+			if (OTP.Type == KPOTPType.STEAM)
+			{
+				if (!cbOTPLength.Items.Contains("5")) cbOTPLength.Items.Add("5");
+				cbOTPLength.SelectedIndex = cbOTPLength.Items.Count - 1;
+			}
+			else if (cbOTPLength.Items.Contains("5"))
+			{
+				cbOTPLength.Items.RemoveAt(cbOTPLength.Items.Count - 1);
+				cbOTPLength.SelectedIndex = 0;
+			}
 
 			if (!tbTOTPTimeCorrectionURL.Focused)
 			{
@@ -168,7 +181,7 @@ namespace KeePassOTP
 
 			string otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(false, true)) : PluginTranslate.Error;
 			otpPreview.Text = "OTP: " + (string.IsNullOrEmpty(otpValue) ? "N/A" : otpValue);
-			if ((OTP.Type == KPOTPType.TOTP) && OTP.RemainingSeconds <= 5)
+			if ((OTP.Type != KPOTPType.HOTP) && OTP.RemainingSeconds <= Config.TOTPSoonExpiring)
 			{
 				otpPreview.ForeColor = System.Drawing.Color.Red;
 				pbTOTPLifetime.ForeColor = System.Drawing.Color.Red;
