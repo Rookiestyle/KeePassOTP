@@ -247,7 +247,7 @@ namespace KeePassOTP
 			if (Type == KPOTPType.HOTP)
 				otpSuffix += "&counter=" + HOTPCounter.ToString();
 			if (Encoding != KPOTPEncoding.BASE32)
-				otpSuffix += "&encoder=" + Encoding.ToString();
+				otpSuffix += "&encoding=" + Encoding.ToString();
 			if (!string.IsNullOrEmpty(Issuer))
 				otpSuffix += "&issuer=" + Encode(Issuer, false);
 			if (Type == KPOTPType.STEAM)
