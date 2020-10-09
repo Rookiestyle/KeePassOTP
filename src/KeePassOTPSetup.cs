@@ -3,6 +3,7 @@ using System.Text;
 using System.Windows.Forms;
 using KeePassLib.Security;
 using KeePassLib.Utility;
+using PluginTools;
 using PluginTranslation;
 
 namespace KeePassOTP
@@ -111,6 +112,20 @@ namespace KeePassOTP
 				OTP.OTPAuthString = new ProtectedString(true, tbOTPSeed.Text);
 				InitSettings(true);
 			}
+			else if (tbOTPSeed.Text.ToLowerInvariant().StartsWith("otpauth-migration://"))
+			{
+				int iCount;
+				ProtectedString psGoogleAuth = PSConvert.ParseGoogleAuthExport(tbOTPSeed.Text, out iCount);
+				if ((iCount == 1) && (psGoogleAuth.Length > 0))
+				{ tbOTPSeed.Text = psGoogleAuth.ReadString(); return; }
+				tbOTPSeed.Text = string.Empty;
+
+			 if (iCount > 1)
+					Tools.ShowError(string.Format(PluginTranslate.ErrorGoogleAuthImportCount, iCount.ToString()));
+				else Tools.ShowError(PluginTranslate.ErrorGoogleAuthImport);
+				return;
+			}
+
 			else OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
 
 			if (cbOTPFormat.SelectedIndex == 0) OTP.Encoding = KPOTPEncoding.BASE32;

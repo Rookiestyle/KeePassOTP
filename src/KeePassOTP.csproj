@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- KeePass PLGX Compiler only can build csharp projects up to csharp version 5 -->
     <LangVersion>5</LangVersion>
@@ -19,7 +19,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeePassOTP</RootNamespace>
     <AssemblyName>KeePassOTP</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -47,12 +47,36 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="protobuf-net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GoogleAuthenticatorImport\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GoogleAuthenticatorImport\protobuf-net.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GoogleAuthenticatorImport\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GoogleAuthenticatorImport\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GoogleAuthenticatorImport\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>GoogleAuthenticatorImport\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -62,6 +86,7 @@
     <Compile Include="DAO\OTPDAO_DB.cs" />
     <Compile Include="DAO\OTPDAO_Entry.cs" />
     <Compile Include="DAO\OTPDAO.cs" />
+    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorImport.cs" />
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="Migration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -121,6 +146,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qr-code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GoogleAuthenticatorImport\protobuf-net.Core.dll" />
+    <Content Include="GoogleAuthenticatorImport\protobuf-net.dll" />
+    <Content Include="GoogleAuthenticatorImport\System.Buffers.dll" />
+    <Content Include="GoogleAuthenticatorImport\System.Collections.Immutable.dll" />
+    <Content Include="GoogleAuthenticatorImport\System.Memory.dll" />
+    <Content Include="GoogleAuthenticatorImport\System.Runtime.CompilerServices.Unsafe.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">
