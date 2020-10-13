@@ -5,11 +5,6 @@
     <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <PlgxKeePassVersion>2.42</PlgxKeePassVersion>
-    <PlgXOS>
-    </PlgXOS>
-  </PropertyGroup>
-  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
@@ -40,43 +35,28 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+	<PlgxConfiguration>
+      <Prerequisites>
+        <KeePassVersion>2.42</KeePassVersion>
+		<DotNetVersion>$(TargetFrameworkVersion.Replace('v', ''))</DotNetVersion>
+      </Prerequisites>
+    </PlgxConfiguration>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="protobuf-net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GoogleAuthenticatorImport\protobuf-net.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GoogleAuthenticatorImport\protobuf-net.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GoogleAuthenticatorImport\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GoogleAuthenticatorImport\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GoogleAuthenticatorImport\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>GoogleAuthenticatorImport\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -142,25 +122,47 @@
     <ProjectReference Include="..\..\_KeePass_Source\KeePass\KeePass.csproj">
       <Project>{10938016-dee2-4a25-9a5a-8fd3444379ca}</Project>
       <Name>KeePass</Name>
+      <!--
+  We do use the nuget package protobuf-net
+  Unfortunately, the dll files created during compile time won't be added to the plgx file
+  
+  We need to use plgxtool to add them
+  plgxtools does this using the PlgxReference tag which needs to be inside a ProjectReference
+  Using the reference to KeePass is a workaround and saves us from doing ExcludeFromPlgx for KeePass
+  -->
+      <PlgxReference>bin\Release\protobuf-net.dll</PlgxReference>
+      <PlgxReference>bin\Release\protobuf-net.Core.dll</PlgxReference>
+      <PlgxReference>bin\Release\System.Buffers.dll</PlgxReference>
+      <PlgxReference>bin\Release\System.Collections.Immutable.dll</PlgxReference>
+      <PlgxReference>bin\Release\System.Memory.dll</PlgxReference>
+      <PlgxReference>bin\Release\System.Numerics.Vectors.dll</PlgxReference>
+      <PlgxReference>bin\Release\System.Runtime.CompilerServices.Unsafe.dll</PlgxReference>
+      <PlgxReference>bin\Release\System.ServiceModel.Primitives.dll</PlgxReference>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qr-code.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GoogleAuthenticatorImport\protobuf-net.Core.dll" />
-    <Content Include="GoogleAuthenticatorImport\protobuf-net.dll" />
-    <Content Include="GoogleAuthenticatorImport\System.Buffers.dll" />
-    <Content Include="GoogleAuthenticatorImport\System.Collections.Immutable.dll" />
-    <Content Include="GoogleAuthenticatorImport\System.Memory.dll" />
-    <Content Include="GoogleAuthenticatorImport\System.Runtime.CompilerServices.Unsafe.dll" />
+    <PackageReference Include="PlgxTool">
+      <Version>1.0.0</Version>
+	  <ExcludeFromPlgx />
+    </PackageReference>
+    <PackageReference Include="protobuf-net">
+      <Version>3.0.52</Version>
+      <ExcludeFromPlgx />
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">
     <Exec Command="..\translationcopy.cmd $(Configuration)" />
   </Target>
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'ReleasePlgx' ">
+    <!-- Create plgx file -->
+    <CallTarget Targets="BuildPlgx" />
+    <!-- copy translations -->
     <Exec Command="..\translationcopy.cmd $(Configuration)" />
-    <Exec Command="..\plgxcreate.cmd $(TargetFrameworkVersion.Replace('v', '')) $(PlgxKeePassVersion) $(PlgXOS)" />
+    <!-- Copy plgx file -->
+    <Exec Command="..\plgxcreate.cmd" />
   </Target>
 </Project>

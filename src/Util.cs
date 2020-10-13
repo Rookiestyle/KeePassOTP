@@ -317,7 +317,7 @@ namespace KeePassOTP
 				}
 
 				otp.Issuer = gAuthData.Issuer;
-				otp.Label = gAuthData.Name.Remove(0, gAuthData.Issuer.Length + 1);
+				otp.Label = string.IsNullOrEmpty(gAuthData.Issuer) ? gAuthData.Name : gAuthData.Name.Remove(0, gAuthData.Issuer.Length + 1);
 				otp.Encoding = KPOTPEncoding.BASE32;
 
 				byte[] bSeed = ConvertBase64ToBase32(gAuthData.Secret);
