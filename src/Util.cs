@@ -278,9 +278,24 @@ namespace KeePassOTP
 				var b = Convert.FromBase64String(param["data"]);
 				GoogleAuthenticatorImport gi = DeserializeGoogleAuthMigrationData(b);
 
+				GoogleAuthenticatorImport.OtpParameters gAuthData = null;
 				iOTPCount = gi.otp_parameters.Count;
-				if (iOTPCount != 1) throw new ArgumentException("Expected exactly one OTP object, found: " + iOTPCount.ToString());
-				var gAuthData = gi.otp_parameters[0];
+				if (iOTPCount != 1)
+				{
+					using (GoogleAuthenticatorImportSelection selForm = new GoogleAuthenticatorImportSelection())
+					{
+						Tools.GlobalWindowManager(selForm);
+						selForm.InitEx(gi.otp_parameters);
+						if (selForm.ShowDialog(KeePass.UI.GlobalWindowManager.TopWindow) == DialogResult.OK)
+						{
+							gAuthData = selForm.SelectedEntry;
+							if (gAuthData != null) iOTPCount = 1;
+						}
+						else iOTPCount = -1;
+					}
+					if (iOTPCount != 1) throw new ArgumentException("Expected exactly one OTP object, found: " + iOTPCount.ToString());
+				}
+				else gAuthData = gi.otp_parameters[0];
 				KPOTP otp = new KPOTP();
 				switch (gAuthData.Algorithm)
 				{

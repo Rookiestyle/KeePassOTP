@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>10</TranslationVersion>
+  <TranslationVersion>11</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -79,7 +79,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Zeitversatz ausgleichen - Nur für TOTP && Steam</value>
+    <value>Zeitversatz ausgleichen - Nur für TOTP &amp;&amp; Steam</value>
   </item>
   <item>
     <key>URL</key>
@@ -246,5 +246,13 @@ Die Daten müssen manuell wiederhergestellt werden.</value>
   <item>
     <key>Placeholder</key>
 	<value>Platzhalter:</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+	<value>Bitte markiere den zu verwendenden Eintrag</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+	<value>Aussteller</value>
   </item>
 </Translation>

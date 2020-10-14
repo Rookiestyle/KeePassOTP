@@ -79,7 +79,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Time correction - TOTP && Steam only</value>
+    <value>Time correction - TOTP &amp;&amp; Steam only</value>
   </item>
   <item>
     <key>URL</key>
@@ -229,16 +229,16 @@ All occurrences of {0} need to be replaced by {1} for Auto-Type to work.
 Replace now in currently loaded databases?</value>
   </item>
   <item>
-	<key>ConfirmOTPDBDelete</key>
-	<value>This will deactivate the OTP database. 
-It will NOT delete the OTP database.
+    <key>ConfirmOTPDBDelete</key>
+    <value>This will deactivate the KeePassOTP database. 
+It will NOT delete the KeePassOTP database.
 
-Click '{0}' to deactivate AND delete OTP database.
-Click '{1}' to deactivate but not delete OTP database.</value>
+Click '{0}' to deactivate AND delete KeePassOTP database.
+Click '{1}' to deactivate but not delete KeePassOTP database.</value>
   </item>
   <item>
-	<key>OTPBackupDone</key>
-	<value>Unlocking the existing OTP database failed and its content has been overwritten.
+    <key>OTPBackupDone</key>
+    <value>Unlocking the existing OTP database failed and its content has been overwritten.
 A backup was saved as attachment in the following entry:
 {0}
 
@@ -247,10 +247,29 @@ Restoring the data needs to be done manually.</value>
   </item>
   <item>
     <key>Placeholder</key>
-	<value>Placeholder:</value>
+    <value>Placeholder:</value>
   </item>
   <item>
     <key>PlaceholderAutoSubmit</key>
-	<value>{0} + Enter</value>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>Error parsing data</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>Error parsing data
+
+Expected amount of OTP entries: 1
+Found amount of OTP entries: {0}</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+    <value>Please check the single entry to use</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+    <value>Issuer</value>
   </item>
 </Translation>

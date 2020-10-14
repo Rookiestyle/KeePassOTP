@@ -128,6 +128,8 @@ Restoring the data needs to be done manually.";
 
 Expected amount of OTP entries: 1
 Found amount of OTP entries: {0}";
+		public static readonly string SelectSingleEntry = @"Please check the single entry to use";
+		public static readonly string Issuer = @"Issuer";
 		#endregion
 
 		#region NO changes in this area
