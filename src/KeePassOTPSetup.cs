@@ -3,6 +3,7 @@ using System.Text;
 using System.Windows.Forms;
 using KeePassLib.Security;
 using KeePassLib.Utility;
+using PluginTools;
 using PluginTranslation;
 
 namespace KeePassOTP
@@ -111,6 +112,24 @@ namespace KeePassOTP
 				OTP.OTPAuthString = new ProtectedString(true, tbOTPSeed.Text);
 				InitSettings(true);
 			}
+			else if (tbOTPSeed.Text.ToLowerInvariant().StartsWith("otpauth-migration://"))
+			{
+				int iCount;
+				ProtectedString psGoogleAuth = PSConvert.ParseGoogleAuthExport(tbOTPSeed.Text, out iCount);
+				if ((iCount == 1) && (psGoogleAuth.Length > 0))
+				{
+					//tbOTPSeed.Text = psGoogleAuth.ReadString();
+					OTP.OTPAuthString = psGoogleAuth;
+					InitSettings(true);
+					return;
+				}
+				tbOTPSeed.Text = string.Empty;
+
+				if (iCount > 1) Tools.ShowError(string.Format(PluginTranslate.ErrorGoogleAuthImportCount, iCount.ToString()));
+				else Tools.ShowError(PluginTranslate.ErrorGoogleAuthImport);
+				return;
+			}
+
 			else OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
 
 			if (cbOTPFormat.SelectedIndex == 0) OTP.Encoding = KPOTPEncoding.BASE32;
@@ -254,7 +273,18 @@ namespace KeePassOTP
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
 				var f = e.Data.GetData(DataFormats.FileDrop) as string[];
-				if (f != null) otp = ParseFromImageFile(f[0]);
+				if (f != null)
+				{
+					otp = ParseFromImageFile(f[0]);
+					if (otp.ReadString().ToLowerInvariant().StartsWith("otpauth-migration://"))
+					{
+						int iOTPCount = 0;
+						try { otp = PSConvert.ParseGoogleAuthExport(otp.ReadString(), out iOTPCount); }
+						catch { }
+						if (iOTPCount > 1) Tools.ShowError(string.Format(PluginTranslate.ErrorGoogleAuthImportCount, iOTPCount.ToString()));
+						else if (iOTPCount == 0) Tools.ShowError(PluginTranslate.ErrorGoogleAuthImport);
+					}
+				}
 			}
 			if (!IsValidOtpAuth(otp))
 			{

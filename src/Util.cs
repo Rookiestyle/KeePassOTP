@@ -266,6 +266,148 @@ namespace KeePassOTP
 			MemUtil.ZeroArray(strHex);
 			return pb;
 		}
+
+		internal static ProtectedString ParseGoogleAuthExport(string s, out int iOTPCount)
+		{
+			iOTPCount = 0;
+			ProtectedString psResult = ProtectedString.Empty;
+			try
+			{
+				var u = new Uri(s);
+				var param = System.Web.HttpUtility.ParseQueryString(u.Query);
+				var b = Convert.FromBase64String(param["data"]);
+				GoogleAuthenticatorImport gi = DeserializeGoogleAuthMigrationData(b);
+
+				iOTPCount = gi.otp_parameters.Count;
+				if (iOTPCount != 1) throw new ArgumentException("Expected exactly one OTP object, found: " + iOTPCount.ToString());
+				var gAuthData = gi.otp_parameters[0];
+				KPOTP otp = new KPOTP();
+				switch (gAuthData.Algorithm)
+				{
+					case GoogleAuthenticatorImport.Algorithm.AlgorithmSha256:
+						otp.Hash = KPOTPHash.SHA256;
+						break;
+					case GoogleAuthenticatorImport.Algorithm.AlgorithmSha512:
+						otp.Hash = KPOTPHash.SHA512;
+						break;
+					default:
+						otp.Hash = KPOTPHash.SHA1;
+						break;
+				}
+
+				switch (gAuthData.Type)
+				{
+					case GoogleAuthenticatorImport.OtpType.OtpTypeHotp:
+						otp.Type = KPOTPType.HOTP;
+						otp.HOTPCounter = (int)gAuthData.Counter;
+						break;
+					default:
+						otp.Type = KPOTPType.TOTP;
+						break;
+				}
+
+				switch (gAuthData.Digits)
+				{
+					case GoogleAuthenticatorImport.DigitCount.DigitCountEight:
+						otp.Length = 8;
+						break;
+					default:
+						otp.Length = 6;
+						break;
+				}
+
+				otp.Issuer = gAuthData.Issuer;
+				otp.Label = string.IsNullOrEmpty(gAuthData.Issuer) ? gAuthData.Name : gAuthData.Name.Remove(0, gAuthData.Issuer.Length + 1);
+				otp.Encoding = KPOTPEncoding.BASE32;
+
+				byte[] bSeed = ConvertBase64ToBase32(gAuthData.Secret);
+				otp.OTPSeed = new ProtectedString(true, bSeed);
+				psResult = otp.OTPAuthString;
+			}
+			catch { }
+			return psResult;
+		}
+
+		private static GoogleAuthenticatorImport DeserializeGoogleAuthMigrationData(byte[] b)
+		{
+			GoogleAuthenticatorImport gi = new GoogleAuthenticatorImport();
+			using (var ms = new System.IO.MemoryStream())
+			{
+				ms.Write(b, 0, b.Length);
+				ms.Position = 0;
+				gi = ProtoBuf.Serializer.Deserialize<GoogleAuthenticatorImport>(ms);
+			}
+			return gi;
+		}
+
+		private const string Base32Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+		private const int InByteSize = 8;
+		private const int OutByteSize = 5;
+		internal static byte[] ConvertBase64ToBase32(byte[] bytes)
+		{
+			List<byte> lBytes = new List<byte>();
+			if ((bytes == null) || (bytes.Length == 0)) return lBytes.ToArray();
+
+			int iCurrentBytePosition = 0;
+
+			// Offset inside a single byte that <bytesPosition> points to (from left to right)
+			// 0 - highest bit, 7 - lowest bit
+			int bytesSubPosition = 0;
+			//byte to look up in the base32 dictionary
+			byte outputBase32Byte = 0;
+			//The number of bits filled in the current output byte
+			int iCurrentOutputPosition = 0;
+
+			// Iterate through input buffer until we reach past the end of it
+			while (iCurrentBytePosition < bytes.Length)
+			{
+				// Calculate the number of bits we can extract out of current input byte to fill missing bits in the output byte
+				int bitsAvailableInByte = Math.Min(InByteSize - bytesSubPosition, OutByteSize - iCurrentOutputPosition);
+				// Make space in the output byte
+				outputBase32Byte <<= bitsAvailableInByte;
+				// Extract the part of the input byte and move it to the output byte
+				outputBase32Byte |= (byte)(bytes[iCurrentBytePosition] >> (InByteSize - (bytesSubPosition + bitsAvailableInByte)));
+				// Update current sub-byte position
+				bytesSubPosition += bitsAvailableInByte;
+
+				// Check overflow
+				if (bytesSubPosition >= InByteSize)
+				{
+					// Move to the next byte
+					iCurrentBytePosition++;
+					bytesSubPosition = 0;
+				}
+
+				// Update current base32 byte completion
+				iCurrentOutputPosition += bitsAvailableInByte;
+				// Check overflow or end of input array
+				if (iCurrentOutputPosition >= OutByteSize)
+				{
+					// Drop the overflow bits
+					outputBase32Byte &= 0x1F;  // 0x1F = 00011111 in binary
+					// Add current Base32 byte and convert it to character
+					lBytes.Add((byte)Base32Alphabet[outputBase32Byte]);
+					// Move to the next byte
+					iCurrentOutputPosition = 0;
+				}
+			}
+
+			// Check if we have a remainder
+			if (iCurrentOutputPosition > 0)
+			{
+				// Move to the right bits
+				outputBase32Byte <<= (OutByteSize - iCurrentOutputPosition);
+
+				// Drop the overflow bits
+				outputBase32Byte &= 0x1F;  // 0x1F = 00011111 in binary
+
+				// Add current Base32 byte and convert it to character
+				//builder.Append(Base32Alphabet[outputBase32Byte]);
+				lBytes.Add((byte)Base32Alphabet[outputBase32Byte]);
+			}
+
+			return lBytes.ToArray();
+		}
 	}
 
 	public static class EventHelper

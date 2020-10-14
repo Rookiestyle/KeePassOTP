@@ -123,6 +123,11 @@ Open it anytime to check the previous content.
 Restoring the data needs to be done manually.";
 		public static readonly string Placeholder = @"Placeholder:";
 		public static readonly string PlaceholderAutoSubmit = @"{0} + Enter";
+		public static readonly string ErrorGoogleAuthImport = @"Error parsing data";
+		public static readonly string ErrorGoogleAuthImportCount = @"Error parsing data
+
+Expected amount of OTP entries: 1
+Found amount of OTP entries: {0}";
 		#endregion
 
 		#region NO changes in this area
