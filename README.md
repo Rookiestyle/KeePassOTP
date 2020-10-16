@@ -4,7 +4,8 @@
 [![Downloads](https://img.shields.io/github/downloads/rookiestyle/keepassotp/total?color=%2300cc00)](https://github.com/rookiestyle/keepassotp/releases/latest/download/keepassotp.plgx)\
 [![License: GPL v3](https://img.shields.io/github/license/rookiestyle/keepassotp)](https://www.gnu.org/licenses/gpl-3.0)
 
-KeePassOTP allows you to generate one time passwords (OTP). Both TOTP and HOTP are supported.
+KeePassOTP allows you to generate one time passwords (OTP).  
+It supports both standard TOTP and standard HOTP as well as Steam OTP.
 
 Once maintained, you can copy or auto-type the OTP.  
 You may also create a QR code and scan it with an OTP app of your liking, e.g. andOTP, Google Authenticator, ...  
@@ -15,7 +16,7 @@ Functionality provided:
 - Configurable hotkey to invoke Auto-Type OTP
 - Column to display OTP or to indicate possible 2FA usage
 - Compatibility with Google Authenticator, andOTP, ...
-- Support TOTP and HOTP
+- Support TOTP and HOTP as well as Steam OTP
 - Secure storage of OTP secrets
 - Auto-Type / Copy OTP using the KeePass tray icon
 
@@ -42,7 +43,7 @@ If you're interested in migration instructions to move from (or to) other OTP pl
 ## Setup OTP data / Change OTP data  
 Use the entry's context menu to setup/change OTP data.  
 
-In the setup form, you can drag&drop the QR code image and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as a seed) and you're ready to go.  
+In the setup form, you can drag&drop the QR code image onto the QR picture in the setup form and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as a seed) and you're ready to go.  
 
 Got a string like this one?  
 `otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example`  
