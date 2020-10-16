@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeePassOTP</RootNamespace>
     <AssemblyName>KeePassOTP</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -137,13 +137,6 @@
   Using the reference to KeePass is a workaround and saves us from doing ExcludeFromPlgx for KeePass
   -->
       <PlgxReference>bin\Release\protobuf-net.dll</PlgxReference>
-      <PlgxReference>bin\Release\protobuf-net.Core.dll</PlgxReference>
-      <PlgxReference>bin\Release\System.Buffers.dll</PlgxReference>
-      <PlgxReference>bin\Release\System.Collections.Immutable.dll</PlgxReference>
-      <PlgxReference>bin\Release\System.Memory.dll</PlgxReference>
-      <PlgxReference>bin\Release\System.Numerics.Vectors.dll</PlgxReference>
-      <PlgxReference>bin\Release\System.Runtime.CompilerServices.Unsafe.dll</PlgxReference>
-      <PlgxReference>bin\Release\System.ServiceModel.Primitives.dll</PlgxReference>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -155,7 +148,7 @@
       <ExcludeFromPlgx />
     </PackageReference>
     <PackageReference Include="protobuf-net">
-      <Version>3.0.52</Version>
+      <Version>2.4.6</Version>
       <ExcludeFromPlgx />
     </PackageReference>
   </ItemGroup>
