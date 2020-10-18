@@ -472,10 +472,16 @@ namespace KeePassOTP
 			}
 		}
 
-		private async void SetURL(string url)
+		/// Calculate time offset for all relevant entries
+		/// Do NOT use Task.Run as this requires .NET 4.5 which will cause issues on Mono
+		/// Mono reports .NET 4.0.3 being installed despite higher versions can be used
+		/// This results in KeePass refusing to compile the plgx
+		private /* async */ void SetURL(string url)
 		{
 			m_url = url == null ? string.Empty : url;
-			await System.Threading.Tasks.Task.Run(() =>
+			//await - Don't use, see comment above method definition
+			System.Threading.Tasks.Task.Factory.StartNew(() =>
+			//System.Threading.Tasks.Task.Run(() =>
 			{
 				OTPTimeCorrection = GetTimeCorrection(url);
 			}
@@ -559,12 +565,20 @@ namespace KeePassOTP
 			return timeCorrection;
 		}
 
-		public static async void GetTimingsAsync(KeePassLib.PwDatabase db)
+		/// Calculate time offset for all relevant entries
+		/// Do NOT use Task.Run as this requires .NET 4.5 which will cause issues on Mono
+		/// Mono reports .NET 4.0.3 being installed despite higher versions can be used
+		/// This results in KeePass refusing to compile the plgx
+		public static /*async*/ void GetTimingsAsync(KeePassLib.PwDatabase db)
 		{
 			//Don't use TraverseTree as db content might change during processing
 			//and this will result in an exception since TraverseTree uses 'foreach'
-			await System.Threading.Tasks.Task.Run(() =>
+			
+			//await - Don't use, see comment above method definition
+			System.Threading.Tasks.Task.Factory.StartNew(() =>
+			//System.Threading.Tasks.Task.Run(() =>
 			{
+				DateTime dtStart = DateTime.Now;
 				IEnumerable<string> lURL = db.RootGroup.GetEntries(true).
 					Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None). //We're not interested in sites without OTP being set up
 					Select(e => e.Strings.ReadSafe(KeePassLib.PwDefs.UrlField)).Distinct(); //We're not interested in duplicate URLs
@@ -574,6 +588,8 @@ namespace KeePassOTP
 					GetTimeCorrection(url);
 					System.Threading.Thread.Sleep(100);
 				};
+				DateTime dtEnd = DateTime.Now;
+				PluginDebug.AddInfo("Calculated OTP time corrections", 0, "Start: " + dtStart.ToLongTimeString(), "End: " + dtEnd.ToLongTimeString());
 			}
 			);
 		}
