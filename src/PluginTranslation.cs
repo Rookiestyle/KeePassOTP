@@ -62,7 +62,7 @@ namespace PluginTranslation
 		public static readonly string OTP_OpenDB = @"Open OTP database - {0}";
 		public static readonly string OTP_CreateDB_PWHint = @"All secrets will be stored in a separate database which will be included within the main database containing the entries as such.
 
-Please provide the masterkey for your OTP secrects in the next form.";
+Please provide the masterkey for your OTP secrets in the next form.";
 		public static readonly string Options_CheckTFA = @"Indicate if 2FA usage is possible";
 		public static readonly string Options_OTPSettings = @"OTP settings (db specific)";
 		public static readonly string Options_UseOTPDB = @"Save OTP secrets in a separate database";

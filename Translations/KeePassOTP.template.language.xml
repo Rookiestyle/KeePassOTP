@@ -113,7 +113,7 @@
     <key>OTP_CreateDB_PWHint</key>
     <value>All secrets will be stored in a separate database which will be included within the main database containing the entries as such.
 
-Please provide the masterkey for your OTP secrects in the next form.</value>
+Please provide the masterkey for your OTP secrets in the next form.</value>
   </item>
   <item>
     <key>Options_CheckTFA</key>
