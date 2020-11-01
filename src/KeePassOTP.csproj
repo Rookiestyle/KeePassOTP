@@ -80,11 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="QRCode\QRCode.cs" />
-    <Compile Include="QRCode\QRCodeData.cs" />
-    <Compile Include="QRCode\QRCodeDecoder.cs" />
-    <Compile Include="QRCode\QRCodeGenerator.cs" />
-    <Compile Include="Util.cs" />
+	<Compile Include="Util.cs" />
     <Compile Include="KeePassOTP.cs" />
     <Compile Include="KeePassOTPColumnProvider.cs" />
     <Compile Include="KeePassOTPExt.cs" />
@@ -129,7 +125,7 @@
       <Project>{10938016-dee2-4a25-9a5a-8fd3444379ca}</Project>
       <Name>KeePass</Name>
       <!--
-  We do use the nuget package protobuf-net
+  We do use the nuget packages protobuf-net and ZXing.net
   Unfortunately, the dll files created during compile time won't be added to the plgx file
   
   We need to use plgxtool to add them
@@ -137,7 +133,9 @@
   Using the reference to KeePass is a workaround and saves us from doing ExcludeFromPlgx for KeePass
   -->
       <PlgxReference>bin\Release\protobuf-net.dll</PlgxReference>
-    </ProjectReference>
+	  <PlgxReference>bin\Release\zxing.dll</PlgxReference>
+	  <PlgxReference>bin\Release\zxing.presentation.dll</PlgxReference>
+	</ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qr-code.png" />
@@ -150,6 +148,10 @@
     <PackageReference Include="protobuf-net">
       <Version>2.4.6</Version>
       <ExcludeFromPlgx />
+    </PackageReference>
+    <PackageReference Include="ZXing.Net">
+      <Version>0.16.6</Version>
+	  <ExcludeFromPlgx />
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

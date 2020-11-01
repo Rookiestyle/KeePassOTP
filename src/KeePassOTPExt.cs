@@ -228,11 +228,11 @@ namespace KeePassOTP
 			if (!otp.Valid) return;
 			try
 			{
-				byte[] bOTP = otp.OTPAuthString.ReadUtf8();
-				QRCoder.QRCodeData qrd = QRCoder.QRCodeGenerator.GenerateQrCode(bOTP, QRCoder.QRCodeGenerator.ECCLevel.Q);
-				MemUtil.ZeroByteArray(bOTP);
-				QRCoder.QRCode qrc = new QRCoder.QRCode(qrd);
-				Bitmap bmp = qrc.GetGraphic(8);
+				ZXing.BarcodeWriter zBW = new ZXing.BarcodeWriter();
+				zBW.Options.Height = 320;
+				zBW.Options.Width = 320;
+				zBW.Format = ZXing.BarcodeFormat.QR_CODE;
+				Bitmap bmp = zBW.Write(otp.OTPAuthString.ReadString());
 				QRForm f = new QRForm();
 				f.FormBorderStyle = FormBorderStyle.FixedDialog;
 				f.StartPosition = FormStartPosition.CenterParent;
@@ -281,8 +281,6 @@ namespace KeePassOTP
 				f.ShowDialog(KeePass.UI.GlobalWindowManager.TopWindow);
 				pb.Image.Dispose();
 				f.Dispose();
-				qrc.Dispose();
-				qrd.Dispose();
 			}
 			catch { }
 		}

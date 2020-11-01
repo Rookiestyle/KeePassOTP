@@ -107,6 +107,15 @@ namespace KeePassOTP
 		private void UpdatePreview()
 		{
 			if (m_NoUpdate) return;
+			if (StrUtil.IsDataUri(tbOTPSeed.Text))
+			{
+				try
+				{
+					OTP.OTPAuthString = ParseFromImageByteArray(StrUtil.DataUriToData(tbOTPSeed.Text));
+					InitSettings(true);
+				}
+				catch { tbOTPSeed.Text = string.Empty; }
+			}
 			if (tbOTPSeed.Text.ToLowerInvariant().StartsWith("otpauth://"))
 			{
 				OTP.OTPAuthString = new ProtectedString(true, tbOTPSeed.Text);
@@ -377,12 +386,10 @@ namespace KeePassOTP
 		private ProtectedString ParseFromImage(System.Drawing.Bitmap bitmap)
 		{
 			if (bitmap == null) return ProtectedString.EmptyEx;
-			QRDecoder.QRDecoder decoder = new QRDecoder.QRDecoder();
-			byte[][] DataByteArray = decoder.ImageDecoder(bitmap);
-			if ((DataByteArray == null) || (DataByteArray.Length < 1)) return ProtectedString.EmptyEx;
-			ProtectedString psResult = new ProtectedString(true, DataByteArray[0]);
-			MemUtil.ZeroByteArray(DataByteArray[0]);
-			return psResult;
+			ZXing.BarcodeReader r = new ZXing.BarcodeReader();
+			ZXing.Result result = r.Decode(bitmap);
+			if (result != null) return new ProtectedString(true, result.Text);
+			return ProtectedString.EmptyEx;
 		}
 
 		private void pbQR_DragEnter(object sender, DragEventArgs e)
