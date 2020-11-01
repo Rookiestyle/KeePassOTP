@@ -240,10 +240,10 @@ namespace KeePassOTP
 				f.MinimizeBox = false;
 				f.MaximizeBox = false;
 				PictureBox pb = new PictureBox();
-				pb.Size = new Size(bmp.Width, bmp.Height);
 				pb.Location = new Point(0, 0);
+				pb.Image = new Bitmap(bmp, bmp.Size); //Assigning bmp directly did not work in my Ubuntu VM...
+				pb.ClientSize = pb.Image.Size;
 				f.ClientSize = pb.Size;
-				pb.Image = bmp;
 				f.Controls.Add(pb);
 				if (!string.IsNullOrEmpty(otp.Issuer) && (otp.Issuer != PluginTranslate.PluginName))
 				{
@@ -281,8 +281,9 @@ namespace KeePassOTP
 				f.ShowDialog(KeePass.UI.GlobalWindowManager.TopWindow);
 				pb.Image.Dispose();
 				f.Dispose();
+				bmp.Dispose();
 			}
-			catch { }
+			catch { };
 		}
 
 		private void OnOTPAutotype(object sender, EventArgs e)
