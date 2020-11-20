@@ -80,7 +80,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-	<Compile Include="Util.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="KeePassOTP.cs" />
     <Compile Include="KeePassOTPColumnProvider.cs" />
     <Compile Include="KeePassOTPExt.cs" />
@@ -96,7 +96,6 @@
     <Compile Include="Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginTools.cs" />
     <Compile Include="PluginTranslation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resources.Designer.cs">
@@ -105,6 +104,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="DAO\TFASites.cs" />
+    <Compile Include="Utilities\Debug.cs" />
+    <Compile Include="Utilities\Tools_Controls.cs" />
+    <Compile Include="Utilities\Tools_Main.cs" />
+    <Compile Include="Utilities\Tools_Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -133,9 +136,9 @@
   Using the reference to KeePass is a workaround and saves us from doing ExcludeFromPlgx for KeePass
   -->
       <PlgxReference>bin\Release\protobuf-net.dll</PlgxReference>
-	  <PlgxReference>bin\Release\zxing.dll</PlgxReference>
-	  <PlgxReference>bin\Release\zxing.presentation.dll</PlgxReference>
-	</ProjectReference>
+      <PlgxReference>bin\Release\zxing.dll</PlgxReference>
+      <PlgxReference>bin\Release\zxing.presentation.dll</PlgxReference>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\qr-code.png" />
@@ -151,7 +154,7 @@
     </PackageReference>
     <PackageReference Include="ZXing.Net">
       <Version>0.16.6</Version>
-	  <ExcludeFromPlgx />
+      <ExcludeFromPlgx />
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

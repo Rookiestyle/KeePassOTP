@@ -61,11 +61,7 @@ namespace KeePassOTP
 			string url = pe.Strings.ReadSafe(PwDefs.UrlField);
 			string target = TFASites.GetTFAUrl(url);
 			PluginDebug.AddInfo("Show 2FA instructions", 0, "URL: " + target);
-			try
-			{
-				System.Diagnostics.Process.Start(target);
-			}
-			catch { }
+			try	{ Tools.OpenUrl(target); } catch { }
 		}
 
 		public void StartTimer()
