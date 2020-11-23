@@ -219,7 +219,7 @@ namespace KeePassOTP
 			HMAC hmac = null;
 
 			if (Hash == KPOTPHash.SHA256) hmac = new HMACSHA256(m_key);
-			if (Hash == KPOTPHash.SHA512) hmac = new HMACSHA512(m_key);
+			else if (Hash == KPOTPHash.SHA512) hmac = new HMACSHA512(m_key);
 			else hmac = new HMACSHA1(m_key, true);
 
 			byte[] r = hmac.ComputeHash(data);
