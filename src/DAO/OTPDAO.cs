@@ -256,6 +256,7 @@ namespace KeePassOTP
 			KeePassOTP2OtpAuth = 2,
 			SanitizeSeed = 4,
 			OTPAuthFormatCorrection = 8,
+			CleanOTPDB = 16, //Remove outdated entries from OTP-DB
 		}
 
 		public static bool CheckAndMigrate(PwDatabase db)
@@ -323,6 +324,13 @@ namespace KeePassOTP
 				if (r >= 0) omStatusNew |= OTP_Migrations.OTPAuthFormatCorrection;
 			}
 
+			if (MigrationRequired(OTP_Migrations.CleanOTPDB, omFlags, omStatusOld))
+			{
+				int r = CleanOTPDB(db);
+				bMigrated |= r > 0;
+				if (r >= 0) omStatusNew |= OTP_Migrations.CleanOTPDB;
+			}
+
 			if ((omStatusNew != omStatusOld) || bMigrated)
 			{
 				db.CustomData.Set(sMigrationStatus, omStatusNew.ToString());
@@ -338,6 +346,21 @@ namespace KeePassOTP
 			if ((omMigrate & omFlags) != omMigrate) return false; //not requested
 			if ((omMigrate & status) == omMigrate) return false; //already done
 			return true;
+		}
+
+		private static int CleanOTPDB(PwDatabase db)
+		{
+			//Get DB to work on
+			PwDatabase otpdb = db;
+			OTPDAO.OTPHandler_DB h = GetOTPHandler(db);
+			if (h == null) return 0;
+			{
+				if (!h.EnsureOTPUsagePossible(null)) return -1;
+				otpdb = h.OTPDB;
+			}
+			List<PwEntry> lEntries = otpdb.RootGroup.GetEntries(true).Where(x => !x.Strings.Exists(Config.OTPFIELD)).ToList();
+			foreach (PwEntry pe in lEntries) otpdb.RootGroup.Entries.Remove(pe);
+			return lEntries.Count;
 		}
 
 		private static int SanitizeSeeds(PwDatabase db)

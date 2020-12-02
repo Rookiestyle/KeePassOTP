@@ -868,7 +868,7 @@ namespace KeePassOTP
 				if (!Valid || !OTPDB_Exists || !OTPDB_Opened) return -1;
 
 				int moved = 0;
-				foreach (PwEntry peOTP in OTPDB.RootGroup.GetEntries(true))
+				foreach (PwEntry peOTP in OTPDB.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)))
 				{
 					PwUuid uuid = new PwUuid(MemUtil.HexStringToByteArray(peOTP.Strings.ReadSafe(UUID)));
 					foreach (PwEntry pe in DB.RootGroup.GetEntries(true).Where(x => uuid.Equals(x.Uuid)))
