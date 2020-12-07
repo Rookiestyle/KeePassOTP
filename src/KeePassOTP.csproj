@@ -108,6 +108,7 @@
     <Compile Include="Utilities\Tools_Controls.cs" />
     <Compile Include="Utilities\Tools_Main.cs" />
     <Compile Include="Utilities\Tools_Options.cs" />
+    <Compile Include="Utilities\Tools_UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

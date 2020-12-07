@@ -220,7 +220,6 @@ namespace KeePassOTP
 			CopyOTP(m_host.MainWindow.GetSelectedEntry(true));
 		}
 
-
 		private void OnOTPQRCode(object sender, EventArgs e)
 		{
 			if (m_host.MainWindow.GetSelectedEntriesCount() != 1) return;
@@ -447,7 +446,7 @@ namespace KeePassOTP
 					m.SetDB(null);
 				}
 				if (bChanged)
-					m_host.MainWindow.UpdateUI(false, null, false, null, false, null, (m_host.Database != null) && m_host.Database.IsOpen && m_host.Database.Modified);
+					Tools.RefreshEntriesList((m_host.Database != null) && m_host.Database.IsOpen && m_host.Database.Modified);
 			};
 			m_tMigratePlaceholder.Start();
 		}

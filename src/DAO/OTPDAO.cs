@@ -169,9 +169,9 @@ namespace KeePassOTP
 			OTPHandler_Base h = GetOTPHandler(pe);
 			h.SaveOTP(myOTP, pe);
 			myOTP.ResetSanitizedChange();
-			Program.MainForm.RefreshEntriesList();
 			bool bModified = (h is OTPHandler_DB) ? (h as OTPHandler_DB).DB == Program.MainForm.ActiveDatabase : true;
-			Program.MainForm.UpdateUI(false, null, false, null,	true, null, bModified);
+			System.Windows.Forms.ListView lv = (System.Windows.Forms.ListView)Tools.GetControl("m_lvEntries");
+			Tools.RefreshEntriesList(bModified);
 		}
 
 		internal static PwDatabase GetDB(this PwEntry pe)
