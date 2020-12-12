@@ -45,7 +45,7 @@ namespace KeePassOTP
 			EntriesOverall = EntriesMigrated = -1;
 		}
 
-		public bool MigratePlaceholder(string from, string to, bool bTouchEntries)
+		public bool MigratePlaceholder(string from, string to)
 		{
 			bool bChanged = false;
 			if (!m_bInitialized) return bChanged;
@@ -64,20 +64,44 @@ namespace KeePassOTP
 			EntryHandler eh = delegate (PwEntry pe)
 			{
 				if (pe == null) { return true; }
+				bool bBackupRequired = true;
 				foreach (var a in pe.AutoType.Associations)
 				{
 					if (a.Sequence.Contains(from))
 					{
+						if (bBackupRequired)
+						{
+							bBackupRequired = false;
+							pe.CreateBackup(m_db);
+						}
 						a.Sequence = a.Sequence.Replace(from, to);
 						bChanged = true;
 					}
 				}
 				if (pe.AutoType.DefaultSequence.Contains(from))
 				{
+					if (bBackupRequired)
+					{
+						bBackupRequired = false;
+						pe.CreateBackup(m_db);
+					}
 					pe.AutoType.DefaultSequence = pe.AutoType.DefaultSequence.Replace(from, to);
 					bChanged = true;
 				}
-				if (bTouchEntries) pe.Touch(true);
+				foreach (var s in pe.Strings.GetKeys())
+				{
+					ProtectedString ps = pe.Strings.Get(s);
+					if (!ps.Contains(from)) continue;
+					if (bBackupRequired)
+					{
+						bBackupRequired = false;
+						pe.CreateBackup(m_db);
+					}
+					ps = ps.Replace(from, to);
+					pe.Strings.Set(s, ps);
+					bChanged = true;
+				}
+				pe.Touch(true, false);
 				return true;
 			};
 
@@ -212,7 +236,7 @@ namespace KeePassOTP
 				}
 			}
 			finally { EndLogger(); }
-			MigratePlaceholder(OtherPluginPlaceholder, Config.Placeholder, false);
+			MigratePlaceholder(OtherPluginPlaceholder, Config.Placeholder);
 		}
 
 		public override void MigrateFromKeePassOTP(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
@@ -289,7 +313,7 @@ namespace KeePassOTP
 			{
 				EndLogger();
 			}
-			MigratePlaceholder(Config.Placeholder, OtherPluginPlaceholder, false);
+			MigratePlaceholder(Config.Placeholder, OtherPluginPlaceholder);
 		}
 	}
 
@@ -395,7 +419,7 @@ namespace KeePassOTP
 			{
 				EndLogger();
 			}
-			MigratePlaceholder(m_OtherPluginPlaceholder, Config.Placeholder, false);
+			MigratePlaceholder(m_OtherPluginPlaceholder, Config.Placeholder);
 		}
 
 		public override void MigrateFromKeePassOTP(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
@@ -462,7 +486,7 @@ namespace KeePassOTP
 				}
 			}
 			finally { EndLogger(); }
-			MigratePlaceholder(Config.Placeholder, m_OtherPluginPlaceholder, false);
+			MigratePlaceholder(Config.Placeholder, m_OtherPluginPlaceholder);
 		}
 	}
 }

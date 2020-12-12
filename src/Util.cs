@@ -6,6 +6,7 @@ using PluginTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -615,6 +616,76 @@ namespace KeePassOTP
 					}
 				}
 			}
+			return result;
+		}
+	}
+
+	internal static class PSExtensions
+	{
+		internal static bool Contains(this ProtectedString ps, string search)
+		{
+			return Contains(ps, new ProtectedString(false, search));
+		}
+
+		internal static bool Contains(this ProtectedString ps, ProtectedString search)
+		{
+			return IndexOfSubString(ps, search) > 0;
+		}
+
+		internal static ProtectedString Replace(this ProtectedString ps, string search, string replace)
+		{
+			return Replace(ps, new ProtectedString(true, StrUtil.Utf8.GetBytes(search)), new ProtectedString(true, StrUtil.Utf8.GetBytes(replace)));
+		}
+
+		internal static ProtectedString Replace(this ProtectedString ps, ProtectedString search, ProtectedString replace)
+		{
+			ProtectedString result = ps;
+			int i = IndexOfSubString(result, search);
+			while (i >= 0)
+			{
+				var psAfter = result.Remove(0, i + search.Length);
+				var psBefore = result.Remove(i, result.Length - i);
+				result = psBefore + replace + psAfter;
+				i = IndexOfSubString(result, search);
+			}
+			return result;
+		}
+
+		private static int IndexOfSubString(ProtectedString ps, ProtectedString search)
+		{
+			if (ps == null || ps.IsEmpty || search == null || search.IsEmpty) return -1;
+			int i = 0;
+			int max = ps.Length - search.Length;
+			if (max < 0) return -1;
+			var haystack = ps.ReadChars();
+			var needle = search.ReadChars();
+			char[] slice = null;
+			try
+			{
+				while (i <= max)
+				{
+					slice = haystack.Slice(i, search.Length);
+					if (needle.SequenceEqual(slice)) return i;
+					i++;
+				}
+				return -1;
+			}
+			catch
+			{
+				return -1;
+			}
+			finally
+			{
+				MemUtil.ZeroArray(haystack);
+				MemUtil.ZeroArray(needle);
+				if (slice != null) MemUtil.ZeroArray(slice);
+			}
+		}
+
+		internal static T[] Slice<T>(this T[] data, int index, int length)
+		{
+			T[] result = new T[length];
+			Array.Copy(data, index, result, 0, length);
 			return result;
 		}
 	}

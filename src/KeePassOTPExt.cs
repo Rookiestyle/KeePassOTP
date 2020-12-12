@@ -438,7 +438,7 @@ namespace KeePassOTP
 					if (!doc.Database.IsOpen) m_host.MainWindow.OpenDatabase(doc.LockedIoc, null, doc.LockedIoc.IsLocalFile());
 					if (!doc.Database.IsOpen) continue;
 					m.SetDB(doc.Database);
-					if (m.MigratePlaceholder(sOldPlaceholder, Config.Placeholder, false))
+					if (m.MigratePlaceholder(sOldPlaceholder, Config.Placeholder))
 					{
 						doc.Database.Modified = true;
 						bChanged = true;

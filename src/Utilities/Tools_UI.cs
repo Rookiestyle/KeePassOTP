@@ -10,10 +10,10 @@
 
 		public static void RefreshEntriesList(bool bSetModified)
 		{
-			UpdateUIAndRefreshEntriesList(false, null, false, null, false, null, bSetModified);
+			UpdateUI(false, null, false, null, false, null, bSetModified);
 		}
 
-		public static void UpdateUIAndRefreshEntriesList(bool bRecreateTabBar, KeePass.UI.PwDocument dsSelect,
+		public static void UpdateUI(bool bRecreateTabBar, KeePass.UI.PwDocument dsSelect,
 			bool bUpdateGroupList, KeePassLib.PwGroup pgSelect, bool bUpdateEntryList,
 			KeePassLib.PwGroup pgEntrySource, bool bSetModified)
 		{
