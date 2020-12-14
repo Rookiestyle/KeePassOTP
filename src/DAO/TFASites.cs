@@ -10,6 +10,7 @@ namespace KeePassOTP
 {
 	public static class TFASites
 	{
+		const string TFA_JSON_FILE = "https://twofactorauth.org/api/v2/tfa.json";
 		public enum TFAPossible
 		{
 			Unknown,
@@ -37,6 +38,7 @@ namespace KeePassOTP
 			NotStarted,
 			Loading,
 			Loaded,
+			FileNotFound,
 			Error
 		}
 
@@ -99,16 +101,17 @@ namespace KeePassOTP
 			{
 				if (m_LoadState == TFALoadProcess.Loading) return;
 				if (m_LoadState == TFALoadProcess.Loaded) return;
+				if (m_LoadState == TFALoadProcess.FileNotFound) return;
 				m_LoadState = TFALoadProcess.Loading;
 			}
 			m_dTFA.Clear();
 			JsonObject j = null;
 			bool bException = false;
+			IOConnectionInfo ioc = IOConnectionInfo.FromPath(TFA_JSON_FILE);
 			try
 			{
-				IOConnectionInfo ioc = IOConnectionInfo.FromPath("https://twofactorauth.org/data.json");
 				byte[] b = IOConnection.ReadFile(ioc);
-				j = new JsonObject(new CharStream(StrUtil.Utf8.GetString(b)));
+				if (b != null) j = new JsonObject(new CharStream(StrUtil.Utf8.GetString(b)));
 			}
 			catch (Exception ex)
 			{
@@ -117,7 +120,12 @@ namespace KeePassOTP
 			}
 			if (j == null)
 			{
-				lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.Error; }
+				if (!IOConnection.FileExists(ioc))
+				{
+					lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.FileNotFound; }
+					Tools.ShowError("Error reading OTP sites: File does not exist\n\n" + TFA_JSON_FILE);
+				}
+				else lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.Error; }
 				if (!bException) PluginDebug.AddError("Error reading OTP sites", 0);
 				return;
 			}
@@ -129,16 +137,17 @@ namespace KeePassOTP
 				{
 					JsonObject k = (kvp.Value as JsonObject).GetValue<JsonObject>(keys[i]);
 					TFAData tfa = new TFAData();
-					tfa.tfa = k.GetValue<bool>("tfa", false);
+					var tfaDetails = k.GetValueArray<string>("tfa");
+					tfa.tfa = tfaDetails != null && tfaDetails.Length > 0;
 					if (!tfa.tfa) continue;
 					tfa.name = k.GetValue<string>("name");
-					tfa.sms = k.GetValue<bool>("sms", false);
+					tfa.sms = tfaDetails.Contains("sms") ||	k.GetValue<bool>("sms", false);
+					tfa.email = tfaDetails.Contains("email") || k.GetValue<bool>("email", false);
+					tfa.phone = tfaDetails.Contains("phone") || k.GetValue<bool>("phone", false);
+					tfa.software = tfaDetails.Contains("software") || k.GetValue<bool>("software", false);
+					tfa.hardware = tfaDetails.Contains("hardwar") || k.GetValue<bool>("hardware", false);
 					tfa.url = k.GetValue<string>("url");
 					tfa.img = k.GetValue<string>("img");
-					tfa.email = k.GetValue<bool>("email", false);
-					tfa.phone = k.GetValue<bool>("phone", false);
-					tfa.software = k.GetValue<bool>("software", false);
-					tfa.hardware = k.GetValue<bool>("hardware", false);
 					tfa.doc = k.GetValue<string>("doc");
 					tfa.category = kvp.Key;
 					m_dTFA[CreatePattern(tfa.url)] = tfa;
