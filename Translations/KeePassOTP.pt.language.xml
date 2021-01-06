@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <TranslationVersion>0</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KPOTP - Sem entradas disponíveis</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>KPOTP preenchimento automático ([Ctrl] para copiar)</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>N/A Uuid: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>grupo: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>Configuração de OTP...</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>Copiar OTP</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>ERRO</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>Título: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>Usuário: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>Configurações de sementes</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Semente:</value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>Usar opções avançadas</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>Formato:</value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>Configurações de OTP</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>Tipo:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>Comprimento:</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>Hash:</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>Passo de tempo:</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>Contador:</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Correção de tempo - TOTP &amp;&amp; Steam apenas</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Diff: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>Sem correção de tempo</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>Usa URL da entrada</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>Usar URL fixa</value>
+  </item>
+  <item>
+    <key>SetupTFA</key>
+    <value>Configuração 2FA</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>Abra o banco de dados OTP - {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>Todos os segredos serão armazenados em um banco de dados separado que será incluído no banco de dados principal contendo as entradas como tal.
+
+Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>Indique se o uso de 2FA é possível</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>Configurações de OTP (específico do banco de dados)</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>Salvar segredos OTP em um banco de dados separado</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>Abrir automaticamente banco de dados OTP quando o banco de dados principal for aberto</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>Entrada -&gt; DB</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>Mova os segredos OTP para separar o banco de dados</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>DB -&gt; Entrada</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>Mova os segredos OTP para as respectivas entradas</value>
+  </item>
+  <item>
+    <key>MoveError</key>
+    <value>Erro ao tentar mover segredos OTP. O banco de dados OTP está aberto?</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} segredo(s) OTP movido(s) com sucesso</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP baixará uma lista de sites que suportam a autenticação de dois fatores em https://twofactorauth.org/
+Esta lista é então comparada com todos os URLs definidos no banco de dados, seus URLs não serão enviados.
+
+A coluna OTP mostrará se 2FA é possível, mas ainda não está configurado.
+Clicar duas vezes nesta dica abrirá a página de configuração 2FA.</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Armazena novos segredos OTP em um banco de dados separado que pode ser criptografado usando uma chave mestra diferente.
+Este banco de dados será armazenado no banco de dados principal contendo as entradas como tal.
+Embora isso aumente a segurança ao adicionar uma segunda chave mestra para seus segredos OTP, potencialmente impedirá que outras portas como KeePass2Android mostrem diretamente o OTP.
+
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Abra o banco de dados OTP ao abrir o banco de dados principal.
+Desative esta opção para abrir o banco de dados OTP somente sob demanda =&gt; Assim que um OTP for realmente solicitado
+O banco de dados OTP será aberto sempre que o banco de dados principal for sincronizado - caso contrário, as alterações no banco de dados OTP não seriam sincronizadas e as alterações locais seriam perdidas.
+
+&gt;&gt; Migração OTP &lt;&lt;
+Dependendo das opções acima, os segredos OTP são armazenados na respectiva entrada ou em um banco de dados separado.
+'{Options_Migrate2DB}' e '{Options_Migrate2Entries}' pode ser usado para mover os segredos OTP entre esses dois locais.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>Migrar de / para outros plug-ins</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>Remover configurações de {0} para entradas migradas com sucesso?</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{0} de {1} entradas foram migradas com sucesso</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>Tecla de atalho KeePassOTP:</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>O banco de dados foi sincronizado.
+Desbloqueie o banco de dados OTP para garantir a sincronização adequada dos dados OTP.
+
+Se o banco de dados OTP não estiver desbloqueado, os dados OTP não podem ser sincronizados e podem resultar em perda de dados.</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>Abrindo banco de dados OTP...</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>Sincronizando banco de dados OTP...</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>Salvando banco de dados OTP...</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>Mostrar código QR...</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>O marcador KeePassOTP foi alterado e o marcador anterior não é mais válido.
+
+Valor antigo: {0}
+Novo valor: {1}
+
+Todas as ocorrências de {0} precisam ser substituídas por {1} para que a digitação automática funcione.
+Substituir agora nos bancos de dados carregados atualmente?</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDBDelete</key>
+    <value>Isso desativará o banco de dados KeePassOTP.
+Isso NÃO excluirá o banco de dados KeePassOTP.
+
+Clique em '{0}' para desativar E excluir o banco de dados KeePassOTP.
+Clique em '{1}' para desativar, mas não excluir o banco de dados KeePassOTP.</value>
+  </item>
+  <item>
+    <key>OTPBackupDone</key>
+    <value>O desbloqueio do banco de dados OTP existente falhou e seu conteúdo foi sobrescrito.
+Um backup foi salvo como anexo na seguinte entrada:
+{0}
+
+Abra-o a qualquer momento para verificar o conteúdo anterior.
+A restauração dos dados precisa ser feita manualmente.</value>
+  </item>
+  <item>
+    <key>Placeholder</key>
+    <value>Marcador:</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>Erro ao analisar dados</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>Erro ao analisar dados
+
+Quantidade esperada de entradas OTP: 1
+Quantidade encontrada de entradas OTP: {0}</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+    <value>Verifique a única entrada a ser usada</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+    <value>Emitente</value>
+  </item>
+</Translation>
