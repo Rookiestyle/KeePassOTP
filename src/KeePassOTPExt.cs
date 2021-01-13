@@ -654,6 +654,7 @@ namespace KeePassOTP
 
 		private void SprEngine_FilterCompile(object sender, SprEventArgs e)
 		{
+			if ((e.Context.Flags & SprCompileFlags.Active) != SprCompileFlags.Active) return;
 			if (e.Text.IndexOf(Config.Placeholder, StringComparison.InvariantCultureIgnoreCase) >= 0)
 			{
 				OTPDAO.EnsureOTPUsagePossible(e.Context.Entry);
@@ -665,8 +666,9 @@ namespace KeePassOTP
 				e.Text = StrUtil.ReplaceCaseInsensitive(e.Text, Config.Placeholder, myOTP.GetOTP(false, true));
 				if (myOTP.Valid && (myOTP.Type == KPOTPType.HOTP))
 				{
-					myOTP.HOTPCounter++;
-					OTPDAO.SaveOTP(myOTP, e.Context.Entry);
+					var newOTP = myOTP.Clone();
+					newOTP.HOTPCounter++;
+					OTPDAO.SaveOTP(newOTP, e.Context.Entry);
 				}
 			}
 		}

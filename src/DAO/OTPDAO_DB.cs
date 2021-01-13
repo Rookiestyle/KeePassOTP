@@ -659,8 +659,15 @@ namespace KeePassOTP
 				string settings = m_peOTP.Strings.ReadSafe(Config.SETTINGS);
 				PluginDebug.AddInfo("Get OTP settings", 0, "Uuid: " + m_pe.Uuid.ToHexString(), "OTP Uuid: " + m_peOTP.Uuid.ToHexString(), "Settings: " + settings);
 				*/
-				myOTP.OTPAuthString = m_peOTP.Strings.GetSafe(Config.OTPFIELD);
-				string timeCorrection = m_peOTP.Strings.ReadSafe(Config.TIMECORRECTION);
+				KeePassLib.Collections.ProtectedStringDictionary dStrings = new KeePassLib.Collections.ProtectedStringDictionary();
+				try
+				{
+					dStrings = m_peOTP.Strings;
+				}
+				catch { return EmptyKPOTDB; }
+
+				myOTP.OTPAuthString = dStrings.GetSafe(Config.OTPFIELD);
+				string timeCorrection = dStrings.ReadSafe(Config.TIMECORRECTION);
 				if (timeCorrection == "OWNURL")
 				{
 					myOTP.TimeCorrectionUrlOwn = true;
@@ -673,7 +680,7 @@ namespace KeePassOTP
 					myOTP.TimeCorrectionUrlOwn = false;
 					myOTP.TimeCorrectionUrl = timeCorrection;
 				}
-				return myOTP;
+				return myOTP;			
 			}
 			#endregion
 

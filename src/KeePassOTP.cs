@@ -146,7 +146,7 @@ namespace KeePassOTP
 			if (!Valid) return string.Empty;
 			//List of time correction data is filled asynchronously
 			//Call it synchronously as it is required now!
-			if (CheckTime) GetTimeCorrection(m_url);
+			if (CheckTime && Type != KPOTPType.HOTP) GetTimeCorrection(m_url);
 			byte[] data = (Type == KPOTPType.HOTP) ? GetHOTPData(ShowNext) : GetTOTPData(ShowNext);
 			byte[] hash = ComputeHash(data);
 			MemUtil.ZeroByteArray(data);
@@ -479,13 +479,9 @@ namespace KeePassOTP
 		private /* async */ void SetURL(string url)
 		{
 			m_url = url == null ? string.Empty : url;
-			//await - Don't use, see comment above method definition
-			System.Threading.Tasks.Task.Factory.StartNew(() =>
-			//System.Threading.Tasks.Task.Run(() =>
-			{
-				OTPTimeCorrection = GetTimeCorrection(url);
-			}
-			);
+			//Don't use Task at all (https://github.com/Rookiestyle/KeePassOTP/issues/31)
+			KeePassLib.Delegates.GAction<object> act = new KeePassLib.Delegates.GAction<object>((object o) => { OTPTimeCorrection = GetTimeCorrection(url); });
+			System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(act));
 		}
 
 		private static TimeSpan GetTimeCorrection(string value)
@@ -573,14 +569,13 @@ namespace KeePassOTP
 		{
 			//Don't use TraverseTree as db content might change during processing
 			//and this will result in an exception since TraverseTree uses 'foreach'
-			
-			//await - Don't use, see comment above method definition
-			System.Threading.Tasks.Task.Factory.StartNew(() =>
-			//System.Threading.Tasks.Task.Run(() =>
+
+			//Don't use Task at all (https://github.com/Rookiestyle/KeePassOTP/issues/31)
+			KeePassLib.Delegates.GAction<object> act = new KeePassLib.Delegates.GAction<object>((object o) => 
 			{
 				DateTime dtStart = DateTime.Now;
 				IEnumerable<string> lURL = db.RootGroup.GetEntries(true).
-					Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None). //We're not interested in sites without OTP being set up
+					//Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None). //We're not interested in sites without OTP being set up
 					Select(e => e.Strings.ReadSafe(KeePassLib.PwDefs.UrlField)).Distinct(); //We're not interested in duplicate URLs
 				foreach (string url in lURL)
 				{
@@ -590,8 +585,9 @@ namespace KeePassOTP
 				};
 				DateTime dtEnd = DateTime.Now;
 				PluginDebug.AddInfo("Calculated OTP time corrections", 0, "Start: " + dtStart.ToLongTimeString(), "End: " + dtEnd.ToLongTimeString());
-			}
-			);
+
+			});
+			System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(act));
 		}
 
 		public static bool Equals(KPOTP otp1, KPOTP otp2)
@@ -627,6 +623,26 @@ namespace KeePassOTP
 				return false;
 			}
 			return true;
+		}
+
+		public KPOTP Clone()
+		{
+			KPOTP result = new KPOTP();
+
+			result.Type = this.Type;
+			result.Encoding = this.Encoding;
+			result.Hash = this.Hash;
+			result.Length = this.Length;
+			result.Issuer = this.Issuer;
+			result.Label = this.Label;
+			result.OTPSeed = this.OTPSeed;
+			result.HOTPCounter = this.HOTPCounter;
+			result.TimeCorrectionUrl = this.TimeCorrectionUrl;
+			result.TimeCorrectionUrlOwn = this.TimeCorrectionUrlOwn;
+			result.TOTPTimestep = this.TOTPTimestep;
+			result.OTPTimeCorrection = this.OTPTimeCorrection;
+
+			return result;
 		}
 	}
 }

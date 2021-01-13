@@ -305,12 +305,14 @@ namespace KeePassOTP
 			}
 			if (!IsValidOtpAuth(otp))
 			{
-				otp = new ProtectedString(true, e.Data.GetData(DataFormats.StringFormat) as string);
+				try { otp = new ProtectedString(true, e.Data.GetData(DataFormats.StringFormat) as string); }
+				catch { otp = ProtectedString.EmptyEx; }
 				if (!IsValidOtpAuth(otp)) otp = CheckAndConvertGoogleAuthFormat(otp);
 			}
 			if (!IsValidOtpAuth(otp))
 			{
-				otp = new ProtectedString(true, e.Data.GetData(DataFormats.Text) as string);
+				try { otp = new ProtectedString(true, e.Data.GetData(DataFormats.Text) as string); }
+				catch { otp = ProtectedString.EmptyEx; }
 				if (!IsValidOtpAuth(otp)) otp = CheckAndConvertGoogleAuthFormat(otp);
 			}
 			if (IsValidOtpAuth(otp))
@@ -370,6 +372,7 @@ namespace KeePassOTP
 
 		private ProtectedString ParseFromImageFile(string sFile)
 		{
+			if (string.IsNullOrEmpty(sFile)) return ProtectedString.EmptyEx;
 			KeePassLib.Serialization.IOConnectionInfo iocInfo = new KeePassLib.Serialization.IOConnectionInfo();
 			iocInfo.Path = sFile;
 			byte[] buffer = KeePassLib.Serialization.IOConnection.ReadFile(iocInfo);
@@ -378,6 +381,7 @@ namespace KeePassOTP
 
 		private ProtectedString ParseFromImageByteArray(byte[] buffer)
 		{
+			if (buffer == null || buffer.Length == 0) return ProtectedString.EmptyEx;
 			System.IO.MemoryStream memstr = new System.IO.MemoryStream(buffer);
 			System.Drawing.Bitmap img = System.Drawing.Image.FromStream(memstr) as System.Drawing.Bitmap;
 			return ParseFromImage(img);
