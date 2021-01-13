@@ -75,7 +75,7 @@
     </Compile>
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="Migration.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -98,11 +98,6 @@
     </Compile>
     <Compile Include="PluginTranslation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="DAO\TFASites.cs" />
     <Compile Include="Utilities\Debug.cs" />
     <Compile Include="Utilities\Tools_Controls.cs" />
@@ -111,18 +106,11 @@
     <Compile Include="Utilities\Tools_UI.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CustomToolNamespace>KeePassOTP</CustomToolNamespace>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\KeePassOTP_setup.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\_KeePass_Source\KeePass\KeePass.csproj">
@@ -142,9 +130,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\qr-code.png" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="PlgxTool">
       <Version>1.0.0</Version>
       <ExcludeFromPlgx />
@@ -157,6 +142,12 @@
       <Version>0.16.6</Version>
       <ExcludeFromPlgx />
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\KeePassOTP_setup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qr-code.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">

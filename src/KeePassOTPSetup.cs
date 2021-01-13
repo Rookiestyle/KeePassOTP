@@ -399,6 +399,7 @@ namespace KeePassOTP
 
 		private void KeePassOTPSetup_Shown(object sender, EventArgs e)
 		{
+			pbQR.Image = Resources.qr_code;
 			((Control)pbQR).AllowDrop = true;
 		}
 	}

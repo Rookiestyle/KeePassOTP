@@ -57,6 +57,7 @@ namespace KeePassOTP
 		private void InitializeComponent()
 		{
 			this.gSeed = new System.Windows.Forms.GroupBox();
+			this.pbQR = new System.Windows.Forms.PictureBox();
 			this.pbTOTPLifetime = new System.Windows.Forms.ProgressBar();
 			this.otpPreviewNext = new System.Windows.Forms.Label();
 			this.otpPreview = new System.Windows.Forms.Label();
@@ -85,11 +86,10 @@ namespace KeePassOTP
 			this.tbTOTPTimeCorrectionURL = new System.Windows.Forms.TextBox();
 			this.lURL = new System.Windows.Forms.Label();
 			this.cbAdvanced = new System.Windows.Forms.CheckBox();
-			this.pbQR = new System.Windows.Forms.PictureBox();
 			this.gSeed.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbQR)).BeginInit();
 			this.gOTP.SuspendLayout();
 			this.gTime.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbQR)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// gSeed
@@ -107,6 +107,18 @@ namespace KeePassOTP
 			this.gSeed.TabIndex = 2;
 			this.gSeed.TabStop = false;
 			this.gSeed.Text = "Seed data";
+			// 
+			// pbQR
+			// 
+			this.pbQR.ErrorImage = null;
+			this.pbQR.Location = new System.Drawing.Point(8, 53);
+			this.pbQR.Name = "pbQR";
+			this.pbQR.Size = new System.Drawing.Size(80, 80);
+			this.pbQR.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pbQR.TabIndex = 14;
+			this.pbQR.TabStop = false;
+			this.pbQR.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbQR_DragDrop);
+			this.pbQR.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbQR_DragEnter);
 			// 
 			// pbTOTPLifetime
 			// 
@@ -182,10 +194,10 @@ namespace KeePassOTP
 			this.cbOTPFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPFormat.FormattingEnabled = true;
 			this.cbOTPFormat.Items.AddRange(new object[] {
-						"BASE32",
-						"BASE64",
-						"HEX",
-						"UTF8"});
+            "BASE32",
+            "BASE64",
+            "HEX",
+            "UTF8"});
 			this.cbOTPFormat.Location = new System.Drawing.Point(100, 58);
 			this.cbOTPFormat.Name = "cbOTPFormat";
 			this.cbOTPFormat.Size = new System.Drawing.Size(121, 28);
@@ -236,9 +248,9 @@ namespace KeePassOTP
 			this.cbOTPHashFunc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPHashFunc.FormattingEnabled = true;
 			this.cbOTPHashFunc.Items.AddRange(new object[] {
-						"SHA1",
-						"SHA256",
-						"SHA512"});
+            "SHA1",
+            "SHA256",
+            "SHA512"});
 			this.cbOTPHashFunc.Location = new System.Drawing.Point(100, 134);
 			this.cbOTPHashFunc.Name = "cbOTPHashFunc";
 			this.cbOTPHashFunc.Size = new System.Drawing.Size(121, 28);
@@ -250,11 +262,11 @@ namespace KeePassOTP
 			this.cbOTPLength.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPLength.FormattingEnabled = true;
 			this.cbOTPLength.Items.AddRange(new object[] {
-						"6",
-						"7",
-						"8",
-						"9",
-						"10"});
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
 			this.cbOTPLength.Location = new System.Drawing.Point(100, 96);
 			this.cbOTPLength.Name = "cbOTPLength";
 			this.cbOTPLength.Size = new System.Drawing.Size(121, 28);
@@ -266,9 +278,9 @@ namespace KeePassOTP
 			this.cbOTPType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbOTPType.FormattingEnabled = true;
 			this.cbOTPType.Items.AddRange(new object[] {
-						"HOTP",
-						"TOTP",
-						"Steam"});
+            "HOTP",
+            "TOTP",
+            "Steam"});
 			this.cbOTPType.Location = new System.Drawing.Point(100, 20);
 			this.cbOTPType.Name = "cbOTPType";
 			this.cbOTPType.Size = new System.Drawing.Size(121, 28);
@@ -401,18 +413,6 @@ namespace KeePassOTP
 			this.cbAdvanced.UseVisualStyleBackColor = true;
 			this.cbAdvanced.CheckedChanged += new System.EventHandler(this.cbAdvanced_CheckedChanged);
 			// 
-			// pbQR
-			// 
-			this.pbQR.Image = global::KeePassOTP.Properties.Resources.qr_code;
-			this.pbQR.Location = new System.Drawing.Point(8, 53);
-			this.pbQR.Name = "pbQR";
-			this.pbQR.Size = new System.Drawing.Size(80, 80);
-			this.pbQR.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pbQR.TabIndex = 14;
-			this.pbQR.TabStop = false;
-			this.pbQR.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbQR_DragDrop);
-			this.pbQR.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbQR_DragEnter);
-			// 
 			// KeePassOTPSetup
 			// 
 			this.AcceptButton = this.buttonOK;
@@ -437,11 +437,11 @@ namespace KeePassOTP
 			this.Shown += new System.EventHandler(this.KeePassOTPSetup_Shown);
 			this.gSeed.ResumeLayout(false);
 			this.gSeed.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pbQR)).EndInit();
 			this.gOTP.ResumeLayout(false);
 			this.gOTP.PerformLayout();
 			this.gTime.ResumeLayout(false);
 			this.gTime.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbQR)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
