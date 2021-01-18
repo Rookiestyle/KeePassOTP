@@ -86,6 +86,7 @@ namespace KeePassOTP
 
 			m_dMigration["KeeOTP"] = new MigrationKeeOTP();
 			m_dMigration["KeeTrayTOTP"] = new MigrationTraytotp();
+			m_dMigration["KeePass"] = new MigrationKeePass();
 
 			int idx = 1;
 			foreach (string s in m_dMigration.Keys)

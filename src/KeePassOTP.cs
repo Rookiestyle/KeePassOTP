@@ -575,7 +575,7 @@ namespace KeePassOTP
 			{
 				DateTime dtStart = DateTime.Now;
 				IEnumerable<string> lURL = db.RootGroup.GetEntries(true).
-					//Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None). //We're not interested in sites without OTP being set up
+					Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None). //We're not interested in sites without OTP being set up
 					Select(e => e.Strings.ReadSafe(KeePassLib.PwDefs.UrlField)).Distinct(); //We're not interested in duplicate URLs
 				foreach (string url in lURL)
 				{

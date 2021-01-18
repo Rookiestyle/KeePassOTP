@@ -45,7 +45,52 @@ namespace KeePassOTP
 			EntriesOverall = EntriesMigrated = -1;
 		}
 
+		public bool MigratePlaceholder(string from, string to, PwEntry pe, out bool bChanged)
+		{
+			bChanged = false;
+			if (pe == null) { return true; }
+			bool bBackupRequired = true;
+			foreach (var a in pe.AutoType.Associations)
+			{
+				if (a.Sequence.Contains(from))
+				{
+					if (bBackupRequired)
+					{
+						bBackupRequired = false;
+						pe.CreateBackup(m_db);
+					}
+					a.Sequence = a.Sequence.Replace(from, to);
+					bChanged = true;
+				}
+			}
+			if (pe.AutoType.DefaultSequence.Contains(from))
+			{
+				if (bBackupRequired)
+				{
+					bBackupRequired = false;
+					pe.CreateBackup(m_db);
+				}
+				pe.AutoType.DefaultSequence = pe.AutoType.DefaultSequence.Replace(from, to);
+				bChanged = true;
+			}
+			foreach (var s in pe.Strings.GetKeys())
+			{
+				ProtectedString ps = pe.Strings.Get(s);
+				if (!ps.Contains(from)) continue;
+				if (bBackupRequired)
+				{
+					bBackupRequired = false;
+					pe.CreateBackup(m_db);
+				}
+				ps = ps.Replace(from, to);
+				pe.Strings.Set(s, ps);
+				bChanged = true;
+			}
+			if (bChanged) pe.Touch(true, false);
+			return bChanged;
+		}
 		public bool MigratePlaceholder(string from, string to)
+
 		{
 			bool bChanged = false;
 			if (!m_bInitialized) return bChanged;
@@ -63,45 +108,9 @@ namespace KeePassOTP
 
 			EntryHandler eh = delegate (PwEntry pe)
 			{
-				if (pe == null) { return true; }
-				bool bBackupRequired = true;
-				foreach (var a in pe.AutoType.Associations)
-				{
-					if (a.Sequence.Contains(from))
-					{
-						if (bBackupRequired)
-						{
-							bBackupRequired = false;
-							pe.CreateBackup(m_db);
-						}
-						a.Sequence = a.Sequence.Replace(from, to);
-						bChanged = true;
-					}
-				}
-				if (pe.AutoType.DefaultSequence.Contains(from))
-				{
-					if (bBackupRequired)
-					{
-						bBackupRequired = false;
-						pe.CreateBackup(m_db);
-					}
-					pe.AutoType.DefaultSequence = pe.AutoType.DefaultSequence.Replace(from, to);
-					bChanged = true;
-				}
-				foreach (var s in pe.Strings.GetKeys())
-				{
-					ProtectedString ps = pe.Strings.Get(s);
-					if (!ps.Contains(from)) continue;
-					if (bBackupRequired)
-					{
-						bBackupRequired = false;
-						pe.CreateBackup(m_db);
-					}
-					ps = ps.Replace(from, to);
-					pe.Strings.Set(s, ps);
-					bChanged = true;
-				}
-				pe.Touch(true, false);
+				bool bChangedEntry;
+				MigratePlaceholder(from, to, pe, out bChangedEntry);
+				bChanged |= bChangedEntry;
 				return true;
 			};
 
@@ -487,6 +496,293 @@ namespace KeePassOTP
 			}
 			finally { EndLogger(); }
 			MigratePlaceholder(Config.Placeholder, m_OtherPluginPlaceholder);
+		}
+	}
+
+	public class MigrationKeePass : MigrationBase
+	{
+		private static Dictionary<KPOTPEncoding, string> m_dHotpStrings = null;
+		private static Dictionary<KPOTPEncoding, string> m_dTotpStrings = null;
+
+		static MigrationKeePass()
+		{
+			m_dHotpStrings = new Dictionary<KPOTPEncoding, string>();
+			m_dHotpStrings[KPOTPEncoding.UTF8] = "HmacOtp-Secret";
+			m_dHotpStrings[KPOTPEncoding.HEX] = "HmacOtp-Secret-Hex";
+			m_dHotpStrings[KPOTPEncoding.BASE32] = "HmacOtp-Secret-Base32";
+			m_dHotpStrings[KPOTPEncoding.BASE64] = "HmacOtp-Secret-Base64";
+
+			m_dTotpStrings = new Dictionary<KPOTPEncoding, string>();
+			m_dTotpStrings[KPOTPEncoding.UTF8] = "TimeOtp-Secret";
+			m_dTotpStrings[KPOTPEncoding.HEX] = "TimeOtp-Secret-Hex";
+			m_dTotpStrings[KPOTPEncoding.BASE32] = "TimeOtp-Secret-Base32";
+			m_dTotpStrings[KPOTPEncoding.BASE64] = "TimeOtp-Secret-Base64";
+		}
+
+		public override void MigrateToKeePassOTP(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
+		{
+			EntriesOverall = EntriesMigrated = -1;
+			if (!m_bInitialized) return;
+
+			MigrateToKeePassOTP_Hotp(bRemove, out EntriesOverall, out EntriesMigrated);
+
+			int Totp_EntriesOverall;
+			int Totp_EntriesMigrated;
+			MigrateToKeePassOTP_Totp(bRemove, out Totp_EntriesOverall, out Totp_EntriesMigrated);
+
+			EntriesOverall += Totp_EntriesOverall;
+			EntriesMigrated += Totp_EntriesMigrated;
+		}
+
+		private const string PLACEHOLDER_HOTP = "{HMACOTP}";
+		private const string HOTP_COUNTER = "HmacOtp-Counter";
+		private void MigrateToKeePassOTP_Hotp(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
+		{
+			EntriesOverall = EntriesMigrated = 0;
+			List<PwEntry> lEntries = m_db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(HOTP_COUNTER)).ToList();
+			EntriesOverall = lEntries.Count;
+			if (lEntries.Count == 0) return;
+
+			if (!OTPDAO.EnsureOTPSetupPossible(lEntries[0])) return;
+			OTPDAO.OTPHandler_Base handler = OTPDAO.GetOTPHandler(lEntries[0]);
+			InitLogger("KeePass -> KeePassOTP (HOTP)", lEntries.Count);
+			try
+			{
+				foreach (PwEntry pe in lEntries)
+				{
+					IncreaseLogger();
+					KPOTPEncoding enc = KPOTPEncoding.BASE32;
+					bool bFound = false;
+					string seed = null;
+					foreach (KeyValuePair<KPOTPEncoding, string> kvp in m_dHotpStrings)
+					{
+						if (pe.Strings.Exists(kvp.Value))
+						{
+							enc = kvp.Key;
+							seed = pe.Strings.ReadSafe(kvp.Value);
+							bFound = true;
+							break;
+						}
+					}
+					if (!bFound)
+					{
+						PluginDebug.AddError("Migration of entry failed",
+							"Uuid: " + pe.Uuid.ToHexString(),
+							"OTP data: not defined");
+						continue;
+					}
+					var otp = OTPDAO.GetOTP(pe);
+					otp.Type = KPOTPType.HOTP;
+					otp.Encoding = enc;
+					otp.OTPSeed = new ProtectedString(true, MigrateString(seed));
+					otp.HOTPCounter = MigrateInt(pe.Strings.ReadSafe(HOTP_COUNTER), 0);
+					if (otp.Valid)
+					{
+						EntriesMigrated++;
+						try
+						{
+							handler.IgnoreBuffer = true;
+							OTPDAO.SaveOTP(otp, pe);
+						}
+						finally { handler.IgnoreBuffer = false; }
+						if (bRemove)
+						{
+							pe.Strings.Remove(m_dHotpStrings[enc]);
+							pe.Strings.Remove(HOTP_COUNTER);
+						}
+					}
+					else
+					{
+						PluginDebug.AddError("Migration of entry failed",
+							"Uuid: " + pe.Uuid.ToHexString(),
+							"OTP data: " + m_dHotpStrings[enc]);
+					}
+				}
+			}
+			finally
+			{
+				EndLogger();
+			}
+			MigratePlaceholder(PLACEHOLDER_HOTP, Config.Placeholder);
+		}
+
+		private const string PLACEHOLDER_TOTP = "{TIMEOTP}";
+		private const string TOTPLENGTH = "TimeOtp-Length";
+		private const string TOTPPERIOD = "TimeOtp-Period";
+		private const string TOTPHASH = "TimeOtp-Algorithm";
+		private void MigrateToKeePassOTP_Totp(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
+		{
+			EntriesOverall = EntriesMigrated = 0;
+			Dictionary<PwEntry, KPOTPEncoding> dEntries = new Dictionary<PwEntry, KPOTPEncoding>();
+			foreach (KeyValuePair<KPOTPEncoding, string> kvp in m_dTotpStrings)
+			{
+				List<PwEntry> lHelp = m_db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(kvp.Value)).ToList();
+				foreach (PwEntry pe in lHelp)
+				{
+					if (!dEntries.ContainsKey(pe)) dEntries[pe] = kvp.Key;
+				}
+			}
+			EntriesOverall = dEntries.Count;
+			if (dEntries.Count == 0) return;
+
+			if (!OTPDAO.EnsureOTPSetupPossible(dEntries.Keys.First())) return;
+			OTPDAO.OTPHandler_Base handler = OTPDAO.GetOTPHandler(dEntries.Keys.First());
+			InitLogger("KeePass -> KeePassOTP (TOTP)", dEntries.Count);
+			try
+			{
+				foreach (KeyValuePair<PwEntry, KPOTPEncoding> kvp in dEntries)
+				{
+					IncreaseLogger();
+					KPOTPEncoding enc = kvp.Value;
+					PwEntry pe = kvp.Key;
+
+					var otp = OTPDAO.GetOTP(pe);
+					otp.Encoding = enc;
+					otp.OTPSeed = new ProtectedString(true, MigrateString(pe.Strings.ReadSafe(m_dTotpStrings[enc])));
+
+					string hash = pe.Strings.ReadSafe(TOTPHASH).ToLowerInvariant();
+					if (hash.Contains("sha-512")) otp.Hash = KPOTPHash.SHA512;
+					else if (hash.Contains("sha-256")) otp.Hash = KPOTPHash.SHA256;
+					else otp.Hash = KPOTPHash.SHA1;
+
+					otp.Length = MigrateInt(pe.Strings.ReadSafe(TOTPLENGTH), 6);
+					otp.TOTPTimestep = MigrateInt(pe.Strings.ReadSafe(TOTPPERIOD), 30);
+
+					otp.HOTPCounter = MigrateInt(pe.Strings.ReadSafe(HOTP_COUNTER), 0);
+					if (otp.Valid)
+					{
+						EntriesMigrated++;
+						try
+						{
+							handler.IgnoreBuffer = true;
+							OTPDAO.SaveOTP(otp, pe);
+						}
+						finally { handler.IgnoreBuffer = false; }
+						if (bRemove)
+						{
+							pe.Strings.Remove(m_dTotpStrings[enc]);
+							pe.Strings.Remove(TOTPHASH);
+							pe.Strings.Remove(TOTPLENGTH);
+							pe.Strings.Remove(TOTPPERIOD);
+						}
+					}
+					else
+					{
+						PluginDebug.AddError("Migration of entry failed",
+							"Uuid: " + pe.Uuid.ToHexString(),
+							"OTP data: " + m_dHotpStrings[enc]);
+					}
+				}
+			}
+			finally
+			{
+				EndLogger();
+			}
+			MigratePlaceholder(PLACEHOLDER_TOTP, Config.Placeholder);
+		}
+
+		private static Version m_vKeePass247 = new Version(2, 47);
+		public override void MigrateFromKeePassOTP(bool bRemove, out int EntriesOverall, out int EntriesMigrated)
+		{
+			EntriesOverall = EntriesMigrated = -1;
+			if (!m_bInitialized) return;
+			EntriesOverall = EntriesMigrated = 0;
+
+			OTPDAO.OTPHandler_DB h = OTPDAO.GetOTPHandler(m_db);
+			if ((h != null) && !h.EnsureOTPUsagePossible(null)) return;
+
+			PwObjectList<PwEntry> lEntries = m_db.RootGroup.GetEntries(true);
+			if (lEntries.Count() == 0) return;
+
+			OTPDAO.OTPHandler_Base handler = OTPDAO.GetOTPHandler(lEntries.GetAt(0));
+			InitLogger("KeePassOTP -> KeeTrayTOTP", lEntries.Count());
+			try
+			{
+				foreach (PwEntry pe in lEntries)
+				{
+					IncreaseLogger();
+					KPOTP otp = OTPDAO.GetOTP(pe);
+					if (!otp.Valid) continue;
+					EntriesOverall++;
+					if (otp.Type != KPOTPType.HOTP && otp.Type != KPOTPType.TOTP)
+					{
+						PluginDebug.AddError("Migration of entry failed",
+							"Uuid: " + pe.Uuid.ToHexString(),
+							"Type not supported: " + otp.Type.ToString());
+						continue;
+					}
+
+					if (otp.Type == KPOTPType.TOTP)
+					{
+						if (Tools.KeePassVersion < m_vKeePass247)
+						{
+							PluginDebug.AddError("Migration of entry failed",
+							"Uuid: " + pe.Uuid.ToHexString(),
+							"Type not supported: " + otp.Type.ToString(),
+							"Minimum required KeePass version: " + m_vKeePass247.ToString());
+						}
+						foreach (var line in m_dTotpStrings)
+						{
+							if (line.Key == otp.Encoding) pe.Strings.Set(line.Value, otp.OTPSeed);
+							else pe.Strings.Remove(line.Value);
+						}
+						
+						if (otp.TOTPTimestep == 30) pe.Strings.Remove(TOTPPERIOD);
+						else pe.Strings.Set(TOTPPERIOD, new ProtectedString(false, otp.TOTPTimestep.ToString()));
+
+						if (otp.Length == 6) pe.Strings.Remove(TOTPLENGTH);
+						else pe.Strings.Set(TOTPLENGTH, new ProtectedString(false, otp.Length.ToString()));
+
+						if (otp.Hash == KPOTPHash.SHA1) pe.Strings.Remove(TOTPHASH);
+						else if (otp.Hash == KPOTPHash.SHA256) pe.Strings.Set(TOTPHASH, new ProtectedString(false, "HMAC-SHA-256"));
+						else if (otp.Hash == KPOTPHash.SHA512) pe.Strings.Set(TOTPHASH, new ProtectedString(false, "HMAC-SHA-512"));
+
+						bool bDummy;
+						MigratePlaceholder(Config.Placeholder, PLACEHOLDER_TOTP, pe, out bDummy);
+					}
+					else if (otp.Type == KPOTPType.HOTP)
+					{
+						if (otp.Length != 6)
+						{
+							PluginDebug.AddError("Migration of entry failed",
+								"Uuid: " + pe.Uuid.ToHexString(),
+								"Length not supported: " + otp.Length.ToString());
+							continue;
+						}
+						if (otp.Hash != KPOTPHash.SHA1)
+						{
+							PluginDebug.AddError("Migration of entry failed",
+								"Uuid: " + pe.Uuid.ToHexString(),
+								"Hash not supported: " + otp.Hash.ToString());
+							continue;
+						}
+
+						foreach (var line in m_dHotpStrings)
+						{
+							if (line.Key == otp.Encoding) pe.Strings.Set(line.Value, otp.OTPSeed);
+							else pe.Strings.Remove(line.Value);
+						}
+						pe.Strings.Set(HOTP_COUNTER, new ProtectedString(false, otp.HOTPCounter.ToString()));
+
+						bool bDummy;
+						MigratePlaceholder(Config.Placeholder, PLACEHOLDER_HOTP, pe, out bDummy);
+					}
+
+					EntriesMigrated++;
+					if (bRemove)
+					{
+						otp.OTPSeed = ProtectedString.EmptyEx;
+						try
+						{
+							handler.IgnoreBuffer = true;
+							OTPDAO.SaveOTP(otp, pe);
+						}
+						finally { handler.IgnoreBuffer = false; }
+					}
+				}
+			}
+			finally { EndLogger(); }
+			MigratePlaceholder(Config.Placeholder, PLACEHOLDER_TOTP); //In case something is defined on group level (could be right, could be wrong, ...)
 		}
 	}
 }
