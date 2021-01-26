@@ -10,11 +10,12 @@ namespace KeePassOTP
 {
 	internal class KeePassOTPColumnProvider : ColumnProvider
 	{
-		public const string KPOTPColumnName = "KPOTP";
+		public const string OTPColumn_Verbose = "KPOTP";
+		public const string OTPColumn_Reduced = "KPOTP_Reduced";
 		private static Dictionary<string, bool> m_dTFAPossible = new Dictionary<string, bool>();
 		private System.Timers.Timer m_columnRefreshTimer = new System.Timers.Timer();
 
-		private readonly string[] ColumnName = new[] { KPOTPColumnName };
+		private readonly string[] ColumnName = new[] { OTPColumn_Verbose, OTPColumn_Reduced };
 
 		public override string[] ColumnNames { get { return ColumnName; } }
 
@@ -25,12 +26,16 @@ namespace KeePassOTP
 			Random r = new Random();
 
 			string otp = string.Empty;
-			System.Diagnostics.StackFrame sf = new System.Diagnostics.StackTrace().GetFrames().FirstOrDefault(x => x.GetMethod().Name == "OnPwListItemDrag");
-			if (sf != null)
+			bool bForUsage = new System.Diagnostics.StackTrace().GetFrames().FirstOrDefault(x => x.GetMethod().Name == "OnPwListItemDrag") != null;
+			if (bForUsage)
 				otp = OTPDAO.GetOTP(pe).GetOTP();
 			else
 				otp = OTPDAO.GetReadableOTP(pe);
-			if (!string.IsNullOrEmpty(otp)) return otp;
+			if (!string.IsNullOrEmpty(otp))
+			{
+				if (bForUsage || strColumnName == OTPColumn_Verbose) return otp;
+				return PluginTranslation.PluginTranslate.TFADefined;
+			}
 
 			if (!Config.CheckTFA) return string.Empty;
 			string url = pe.Strings.ReadSafe(PwDefs.UrlField);
@@ -97,7 +102,7 @@ namespace KeePassOTP
 				if (KeePass.Program.MainForm.UIIsInteractionBlocked()) return;
 				if (!KeePass.Program.MainForm.Visible) return;
 				if (!KeePass.Program.MainForm.ActiveDatabase.IsOpen) return;
-				if (KeePass.Program.Config.MainWindow.EntryListColumns.Find(x => x.CustomName == KPOTPColumnName) == null) return;
+				if (KeePass.Program.Config.MainWindow.EntryListColumns.Find(x => x.CustomName == OTPColumn_Verbose) == null) return;
 				PwGroup pg = KeePass.Program.MainForm.GetSelectedGroup();
 				if (pg == null) return;
 				bool bRefresh = pg.GetEntries(KeePass.Program.Config.MainWindow.ShowEntriesOfSubGroups).FirstOrDefault(x => OTPDAO.OTPDefined(x) == OTPDAO.OTPDefinition.Complete) != null;
@@ -115,7 +120,7 @@ namespace KeePassOTP
 		{
 			if (m_cpr == null) m_cpr = new ColumnProviderUpdate(this);
 			if (!m_cpr.Initialized) return false;
-			return m_cpr.UpdateEntryListColumn(KPOTPColumnName) != ColumnProviderUpdate.UpdateResult.Failed;
+			return m_cpr.UpdateEntryListColumn(OTPColumn_Verbose) != ColumnProviderUpdate.UpdateResult.Failed;
 		}
 	}
 

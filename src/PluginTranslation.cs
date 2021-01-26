@@ -59,6 +59,7 @@ namespace PluginTranslation
 		public static readonly string TimeCorrectionEntry = @"Use entry's URL";
 		public static readonly string TimeCorrectionFixed = @"Use fixed URL";
 		public static readonly string SetupTFA = @"Setup 2FA";
+		public static readonly string TFADefined = @"2FA defined";
 		public static readonly string OTP_OpenDB = @"Open OTP database - {0}";
 		public static readonly string OTP_CreateDB_PWHint = @"All secrets will be stored in a separate database which will be included within the main database containing the entries as such.
 
