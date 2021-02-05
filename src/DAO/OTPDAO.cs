@@ -257,6 +257,7 @@ namespace KeePassOTP
 			SanitizeSeed = 4,
 			OTPAuthFormatCorrection = 8,
 			CleanOTPDB = 16, //Remove outdated entries from OTP-DB
+			ProcessReferences = 32,
 		}
 
 		public static bool CheckAndMigrate(PwDatabase db)
@@ -331,6 +332,13 @@ namespace KeePassOTP
 				if (r >= 0) omStatusNew |= OTP_Migrations.CleanOTPDB;
 			}
 
+			if (MigrationRequired(OTP_Migrations.ProcessReferences, omFlags, omStatusOld))
+			{
+				int r = ProcessReferences(db);
+				bMigrated |= r > 0;
+				if (r >= 0) omStatusNew |= OTP_Migrations.ProcessReferences;
+			}
+
 			if ((omStatusNew != omStatusOld) || bMigrated)
 			{
 				db.CustomData.Set(sMigrationStatus, omStatusNew.ToString());
@@ -361,6 +369,33 @@ namespace KeePassOTP
 			List<PwEntry> lEntries = otpdb.RootGroup.GetEntries(true).Where(x => !x.Strings.Exists(Config.OTPFIELD)).ToList();
 			foreach (PwEntry pe in lEntries) otpdb.RootGroup.Entries.Remove(pe);
 			return lEntries.Count;
+		}
+		
+		private static int ProcessReferences(PwDatabase db)
+		{
+			//Get DB to work on
+			PwDatabase otpdb = db;
+			OTPDAO.OTPHandler_DB h = GetOTPHandler(db);
+			if (h != null)
+			{
+				if (!h.EnsureOTPUsagePossible(null)) return -1;
+				otpdb = h.OTPDB;
+			}
+			if (otpdb == null || !otpdb.IsOpen) return -1;
+			int i = 0;
+			var b = new OTPHandler_Base();
+			foreach (PwEntry pe in otpdb.RootGroup.GetEntries(true))
+			{
+				KPOTP otp = OTPDAO.GetOTP(pe);
+				if (!otp.Valid) continue;
+				if (!otp.Issuer.ToLowerInvariant().Contains("{ref:") && !otp.Label.ToLowerInvariant().EndsWith("{ref")) continue;
+				PwEntry peMain = h is OTPHandler_DB ? (h as OTPHandler_DB).GetMainPwEntry(pe) : pe;
+				b.InitIssuerLabel(otp, peMain);
+				pe.CreateBackup(otpdb);
+				pe.Strings.Set(Config.OTPFIELD, otp.OTPAuthString);
+				i++;
+			}
+			return i;
 		}
 
 		private static int SanitizeSeeds(PwDatabase db)
@@ -628,6 +663,14 @@ namespace KeePassOTP
 				h.UpdateOTPData(pe, true);
 			m_dEntryOTPData.Remove(pe);
 		}
+
+		public static string GetDereferencedString(PwEntry pe, string s)
+		{
+			if (pe == null) return s;
+			if (!s.ToLowerInvariant().Contains("{ref:")) return s;
+			KeePass.Util.Spr.SprContext ctx = new KeePass.Util.Spr.SprContext(pe, Program.MainForm.DocumentManager.FindContainerOf(pe), KeePass.Util.Spr.SprCompileFlags.Deref);
+			return KeePass.Util.Spr.SprEngine.Compile(s, ctx);
+		}
 	}
 
 	public static partial class OTPDAO
@@ -645,9 +688,9 @@ namespace KeePassOTP
 
 			public void InitIssuerLabel(KPOTP otp, PwEntry pe)
 			{
-				otp.Issuer = pe.Strings.ReadSafe(PwDefs.TitleField);
+				otp.Issuer = GetDereferencedString(pe, pe.Strings.ReadSafe(PwDefs.TitleField));
 				if (string.IsNullOrEmpty(otp.Issuer)) otp.Issuer = PluginTranslation.PluginTranslate.PluginName;
-				otp.Label = pe.Strings.ReadSafe(PwDefs.UserNameField);
+				otp.Label = GetDereferencedString(pe, pe.Strings.ReadSafe(PwDefs.UserNameField));
 			}
 		}
 	}

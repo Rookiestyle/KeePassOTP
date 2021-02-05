@@ -557,6 +557,14 @@ namespace KeePassOTP
 				GetOTPEntry(false, out bDummy);
 			}
 
+			public PwEntry GetMainPwEntry(PwEntry pe)
+			{
+				if (!OTPDB_Opened) return null;
+				string uuidstring = pe.Strings.ReadSafe(UUID);
+				PwUuid uuid = new PwUuid(MemUtil.HexStringToByteArray(uuidstring));
+				return DB.RootGroup.FindEntry(uuid, true);
+			}
+
 			private void GetOTPEntry(bool bCreate, out bool Created)
 			{
 				Created = false;
