@@ -107,7 +107,7 @@
   </item>
   <item>
 	<key>TFADefined</key>
-	<value>2FA configurado</key>
+	<value>TFA configurado</key>
   </item>
   <item>
     <key>OTP_OpenDB</key>
