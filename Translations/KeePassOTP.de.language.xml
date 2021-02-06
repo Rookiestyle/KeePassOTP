@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>12</TranslationVersion>
+  <TranslationVersion>13</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -103,7 +103,7 @@
   </item>
   <item>
 	<key>TFADefined</key>
-	<value>2FA konfiguriert</key>
+	<value>2FA konfiguriert</value>
   </item>
   <item>
     <key>OTP_OpenDB</key>
