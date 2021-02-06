@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>2</TranslationVersion>
+  <TranslationVersion>3</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
   </item>
   <item>
     <key>OTPCopyTrayEntries</key>
-    <value>KPOTP preenchimento automático ([Ctrl] para copiar)</value>
+    <value>Preenchimento Automático KPOTP ([Ctrl] para Copiar)</value>
   </item>
   <item>
     <key>Empty</key>
@@ -15,7 +15,7 @@
   </item>
   <item>
     <key>Group</key>
-    <value>grupo: {0}</value>
+    <value>Grupo: {0}</value>
   </item>
   <item>
     <key>OTPSetup</key>
@@ -103,15 +103,15 @@
   </item>
   <item>
     <key>SetupTFA</key>
-    <value>Configuração 2FA</value>
+    <value>Configuração TFA</value>
   </item>
   <item>
 	<key>TFADefined</key>
-	<value>2FA configurado</key>
+	<value>TFA configurado</key>
   </item>
   <item>
     <key>OTP_OpenDB</key>
-    <value>Abra o banco de dados OTP - {0}</value>
+    <value>Abrir banco de dados OTP - {0}</value>
   </item>
   <item>
     <key>OTP_CreateDB_PWHint</key>
@@ -121,7 +121,7 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
   </item>
   <item>
     <key>Options_CheckTFA</key>
-    <value>Indique se o uso de 2FA é possível</value>
+    <value>Indique se o uso de TFA é possível</value>
   </item>
   <item>
     <key>Options_OTPSettings</key>
@@ -164,8 +164,8 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
     <value>KeePassOTP baixará uma lista de sites que suportam a autenticação de dois fatores em https://twofactorauth.org/
 Esta lista é então comparada com todos os URLs definidos no banco de dados, seus URLs não serão enviados.
 
-A coluna OTP mostrará se 2FA é possível, mas ainda não está configurado.
-Clicar duas vezes nesta dica abrirá a página de configuração 2FA.</value>
+A coluna OTP mostrará se TFA é possível, mas ainda não está configurado.
+Clicar duas vezes nesta dica abrirá a página de configuração TFA.</value>
   </item>
   <item>
     <key>Options_Help</key>
