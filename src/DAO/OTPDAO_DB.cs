@@ -14,6 +14,7 @@ using KeePass.UI;
 using KeePassLib;
 using KeePassLib.Interfaces;
 using KeePassLib.Keys;
+using KeePassLib.Native;
 using KeePassLib.Security;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;
@@ -774,11 +775,19 @@ namespace KeePassOTP
 
 			private CompositeKey OTPDB_RequestPassword(bool bSetNewPassword, out bool bCancel)
 			{
+				bCancel = false;
+				if (!bSetNewPassword && Program.Config.Security.MasterKeyOnSecureDesktop &&
+					KeePass.Util.WinUtil.IsAtLeastWindows2000 && !NativeLib.IsUnix())
+				{
+					CompositeKey ck = new CompositeKey();
+					try { ck = OTPDB_RequestPasswordSecure(bSetNewPassword, out bCancel); }
+					catch (Exception ex) { Tools.ShowError(ex.Message); }
+					return ck;
+				}
 				if (!bSetNewPassword)
 				{
 					KeyPromptForm kpf = new KeyPromptForm();
-					string title = string.Format(PluginTranslate.OTP_OpenDB, string.IsNullOrEmpty(DB.Name) ? UrlUtil.GetFileName(DB.IOConnectionInfo.Path) : DB.Name);
-					kpf.InitEx(OTPDB.IOConnectionInfo, false, false, title);
+					SetKeyPromptFormTitle(kpf);
 					bCancel = kpf.ShowDialog() != DialogResult.OK;
 					if (bCancel) return new CompositeKey();
 					return kpf.CompositeKey;
@@ -788,6 +797,78 @@ namespace KeePassOTP
 				bCancel = kcf.ShowDialog() != DialogResult.OK;
 				if (bCancel) return OTPDB.MasterKey;
 				return kcf.CompositeKey;
+			}
+
+			private static void SetFieldValue(object o, string field, object val)
+			{
+				var f = o.GetType().GetField(field);
+				f.SetValue(o, val);
+			}
+
+			public static object Create_OdKpfConstructParams(IOConnectionInfo ioc, bool CanExit, bool SecureDesktopMode)
+			{
+				var tt = typeof(MainForm).GetNestedTypes(System.Reflection.BindingFlags.NonPublic);
+
+				var to = tt.FirstOrDefault(x => x.Name == "OdKpfConstructParams");
+				var c = to.GetConstructor(new Type[] { });
+				var ocp = c.Invoke(null);
+
+				SetFieldValue(ocp, "IOConnectionInfo", ioc);
+				SetFieldValue(ocp, "CanExit", CanExit);
+				SetFieldValue(ocp, "SecureDesktopMode", SecureDesktopMode);
+
+				return ocp;
+			}
+
+			public static object Create_OdKpfResult()
+			{
+				var tt = typeof(MainForm).GetNestedTypes(System.Reflection.BindingFlags.NonPublic);
+
+				var to = tt.FirstOrDefault(x => x.Name == "OdKpfResult");
+				var c = to.GetConstructor(new Type[] { });
+				return c.Invoke(null);
+			}
+
+			private CompositeKey OTPDB_RequestPasswordSecure(bool bSetNewPassword, out bool bCancel)
+			{
+				var kpfParams = Create_OdKpfConstructParams(OTPDB.IOConnectionInfo, false, true);
+
+				DialogResult dr;
+				var kpfResult = Create_OdKpfResult();
+
+				ProtectedDialog dlg = new ProtectedDialog(OdKpfConstruct,	OdKpfBuildResult);
+				object objResult;
+				dr = dlg.ShowDialog(out objResult, kpfParams);
+				bCancel = dr == DialogResult.None || dr == DialogResult.Cancel;
+				var fi = objResult.GetType().GetField("ShowHelpAfterClose");
+				if (fi != null && (bool)fi.GetValue(objResult))
+				{
+					bCancel = true;
+					AppHelp.ShowHelp(AppDefs.HelpTopics.KeySources, null);
+				}
+				if (bCancel) return new CompositeKey();
+				fi = objResult.GetType().GetField("Key");
+				return fi.GetValue(objResult) as CompositeKey;
+			}
+
+			private object OdKpfBuildResult(Form f)
+			{
+				System.Reflection.MethodInfo mi = typeof(MainForm).GetMethod("OdKpfBuildResult", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+				return mi.Invoke(null, new object[] { f });
+			}
+
+			private Form OdKpfConstruct(object objParam)
+			{
+				System.Reflection.MethodInfo mi = typeof(MainForm).GetMethod("OdKpfConstruct", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+				KeyPromptForm kpf = mi.Invoke(null, new object[] { objParam }) as KeyPromptForm;
+				if (kpf != null) SetKeyPromptFormTitle(kpf);
+				return kpf;
+			}
+
+			private void SetKeyPromptFormTitle(KeyPromptForm kpf)
+			{
+				string title = string.Format(PluginTranslate.OTP_OpenDB, string.IsNullOrEmpty(DB.Name) ? UrlUtil.GetFileName(DB.IOConnectionInfo.Path) : DB.Name);
+				kpf.InitEx(OTPDB.IOConnectionInfo, false, false, title);
 			}
 
 			private void KeySources_Clear()
