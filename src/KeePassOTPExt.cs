@@ -499,31 +499,28 @@ namespace KeePassOTP
 			PluginDebug.AddInfo("Tray setup: Start", 0);
 			m_TrayMenu.DropDownItems.Clear();
 			List<PwDatabase> lDB = m_host.MainWindow.DocumentManager.GetOpenDatabases();
-			SearchParameters sp = new SearchParameters();
-			sp.ExcludeExpired = !Program.Config.Integration.AutoTypeExpiredCanMatch; //exclude expired entries only if they can not match
-			sp.SearchInStringNames = true;
-			Dictionary<string, PwObjectList<PwEntry>> dEntries = new Dictionary<string, PwObjectList<PwEntry>>();
+			Dictionary<string, List<PwEntry>> dEntries = new Dictionary<string, List<PwEntry>>();
+			DateTime dtExpired = DateTime.UtcNow;
 			foreach (PwDatabase db in lDB)
 			{
 				string dbName = UrlUtil.GetFileName(db.IOConnectionInfo.Path);
 				if (!string.IsNullOrEmpty(db.Name))
 					dbName = db.Name + " (" + dbName + ")";
-				PwObjectList<PwEntry> entries = new PwObjectList<PwEntry>();
-				if (Config.UseDBForOTPSeeds(db))
-					sp.SearchString = OTPDAO.OTPHandler_DB.DBNAME;
-				else
-					sp.SearchString = Config.OTPFIELD; // Config.SEED + " " + Config.SETTINGS;
-				db.RootGroup.SearchEntries(sp, entries);
-
-				PluginDebug.AddInfo("Tray setup: Check database", 0, "DB: " + dbName, "Entries: " + entries.UCount.ToString());
-				if ((entries == null) || (entries.UCount == 0)) continue;
+				string sSearch = Config.UseDBForOTPSeeds(db) ? OTPDAO.OTPHandler_DB.DBNAME : Config.OTPFIELD;
+				var entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(sSearch)).ToList();
+				if (!Program.Config.Integration.AutoTypeExpiredCanMatch) // Remove expired entries
+				{
+					entries = entries.Where(x => !x.Expires || x.ExpiryTime >= dtExpired).ToList();
+				}
+				PluginDebug.AddInfo("Tray setup: Check database", 0, "DB: " + dbName, "Entries: " + entries.Count.ToString());
+				if (entries.Count == 0) continue;
 				//Ignore deleted entries
 				PwGroup pgRecycle = db.RecycleBinEnabled ? db.RootGroup.FindGroup(db.RecycleBinUuid, true) : null;
 				if (pgRecycle != null)
 				{
-					for (int i = (int)entries.UCount - 1; i >= 0; i--)
+					for (int i = entries.Count - 1; i >= 0; i--)
 					{
-						PwEntry pe = entries.GetAt((uint)i);
+						PwEntry pe = entries[i];
 						if (pe.IsContainedIn(pgRecycle))
 							entries.Remove(pe);
 					}
