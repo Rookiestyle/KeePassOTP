@@ -651,7 +651,7 @@ namespace KeePassOTP
 
 		private void SprEngine_FilterCompile(object sender, SprEventArgs e)
 		{
-			if ((e.Context.Flags & SprCompileFlags.Active) != SprCompileFlags.Active) return;
+			if ((e.Context.Flags & SprCompileFlags.ExtActive) != SprCompileFlags.ExtActive) return;
 			if (e.Text.IndexOf(Config.Placeholder, StringComparison.InvariantCultureIgnoreCase) >= 0)
 			{
 				OTPDAO.EnsureOTPUsagePossible(e.Context.Entry);
