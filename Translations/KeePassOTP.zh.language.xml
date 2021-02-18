@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <TranslationVersion>1</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KPOTP - 没有可用的条目</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>KPOTP 自动输入 ([Ctrl]键复制)</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>N/A Uuid: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>群组: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>OTP 设置...</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>复制 OTP</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>错误</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>标题: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>User: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>Seed settings</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Seed: </value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>使用高级选项</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>格式：</value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>OTP 设置</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>类型:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>长度：</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>哈希：</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>时间：</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>计数器：</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Time correction - TOTP &amp;&amp; Steam only</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Diff: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>没有时间校正</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>使用URL</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>使用固定URL</value>
+  </item>
+  <item>
+    <key>SetupTFA</key>
+    <value>设置 2FA</value>
+  </item>
+  <item>
+	<key>TFADefined</key>
+	<value>2FA 已设置</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>打开 OTP 数据库 - {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>所有OTP 密钥将存储在一个单独的数据库中，该数据库将包含在主数据库中。
+
+请在下一个窗口中填写您的主数据库密码。</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>表明是否使用 2FA</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>OTP 设置（关于数据库）</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>保存 OTP 密钥到一个单独的数据库</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>打开主数据库时自动打开 OTP 数据库</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>条目 -&gt; 数据库</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>将 OTP 密钥移动到单独的数据库</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>数据库 -&gt; 条目</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>将 OTP 密钥移至各个条目</value>
+  </item>
+  <item>
+    <key>MoveError</key>
+    <value>尝试移动 OTP 密钥时出错。 OTP 密钥数据库是否打开？</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} OTP 密钥成功移动</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP 将从https://twofactorauth.org/下载支持两因素身份验证的站点列表。
+然后将此列表与数据库中定义的所有URL进行比较，您的URL不会被发送。
+
+OTP列将显示是否支持 2FA，但尚未配置。
+双击该提示将打开 2FA 设置页面。</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Stores new OTP secrets in a separate database that can be encrypted using a different masterkey.
+This database will be stored within the main database containing the entries as such.
+While this increases security by adding a second masterkey for your OTP secrets, it will potentially prevent other ports like KeePass2Android to directly show OTP.
+
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Open the OTP database when opening the main database.
+Deactivate this option to open the OTP database only on demand =&gt; As soon as an OTP is actually requested
+The OTP database will be opened everytime the main database is synchronized - otherwise changes of the OTP database would not get synchronized and local changes would get lost.
+
+&gt;&gt; OTP migration &lt;&lt;
+Depening on above options, OTP secrets are stored either within the respective entry or within a separate database.
+'{Options_Migrate2DB}' und '{Options_Migrate2Entries}' can be used to move the OTP secrets between those two locations.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>从 / 移动到其他插件</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>删除 {0} 个成功迁移条目的设置？</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{0} 个条目中的 {1} 个已成功迁移</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>KeePassOTP 快捷键：</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>数据库已同步。
+请解锁 OTP 数据库，以确保 OTP 数据正确同步。
+
+如果未解锁 OTP 数据库，则 OTP 数据将无法同步，并可能导致数据丢失。</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>正在打开 OTP 数据库...</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>正在同步 OTP 数据库...</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>正在保存 OTP 数据库...</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>显示二维码...</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>KeePassOTP 占位符已更改，并且以前的占位符不再有效。
+
+旧值：{0}
+新值：{1}
+
+所有出现的{0}必须用{1}替换，自动类型才能起作用。
+立即替换当前已加载的数据库中的数据？</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDBDelete</key>
+    <value>这将停用KeePassOTP数据库。
+不会删除KeePassOTP数据库。
+
+单击 '{0}' 以停用并删除KeePassOTP数据库。
+单击 '{1}' 以停用但不删除KeePassOTP数据库。</value>
+  </item>
+  <item>
+    <key>OTPBackupDone</key>
+    <value>解锁现有OTP数据库失败，并且其内容已被覆盖。
+在以下条目中，备份已另存为附件：
+{0}
+
+随时打开以检查以前的内容。
+恢复数据需要手动完成。</value>
+  </item>
+  <item>
+    <key>Placeholder</key>
+    <value>占位符：</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>解析数据时出错</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>解析数据时出错
+
+预期的OTP条目数：1
+找到的OTP条目数量：{0}</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+    <value>请检查单个条目以使用</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+    <value>Issuer</value>
+  </item>
+</Translation>
