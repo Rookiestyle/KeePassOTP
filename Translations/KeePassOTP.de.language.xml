@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>13</TranslationVersion>
+  <TranslationVersion>14</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -117,11 +117,11 @@ Bitte definiere den Hauptschlüssel für diese Datenbank im nächsten Fenster.</
   </item>
   <item>
     <key>Options_CheckTFA</key>
-    <value>Weise auf möglich 2FA-Nutzung hin</value>
+    <value>Weise auf mögliche 2FA-Nutzung hin</value>
   </item>
   <item>
     <key>Options_OTPSettings</key>
-    <value>OTP Einstellungen (Datenbank spezifisch)</value>
+    <value>OTP Einstellungen (datenbankspezifisch)</value>
   </item>
   <item>
     <key>Options_UseOTPDB</key>
