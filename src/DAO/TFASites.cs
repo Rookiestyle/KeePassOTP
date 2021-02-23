@@ -10,7 +10,16 @@ namespace KeePassOTP
 {
 	public static class TFASites
 	{
-		const string TFA_JSON_FILE = "https://twofactorauth.org/api/v2/tfa.json";
+		//const string TFA_JSON_FILE = "https://twofactorauth.org/api/v2/tfa.json";
+		const string TFA_JSON_FILE_DEFAULT = "https://2fa.directory/api/v2/tfa.json";
+
+		public static string TFA_JSON_FILE
+		{
+			get
+			{
+				return KeePass.Program.Config.CustomConfig.GetString("KeePassOTP.TFASiteCheckURL", TFA_JSON_FILE_DEFAULT);
+			}
+		}
 		public enum TFAPossible
 		{
 			Unknown,
