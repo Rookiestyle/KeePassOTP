@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Translation>
-<TranslationVersion>5</TranslationVersion>
+<TranslationVersion>6</TranslationVersion>
 <item>
 <key>OTPCopyTrayNoEntries</key>
 <value>KPOTP - Aucune entrée disponible</value>
@@ -160,7 +160,7 @@ Veuillez fournir dans le prochain formulaire la clé principale pour vos secrets
 </item>
 <item>
 <key>Options_Check2FA_Help</key>
-<value>KeePassOTP téléchargera une liste de sites supportant l'authentification à facteurs depuis https://twofactorauth.org/
+<value>KeePassOTP téléchargera une liste de sites supportant l'authentification à facteurs depuis {0}
 Cette liste est ensuite comparée à toutes les adresses URLs présentes dans la base, vos adresses URLs ne sont pas envoyées.
 La colonne OTP affichera si l'authentification à 2 facteurs (2FA) est possible mais pas encore configurée.
 Double-cliquer sur cette information affichera la page de configuration de l'authentification à 2 facteurs.</value>

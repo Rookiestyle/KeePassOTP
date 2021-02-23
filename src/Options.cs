@@ -58,7 +58,14 @@ namespace KeePassOTP
 			gbAutotype.Text = KPRes.ConfigureAutoType;
 			cgbCheckTFA.Text = PluginTranslate.Options_CheckTFA;
 			lHotkey.Text = PluginTranslate.Hotkey;
-			string[] aLines = PluginTranslate.Options_Check2FA_Help.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+			string sUrl = KPRes.Error;
+			try
+			{
+				Uri u = new Uri(TFASites.TFA_JSON_FILE);
+				sUrl = u.Scheme + "://" + u.Host;
+			}
+			catch { }
+			string[] aLines = string.Format(PluginTranslate.Options_Check2FA_Help, sUrl).Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 			for (int i = 0; i < aLines.Length; i++)
 			{
 				aLines[i] = aLines[i].Replace("{Options_CheckTFA}", PluginTranslate.Options_CheckTFA);

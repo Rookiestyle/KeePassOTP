@@ -74,7 +74,7 @@ Please provide the masterkey for your OTP secrets in the next form.";
 		public static readonly string Options_Migrate2EntriesHint = @"Move OTP secrets to respective entries";
 		public static readonly string MoveError = @"Error when trying to move OTP secrets. Is the OTP database open?";
 		public static readonly string EntriesMoved = @"{0} OTP secret(s) move auccessfully";
-		public static readonly string Options_Check2FA_Help = @"KeePassOTP will download a list of sites supporting two factor authentication from https://twofactorauth.org/
+		public static readonly string Options_Check2FA_Help = @"KeePassOTP will download a list of sites supporting two factor authentication from {0}
 This list is then compared it with all URLs defined in the database, your URLs will not be sent.
 
 The OTP column will show whether 2FA is possible but not yet configured.

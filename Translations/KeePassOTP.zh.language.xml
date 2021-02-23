@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>1</TranslationVersion>
+  <TranslationVersion>2</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的条目</value>
@@ -161,7 +161,7 @@
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
-    <value>KeePassOTP 将从https://twofactorauth.org/下载支持两因素身份验证的站点列表。
+    <value>KeePassOTP 将从{0}下载支持两因素身份验证的站点列表。
 然后将此列表与数据库中定义的所有URL进行比较，您的URL不会被发送。
 
 OTP列将显示是否支持 2FA，但尚未配置。

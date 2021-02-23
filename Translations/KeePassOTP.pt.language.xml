@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>4</TranslationVersion>
+  <TranslationVersion>5</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -161,7 +161,7 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
-    <value>KeePassOTP baixará uma lista de sites que suportam a autenticação de dois fatores em https://twofactorauth.org/
+    <value>KeePassOTP baixará uma lista de sites que suportam a autenticação de dois fatores em {0}
 Esta lista é então comparada com todos os URLs definidos no banco de dados, seus URLs não serão enviados.
 
 A coluna OTP mostrará se TFA é possível, mas ainda não está configurado.

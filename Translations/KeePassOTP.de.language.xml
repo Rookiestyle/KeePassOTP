@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>14</TranslationVersion>
+  <TranslationVersion>15</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -158,7 +158,7 @@ Ist die OTP-Datenbank geöffnet?</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
-    <value>KeePassOTP lädt eine Liste Seiten von https://twofactorauth.org/, die 2FA (Zwei Faktor Authentifizierung) unterstützen.
+    <value>KeePassOTP lädt eine Liste Seiten von {0}, die 2FA (Zwei Faktor Authentifizierung) unterstützen.
 Im Anschluss daran, wird jede URL der Datenbank mit der Liste abgeglichen.
 Die OTP-Spalte wird darauf hinweisen, wenn 2FA möglich ist, aber noch nicht konfiguriert. Ein Doppelklick auf den Hinweis öffnet die jeweilige 2FA-Seite.
 

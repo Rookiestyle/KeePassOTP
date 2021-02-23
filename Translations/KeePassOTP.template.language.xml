@@ -161,7 +161,7 @@ Please provide the masterkey for your OTP secrets in the next form.</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
-    <value>KeePassOTP will download a list of sites supporting two factor authentication from https://twofactorauth.org/
+    <value>KeePassOTP will download a list of sites supporting two factor authentication from {0}
 This list is then compared it with all URLs defined in the database, your URLs will not be sent.
 
 The OTP column will show whether 2FA is possible but not yet configured.
