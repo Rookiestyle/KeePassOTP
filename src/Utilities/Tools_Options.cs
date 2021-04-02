@@ -147,6 +147,7 @@ namespace PluginTools
 				lv.CheckBoxes = true;
 				tpOverview.Layout += TpOverview_Layout;
 				Label lInfo = new Label();
+				lInfo.AutoSize = true;
 				lInfo.Text = "Use the checkbox to activate/deactivate debug mode";
 				lInfo.Dock = DockStyle.Bottom;
 				uc.Controls.Add(lv);
@@ -234,6 +235,7 @@ namespace PluginTools
 			llUrl.Text = PluginURL;
 			uc.Controls.Add(llUrl);
 			llUrl.Dock = DockStyle.Bottom;
+			llUrl.AutoSize = true;
 			llUrl.LinkClicked += new LinkLabelLinkClickedEventHandler(PluginURLClicked);
 		}
 
