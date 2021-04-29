@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>2</TranslationVersion>
+  <TranslationVersion>3</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的条目</value>
@@ -79,7 +79,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Time correction - TOTP &amp;&amp; Steam only</value>
+    <value>时间校正 - TOTP &amp;&amp; 仅 Steam</value>
   </item>
   <item>
     <key>URL</key>
@@ -170,18 +170,18 @@ OTP列将显示是否支持 2FA，但尚未配置。
   <item>
     <key>Options_Help</key>
     <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
-Stores new OTP secrets in a separate database that can be encrypted using a different masterkey.
-This database will be stored within the main database containing the entries as such.
-While this increases security by adding a second masterkey for your OTP secrets, it will potentially prevent other ports like KeePass2Android to directly show OTP.
+将新的 OTP 密钥存储在单独的数据库中，该数据库可以使用其他主密钥进行加密。
+该数据库将存储在包含此类条目的主数据库中。
+尽管通过为您的 OTP 密钥添加第二个主密钥来提高安全性，但它可能会阻止其他端口（例如 KeePass2Android）直接显示 OTP。
 
 &gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
-Open the OTP database when opening the main database.
-Deactivate this option to open the OTP database only on demand =&gt; As soon as an OTP is actually requested
-The OTP database will be opened everytime the main database is synchronized - otherwise changes of the OTP database would not get synchronized and local changes would get lost.
+打开主数据库时，请打开 OTP 数据库。
+停用此选项以仅按需打开 OTP 数据库 =&gt; 实际要求 OTP 时
+每次同步主数据库时都会打开OTP数据库 - 否则 OTP 数据库的更改将不会同步，并且本地更改将丢失。
 
-&gt;&gt; OTP migration &lt;&lt;
-Depening on above options, OTP secrets are stored either within the respective entry or within a separate database.
-'{Options_Migrate2DB}' und '{Options_Migrate2Entries}' can be used to move the OTP secrets between those two locations.</value>
+&gt;&gt; OTP 迁移 &lt;&lt;
+根据以上选项，OTP 密钥将存储在相应的条目中或单独的数据库中。
+'{Options_Migrate2DB}' 和 '{Options_Migrate2Entries}' 可用于在这两个位置之间移动 OTP 密钥。</value>
   </item>
   <item>
     <key>MigrateOtherPlugins</key>
