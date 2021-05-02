@@ -24,7 +24,8 @@ namespace KeePassOTP
 		{
 			Unknown,
 			Yes,
-			No
+			No,
+			Error,
 		}
 
 		private class TFAData
@@ -64,12 +65,10 @@ namespace KeePassOTP
 				lock (m_TFAReadLock)
 				{
 					m_LoadState = TFALoadProcess.NotStarted;
-
 				}
 			}
-			System.Threading.ThreadPool.QueueUserWorkItem(ReadOTPSites);
+			System.Threading.ThreadPool.QueueUserWorkItem(ReadOTPSites, false);
 		}
-
 		public static string GetTFAUrl(string url)
 		{
 			if (!Config.CheckTFA) return string.Empty;
@@ -90,7 +89,21 @@ namespace KeePassOTP
 			}
 			lock (m_TFAReadLock)
 			{
-				if (m_LoadState != TFALoadProcess.Loaded) return TFAPossible.Unknown;
+				if (m_LoadState == TFALoadProcess.Error)
+				{
+					if (m_RetryReadOTPSites == null)
+					{
+						m_RetryReadOTPSites = new System.Windows.Forms.Timer();
+						m_RetryReadOTPSites.Tick += OnRereadOTPSitesTimerTick;
+						m_RetryReadOTPSites.Interval = 30 * 1000;
+						m_RetryReadOTPSites.Enabled = false;
+					}
+					TriggerReadOTPSites();
+					return TFAPossible.Error;
+				}
+
+				if (m_LoadState == TFALoadProcess.FileNotFound) return TFAPossible.Unknown;
+				if (m_LoadState != TFALoadProcess.Loaded) return TFAPossible.Error;
 				string urlpattern = CreatePattern(url);
 				if (!m_dTFA.TryGetValue(urlpattern, out tfa))
 				{
@@ -102,6 +115,27 @@ namespace KeePassOTP
 				if (tfa.tfa) return TFAPossible.Yes;
 				else return TFAPossible.No;
 			}
+		}
+
+		private static void OnRereadOTPSitesTimerTick(object sender, EventArgs e)
+		{
+			lock (m_TFAReadLock)
+			{
+				System.Threading.ThreadPool.QueueUserWorkItem(RetryReadOTPSites);
+			}
+		}
+
+		private static System.Windows.Forms.Timer m_RetryReadOTPSites = null;
+		private static void TriggerReadOTPSites()
+		{
+			if (m_RetryReadOTPSites.Enabled) return;
+			m_RetryReadOTPSites.Enabled = true;
+		}
+
+		private static void RetryReadOTPSites(object s)
+		{
+			ReadOTPSites(true);
+			m_RetryReadOTPSites.Enabled = false;
 		}
 
 		private static void ReadOTPSites(object s)
@@ -117,24 +151,36 @@ namespace KeePassOTP
 			JsonObject j = null;
 			bool bException = false;
 			IOConnectionInfo ioc = IOConnectionInfo.FromPath(TFA_JSON_FILE);
+			bool bExists = false;
+			bool bNoInternet = false;
+			string sError = "File not found or no internet connection";
 			try
 			{
+				bExists = IOConnection.FileExists(ioc, true);
 				byte[] b = IOConnection.ReadFile(ioc);
 				if (b != null) j = new JsonObject(new CharStream(StrUtil.Utf8.GetString(b)));
 			}
+			catch (System.Net.WebException exWeb)
+			{
+				sError = exWeb.Message;
+				PluginDebug.AddError("Error reading OTP sites", 0, "Error: " + sError);
+				bException = true;
+				bNoInternet = exWeb.Response == null || exWeb.Status == System.Net.WebExceptionStatus.NameResolutionFailure;
+			}
 			catch (Exception ex)
 			{
+				sError = ex.Message;
 				PluginDebug.AddError("Error reading OTP sites", 0, "Error: " + ex.Message);
 				bException = true;
 			}
 			if (j == null)
 			{
-				if (!IOConnection.FileExists(ioc))
+				if (!bExists || bNoInternet)
 				{
-					lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.FileNotFound; }
-					Tools.ShowError("Error reading OTP sites: File does not exist\n\n" + TFA_JSON_FILE);
+					lock (m_TFAReadLock) { m_LoadState = bNoInternet ? TFALoadProcess.Error : TFALoadProcess.FileNotFound; }
+					if (!(bool)s) Tools.ShowError("Error reading OTP sites: " + sError + "\n\n" + TFA_JSON_FILE);
 				}
-				else lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.Error; }
+				else lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.FileNotFound; }
 				if (!bException) PluginDebug.AddError("Error reading OTP sites", 0);
 				return;
 			}

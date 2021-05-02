@@ -131,6 +131,7 @@ Expected amount of OTP entries: 1
 Found amount of OTP entries: {0}";
 		public static readonly string SelectSingleEntry = @"Please check the single entry to use";
 		public static readonly string Issuer = @"Issuer";
+		public static readonly string CheckingTFA = @"Checking 2FA";
 		#endregion
 
 		#region NO changes in this area

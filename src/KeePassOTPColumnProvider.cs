@@ -44,8 +44,10 @@ namespace KeePassOTP
 			TFASites.TFAPossible TFAPossible = TFASites.IsTFAPossible(url);
 			if (TFAPossible == TFASites.TFAPossible.Yes)
 				return PluginTranslation.PluginTranslate.SetupTFA;
+			else if (TFAPossible == TFASites.TFAPossible.Error)
+				return PluginTranslation.PluginTranslate.CheckingTFA;
 			else if (TFAPossible == TFASites.TFAPossible.Unknown)
-				return "Checking 2FA";
+				return "???";
 			else
 				return string.Empty;
 		}
