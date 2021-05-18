@@ -44,7 +44,8 @@ If you're interested in migration instructions to move from (or to) other OTP pl
 Use the entry's context menu to setup/change OTP data.  
 
 In the setup form, you can drag&drop the QR code image onto the QR picture in the setup form and have KeePassOTP parse it or you can enter the OTP secret manually (sometimes referred to as a seed) and you're ready to go.  
-
+In addition, you can click the screen capture button and KeePassOTP will search for an OTP qr code anywhere on the screen.
+  
 Got a string like this one?  
 `otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example`  
 Paste the entire string, KeePassOTP can process this [otpauth-format](https://github.com/google/google-authenticator/wiki/Key-Uri-Format) as well.
