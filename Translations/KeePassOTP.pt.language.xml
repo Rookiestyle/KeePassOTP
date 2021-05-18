@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
+  <!-- 
+    Increment the TranslationVersion every time the translation file is updated
+	Also update the version.info file
+  -->
   <TranslationVersion>5</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>

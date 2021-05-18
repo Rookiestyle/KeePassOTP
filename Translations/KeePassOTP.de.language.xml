@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
-  <TranslationVersion>15</TranslationVersion>
+  <!-- 
+    Increment the TranslationVersion every time the translation file is updated
+	Also update the version.info file
+  -->
+  <TranslationVersion>16</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -102,8 +106,12 @@
     <value>Feste URL</value>
   </item>
   <item>
-	<key>TFADefined</key>
-	<value>2FA konfiguriert</value>
+    <key>SetupTFA</key>
+    <value>Setup 2FA</value>
+  </item>
+  <item>
+    <key>TFADefined</key>
+    <value>2FA konfiguriert</value>
   </item>
   <item>
     <key>OTP_OpenDB</key>
@@ -230,17 +238,17 @@ Neuer Platzhalter: {1}
 Damit Auto-Type weiterhin vollumfänglich genutzt werden kann, muss {0} überall durch {1} ersetzt werden..
 Soll diese Ersetzung jetzt in allen geladenen Datenbanken durchgeführt werden?</value>
   </item>
-    <item>
-	<key>ConfirmOTPDBDelete</key>
-	<value>Diese Aktion deaktiviert die OTP-Datenbank.
+  <item>
+    <key>ConfirmOTPDBDelete</key>
+    <value>Diese Aktion deaktiviert die OTP-Datenbank.
 Die OTP-Datenbank wird dadurch NICHT gelöscht.
 
 Klicke '{0}' um die OTP-Datenbank zu deaktivieren und zu löschen.
 Klicke '{1}' um die OTP-Datenbank zu deaktivieren und nicht zu löschen.</value>
   </item>
-    <item>
-	<key>OTPBackupDone</key>
-	<value>Das Entsperren der OTP-Datenbank ist fehlgeschlagen, die OTP-Datenbank wurde überschrieben.
+  <item>
+    <key>OTPBackupDone</key>
+    <value>Das Entsperren der OTP-Datenbank ist fehlgeschlagen, die OTP-Datenbank wurde überschrieben.
 Ein Backup wurde als Attachmemt in folgendem Eintrag gespeichert:
 {0}
 
@@ -249,14 +257,48 @@ Die Daten müssen manuell wiederhergestellt werden.</value>
   </item>
   <item>
     <key>Placeholder</key>
-	<value>Platzhalter:</value>
+    <value>Platzhalter:</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>Fehler beim Verarbeiten der Daten</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>Fehler beim Verarbeiten der Daten
+
+Erwartete Anzahl Datensätze: 1
+Tatsächliche Anzahl Datensätze: {0}</value>
   </item>
   <item>
     <key>SelectSingleEntry</key>
-	<value>Bitte markiere den zu verwendenden Eintrag</value>
+    <value>Bitte markiere den zu verwendenden Eintrag</value>
   </item>
   <item>
     <key>Issuer</key>
-	<value>Aussteller</value>
+    <value>Aussteller</value>
+  </item>
+  <item>
+    <key>CheckingTFA</key>
+    <value>Prüfe 2FA</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCode</key>
+    <value>Vom Bildschrim lesen</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCodeExplain</key>
+    <value>KeePassOTP wird nach einem OTP QR code auf dem Bildschirm suchen.
+Um das zu erleichtern, wird KeePass selbst für maximal 30 Sekunden in den Hintergrund fallen.
+
+Dieses Hinweis wird nicht erneut angezeigt.</value>
+  </item>
+  <item>
+    <key>OTP_Setup_DragDrop</key>
+    <value>Drag &amp; drop a valid OTP QR code</value>
   </item>
 </Translation>

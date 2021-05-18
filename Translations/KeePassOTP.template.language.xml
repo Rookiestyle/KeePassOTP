@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Translation>
+  <!-- 
+    Increment the TranslationVersion every time the translation file is updated
+	Also update the version.info file
+  -->
   <TranslationVersion>0</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
@@ -106,8 +110,8 @@
     <value>Setup 2FA</value>
   </item>
   <item>
-	<key>TFADefined</key>
-	<value>2FA defined</value>
+    <key>TFADefined</key>
+    <value>2FA defined</value>
   </item>
   <item>
     <key>OTP_OpenDB</key>
@@ -275,5 +279,24 @@ Found amount of OTP entries: {0}</value>
   <item>
     <key>Issuer</key>
     <value>Issuer</value>
+  </item>
+  <item>
+    <key>CheckingTFA</key>
+    <value>Checking 2FA</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCode</key>
+    <value>Read OTP QR code from screen</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCodeExplain</key>
+    <value>KeePassOTP will now try to find and read the OTP QR code from your screen.
+KeePass itself will drop to background for max {0} seconds to simplify reading the OTP QR code.
+
+This message will not be shown again.</value>
+  </item>
+  <item>
+    <key>OTP_Setup_DragDrop</key>
+    <value>Drag &amp; drop a valid OTP QR code</value>
   </item>
 </Translation>

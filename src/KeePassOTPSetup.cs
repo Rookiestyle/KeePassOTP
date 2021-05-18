@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using KeePass;
 using KeePassLib.Security;
 using KeePassLib.Utility;
 using PluginTools;
@@ -50,6 +55,9 @@ namespace KeePassOTP
 			lURL.Text = PluginTranslate.URL;
 			lTime.Text = PluginTranslate.TimeDiff;
 			cbAdvanced.Text = PluginTranslate.AdvancedOptions;
+			pbSearchScreen.Image = Resources.qr_code_screencapture;
+			pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
+
 
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionOff);
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionEntry);
@@ -405,6 +413,116 @@ namespace KeePassOTP
 		{
 			pbQR.Image = Resources.qr_code;
 			((Control)pbQR).AllowDrop = true;
+		}
+
+		private void bSearchScreen_Click(object sender, EventArgs e)
+		{
+			int iSeconds = 30;
+			ShowReadScreenForQRCodeExplanation(!RightToLeftLayout, iSeconds);
+
+			if (pbSearchScreen.Text != PluginTranslate.ReadScreenForQRCode)
+			{
+				pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
+				pbSearchScreen.Image = Resources.qr_code_screencapture;
+				return;
+			}
+
+			pbSearchScreen.Text = KeePass.Resources.KPRes.Cancel;
+			pbSearchScreen.Image = KeePass.UI.UIUtil.CreateGrayImage(Resources.qr_code_screencapture);
+			
+			bool bWasTopMost = Program.MainForm.TopMost;
+			SaveOpacityOrDropToBackground();
+			SearchScreenForQRCode(iSeconds);
+			Activate();
+			BringToFront();
+			Program.MainForm.TopMost = bWasTopMost;
+			RestoreOpacity();
+			pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
+			pbSearchScreen.Image = Resources.qr_code_screencapture;
+		}
+
+		private Dictionary<Form, double> m_dOpacity = new Dictionary<Form, double>();
+		private static MethodInfo m_miLoseFocus = null;
+		private static bool? m_bFoundLoseFocus = null;
+		private void SaveOpacityOrDropToBackground()
+		{
+			if (!m_bFoundLoseFocus.HasValue)
+			{
+				var t = Program.MainForm.GetType().Assembly.GetType("KeePass.Native.NativeMethods");
+				m_miLoseFocus = t.GetMethod("LoseFocus", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, null, new Type[] { typeof(Form), typeof(bool) }, null);
+				m_bFoundLoseFocus = m_miLoseFocus != null;
+			}
+
+			if (m_bFoundLoseFocus.HasValue && m_bFoundLoseFocus.Value)
+			{
+				Program.MainForm.TopMost = false;
+				m_miLoseFocus.Invoke(null, new object[] { this, true });
+				return;
+			}
+
+			if (RightToLeftLayout) return;
+			m_dOpacity[Program.MainForm] = Program.MainForm.Opacity;
+			m_dOpacity[this] = Opacity;
+
+			Program.MainForm.Opacity = 0.25;
+			Opacity = 0.25;
+		}
+
+		private void RestoreOpacity()
+		{
+			foreach (KeyValuePair<Form, double> kvp in m_dOpacity)
+				kvp.Key.Opacity = kvp.Value;
+			m_dOpacity.Clear();
+		}
+
+		private bool SearchScreenForQRCode(int iSeconds)
+		{
+			int iSleep = 250;
+			try
+			{
+				DateTime dtEnd = DateTime.Now.AddSeconds(iSeconds);
+				while (dtEnd > DateTime.Now)
+				{
+					System.Threading.Thread.Sleep(iSleep);
+					Application.DoEvents();
+					Bitmap bmp = new Bitmap(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height, PixelFormat.Format32bppArgb);
+
+					using (Graphics g = Graphics.FromImage(bmp))
+					{
+						g.CopyFromScreen(SystemInformation.VirtualScreen.X, SystemInformation.VirtualScreen.Y, 0, 0, SystemInformation.VirtualScreen.Size, CopyPixelOperation.SourceCopy);
+					}
+
+					ProtectedString otp = ParseFromImage(bmp);
+					bmp.Dispose();
+					if (IsValidOtpAuth(otp))
+					{
+						OTP.OTPAuthString = otp;
+						InitSettings(true);
+						return true;
+					}
+					if (pbSearchScreen.Text == PluginTranslate.ReadScreenForQRCode) return false;
+				}
+			}
+			catch { }
+			return false;
+		}
+
+		private void ShowReadScreenForQRCodeExplanation(bool bUseOpacity, int iSeconds)
+		{
+			if (!bUseOpacity) return;
+			if (Config.ReadScreenForQRCodeExplanationShown) return;
+			Config.ReadScreenForQRCodeExplanationShown = true;
+			Tools.ShowInfo(string.Format(PluginTranslate.ReadScreenForQRCodeExplain, iSeconds));
+		}
+
+		private void pbQR_MouseHover(object sender, EventArgs e)
+		{
+			toolTip1.Show(PluginTranslate.OTP_Setup_DragDrop, pbQR);
+		}
+
+		private void bSearchScreen_MouseHover(object sender, EventArgs e)
+		{
+			toolTip1.Show(PluginTranslate.ReadScreenForQRCode, pbSearchScreen);
 		}
 	}
 }

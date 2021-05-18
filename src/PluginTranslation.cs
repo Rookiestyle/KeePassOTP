@@ -132,6 +132,12 @@ Found amount of OTP entries: {0}";
 		public static readonly string SelectSingleEntry = @"Please check the single entry to use";
 		public static readonly string Issuer = @"Issuer";
 		public static readonly string CheckingTFA = @"Checking 2FA";
+		public static readonly string ReadScreenForQRCode = @"Read OTP QR code from screen";
+		public static readonly string ReadScreenForQRCodeExplain = @"KeePassOTP will now try to find and read the OTP QR code from your screen.
+KeePass itself will drop to background for max {0} seconds to simplify reading the OTP QR code.
+
+This message will not be shown again.";
+		public static readonly string OTP_Setup_DragDrop = @"Drag & drop a valid OTP QR code";
 		#endregion
 
 		#region NO changes in this area

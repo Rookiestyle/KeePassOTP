@@ -28,6 +28,7 @@ namespace KeePassOTP
 		private const string Config_Placeholder = "KeePassOTP.Placeholder";
 		private const string Config_KPOTPAutoSubmit = "KeePassOTP.KPOTPAutoSubmit";
 		private const string Config_ShowHintSyncRequiresUnlock = "KeePassOTP.ShowHintSyncRequiresUnlock";
+		private const string Config_ReadScreenForQRCodeExplanationShown = "KeePassOTP.ReadScreenForQRCodeExplanationShown";
 		private static int HotkeyID = -1;
 
 		internal static void Init()
@@ -55,6 +56,13 @@ namespace KeePassOTP
 				return bShow;
 			}
 		}
+
+		internal static bool ReadScreenForQRCodeExplanationShown
+		{
+			get { return Program.Config.CustomConfig.GetBool(Config_ReadScreenForQRCodeExplanationShown, false); }
+			set { Program.Config.CustomConfig.SetBool(Config_ReadScreenForQRCodeExplanationShown, value); }
+		}
+		
 
 		internal static bool CheckTFA
 		{

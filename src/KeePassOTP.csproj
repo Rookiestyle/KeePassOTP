@@ -149,6 +149,9 @@
   <ItemGroup>
     <None Include="Resources\qr-code.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qr-code-screencapture.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">
     <Exec Command="..\translationcopy.cmd $(Configuration)" />
