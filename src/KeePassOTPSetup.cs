@@ -326,7 +326,9 @@ namespace KeePassOTP
 			if (IsValidOtpAuth(otp))
 			{
 				OTP.OTPAuthString = otp;
+				m_NoUpdate = true; 
 				InitSettings(true);
+				m_NoUpdate = false;
 			}
 		}
 
@@ -497,7 +499,9 @@ namespace KeePassOTP
 					if (IsValidOtpAuth(otp))
 					{
 						OTP.OTPAuthString = otp;
+						m_NoUpdate = true;
 						InitSettings(true);
+						m_NoUpdate = false; 
 						return true;
 					}
 					if (pbSearchScreen.Text == PluginTranslate.ReadScreenForQRCode) return false;

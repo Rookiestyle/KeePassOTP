@@ -335,6 +335,7 @@ namespace KeePassOTP
 
 			string encoding = parameters.Get("encoding");
 			if (!string.IsNullOrEmpty(encoding)) encoding = encoding.ToLowerInvariant();
+			Encoding = KPOTPEncoding.BASE32;
 			if (encoding == "base64") Encoding = KPOTPEncoding.BASE64;
 			else if (encoding == "hex") Encoding = KPOTPEncoding.HEX;
 			else if (encoding == "utf8") Encoding = KPOTPEncoding.UTF8;
