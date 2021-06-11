@@ -22,7 +22,7 @@ Functionality provided
 - Secure storage of OTP secrets
 - Auto-Type or Copy OTP using the KeePass tray icon
 
-### Table of Contents
+## Table of Contents
 
 - [Configuration](#configuration)
 - [Usage](#usage)
@@ -30,7 +30,7 @@ Functionality provided
 - [Download](#download)
 - [Requirements](#requirements)
 
-### Configuration
+## Configuration
 
 KeePassOTP integrates into KeePass' options form.
 
@@ -42,14 +42,14 @@ In the database-specific area you can choose the working mode of KeePassOTP.
 
 The general area lets you define settings that are valid for all databases.
 
-### Usage
+## Usage
 
 OTP settings are entry-specific.
 To setup, change, copy or auto-type the OTP, you may use the context menu of the respective entry.
 
 If you're interested in migration instructions to move from (or to) other OTP plugins or if you want to know more about some of the technical details, please have a look at the [Wiki](https://github.com/rookiestyle/keepassotp/wiki).
 
-#### Setup OTP data / Change OTP data
+### Setup OTP data / Change OTP data
 
 Use the entry's context menu to setup/change OTP data.
 
@@ -69,7 +69,7 @@ As almost all sites require you to enter an OTP as part of the activation proces
 
 <img src="images/KeePassOTP%20-%20setup%20simple.png" alt="Setup">
 
-#### Use OTP data
+### Use OTP data
 
 There are multiple convenient ways to use the one time passwords.
 
@@ -83,7 +83,7 @@ There are multiple convenient ways to use the one time passwords.
   - Using a configurable hotkey working inside and outside KeePass
   - Using KeePass' tray icon
  
-### Translations
+## Translations
 
 KeePassOTP is provided with English language built-in and allows usage of translation files.
 These translation files need to be placed in a folder called *Translations* inside your plugin folder.
@@ -97,7 +97,7 @@ Example: `KeePassOTP.de.language.xml`
 The language identifier in the filename must match the language identifier inside the KeePass language that you can select using *View -> Change language...*
 This identifier is shown there as well, if you have [EarlyUpdateCheck](https://github.com/rookiestyle/earlyupdatecheck) installed.
 
-### Download
+## Download
 
 Please follow these links to download the plugin file itself.
 
@@ -106,7 +106,7 @@ Please follow these links to download the plugin file itself.
 
 If you're interested in any of the available translations in addition, please download them from the [Translations](Translations) folder.
 
-### Requirements
+## Requirements
 
 - KeePass version 2.42
 - .NET framework version 4.0
