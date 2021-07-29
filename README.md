@@ -18,7 +18,7 @@ Functionality provided
 - Configurable hotkey to invoke Auto-Type OTP
 - Column to display OTP or to indicate possible 2FA usage
 - Compatibility with Google Authenticator, andOTP etc.
-- Support TOTP and HOTP as well as Steam OTP
+- Support TOTP and HOTP as well as Steam OTP and Yandex (Yandex.Key)
 - Secure storage of OTP secrets
 - Auto-Type or Copy OTP using the KeePass tray icon
 

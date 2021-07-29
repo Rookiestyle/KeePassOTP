@@ -467,7 +467,7 @@ namespace KeePassOTP
 							"Hash not supported: " + otp.Hash.ToString());
 						continue;
 					}
-					if (otp.Type == KPOTPType.HOTP)
+					if (otp.Type != KPOTPType.TOTP && otp.Type != KPOTPType.STEAM)
 					{
 						PluginDebug.AddError("Migration of entry failed",
 							"Uuid: " + pe.Uuid.ToHexString(),

@@ -89,6 +89,8 @@ namespace KeePassOTP
 			this.lURL = new System.Windows.Forms.Label();
 			this.cbAdvanced = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.tbYandexPin = new System.Windows.Forms.TextBox();
+			this.lYandexPin = new System.Windows.Forms.Label();
 			this.gSeed.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbSearchScreen)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbQR)).BeginInit();
@@ -198,6 +200,8 @@ namespace KeePassOTP
 			// 
 			// gOTP
 			// 
+			this.gOTP.Controls.Add(this.lYandexPin);
+			this.gOTP.Controls.Add(this.tbYandexPin);
 			this.gOTP.Controls.Add(this.cbOTPFormat);
 			this.gOTP.Controls.Add(this.lFormat);
 			this.gOTP.Controls.Add(this.tbTOTPTimestep);
@@ -319,7 +323,8 @@ namespace KeePassOTP
 			this.cbOTPType.Items.AddRange(new object[] {
             "HOTP",
             "TOTP",
-            "Steam"});
+            "Steam",
+            "Yandex"});
 			this.cbOTPType.Location = new System.Drawing.Point(178, 31);
 			this.cbOTPType.Margin = new System.Windows.Forms.Padding(5);
 			this.cbOTPType.Name = "cbOTPType";
@@ -467,6 +472,23 @@ namespace KeePassOTP
 			this.cbAdvanced.UseVisualStyleBackColor = true;
 			this.cbAdvanced.CheckedChanged += new System.EventHandler(this.cbAdvanced_CheckedChanged);
 			// 
+			// tbYandexPin
+			// 
+			this.tbYandexPin.Location = new System.Drawing.Point(676, 31);
+			this.tbYandexPin.Margin = new System.Windows.Forms.Padding(5);
+			this.tbYandexPin.Name = "tbYandexPin";
+			this.tbYandexPin.Size = new System.Drawing.Size(175, 38);
+			this.tbYandexPin.TabIndex = 5221;
+			// 
+			// lYandexPin
+			// 
+			this.lYandexPin.Location = new System.Drawing.Point(444, 37);
+			this.lYandexPin.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+			this.lYandexPin.Name = "lYandexPin";
+			this.lYandexPin.Size = new System.Drawing.Size(213, 36);
+			this.lYandexPin.TabIndex = 5222;
+			this.lYandexPin.Text = "Pin:";
+			// 
 			// KeePassOTPSetup
 			// 
 			this.AcceptButton = this.buttonOK;
@@ -512,5 +534,7 @@ namespace KeePassOTP
 		private System.Windows.Forms.PictureBox pbQR;
 		private System.Windows.Forms.PictureBox pbSearchScreen;
 		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.Label lYandexPin;
+		internal System.Windows.Forms.TextBox tbYandexPin;
 	}
 }

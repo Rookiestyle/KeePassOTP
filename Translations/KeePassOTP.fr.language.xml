@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-<TranslationVersion>6</TranslationVersion>
+<TranslationVersion>7</TranslationVersion>
 <item>
 <key>OTPCopyTrayNoEntries</key>
 <value>KPOTP - Aucune entrée disponible</value>
@@ -83,7 +83,7 @@
 </item>
 <item>
 <key>TimeCorrection</key>
-<value>Correction de temps - seulement pour TOTP et Steam</value>
+<value>Correction de temps - Pas pour HOTP</value>
 </item>
 <item>
 <key>URL</key>

@@ -104,6 +104,10 @@
     <Compile Include="Utilities\Tools_Main.cs" />
     <Compile Include="Utilities\Tools_Options.cs" />
     <Compile Include="Utilities\Tools_UI.cs" />
+    <Compile Include="Yandex\Base26Encoder.cs" />
+    <Compile Include="Yandex\YandexPin.cs" />
+    <Compile Include="Yandex\YandexSecret.cs" />
+    <Compile Include="Yandex\YaOtp.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Resources.resx">

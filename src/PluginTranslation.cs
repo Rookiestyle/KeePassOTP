@@ -52,7 +52,7 @@ namespace PluginTranslation
 		public static readonly string OTPHash = @"Hash:";
 		public static readonly string OTPTimestep = @"Timestep:";
 		public static readonly string OTPCounter = @"Counter:";
-		public static readonly string TimeCorrection = @"Time correction - TOTP && Steam only";
+		public static readonly string TimeCorrection = @"Time correction - not applicable for HOTP";
 		public static readonly string URL = @"URL: ";
 		public static readonly string TimeDiff = @"Diff: ";
 		public static readonly string TimeCorrectionOff = @"No time correction";

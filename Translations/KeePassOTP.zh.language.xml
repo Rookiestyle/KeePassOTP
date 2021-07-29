@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>3</TranslationVersion>
+  <TranslationVersion>4</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的条目</value>
@@ -83,7 +83,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>时间校正 - TOTP &amp;&amp; 仅 Steam</value>
+    <value>时间校正 - 不适用于 HOTP</value>
   </item>
   <item>
     <key>URL</key>

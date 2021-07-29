@@ -90,6 +90,7 @@ namespace KeePassOTP
 			cbOTPHashFunc.SelectedIndex = (int)OTP.Hash;
 			tbTOTPTimestep.Text = OTP.TOTPTimestep.ToString();
 			tbHOTPCounter.Text = OTP.HOTPCounter.ToString();
+			tbYandexPin.Text = OTP.YandexPin;
 
 			if (bCheckAdvancedMode)
 			{
@@ -172,24 +173,18 @@ namespace KeePassOTP
 			if (cbOTPType.SelectedIndex == 0) OTP.Type = KPOTPType.HOTP;
 			else if (cbOTPType.SelectedIndex == 1) OTP.Type = KPOTPType.TOTP;
 			else if (cbOTPType.SelectedIndex == 2) OTP.Type = KPOTPType.STEAM;
+			else if (cbOTPType.SelectedIndex == 3) OTP.Type = KPOTPType.YANDEX;
 
-			pbTOTPLifetime.Maximum = OTP.TOTPTimestep;
-			pbTOTPLifetime.Value = OTP.RemainingSeconds;
-			gTime.Enabled = tbTOTPTimestep.Visible = lTimestep.Visible = OTP.Type == KPOTPType.TOTP;
-			pbTOTPLifetime.Visible = OTP.Type != KPOTPType.HOTP;
-			tbHOTPCounter.Visible = lCounter.Visible = OTP.Type == KPOTPType.HOTP;
+			OTP.YandexPin = tbYandexPin.Text;
 
-			cbOTPLength.Enabled = OTP.Type != KPOTPType.STEAM;
-			if (OTP.Type == KPOTPType.STEAM)
-			{
-				if (!cbOTPLength.Items.Contains("5")) cbOTPLength.Items.Add("5");
-				cbOTPLength.SelectedIndex = cbOTPLength.Items.Count - 1;
-			}
-			else if (cbOTPLength.Items.Contains("5"))
-			{
-				cbOTPLength.Items.RemoveAt(cbOTPLength.Items.Count - 1);
-				cbOTPLength.SelectedIndex = 0;
-			}
+			if (OTP.Type == KPOTPType.TOTP)
+				AdjustFields_TOTP();
+			else if (OTP.Type == KPOTPType.HOTP)
+				AdjustFields_HOTP();
+			else if (OTP.Type == KPOTPType.STEAM)
+				AdjustFields_Steam();
+			else if (OTP.Type == KPOTPType.YANDEX)
+				AdjustFields_Yandex();
 
 			if (!tbTOTPTimeCorrectionURL.Focused)
 			{
@@ -235,6 +230,104 @@ namespace KeePassOTP
 
 			otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
 			otpPreviewNext.Text = "Next: " + (string.IsNullOrEmpty(otpValue) ? "N/A" : otpValue);
+		}
+
+		private void SetEnabled(bool bEnabled, params Control[] controls)
+		{
+			foreach (var c in controls)
+			{
+				c.Enabled = bEnabled;
+				if (bEnabled) c.Visible = bEnabled && (c != gTime || cbAdvanced.Checked);
+			}
+		}
+
+		private void SetVisible(bool bEnabled, params Control[] controls)
+		{
+			foreach (var c in controls) c.Visible= bEnabled;
+		}
+
+		private void AdjustFields_TOTP()
+		{
+			if (cbOTPLength.Items.Contains("5"))
+			{
+				cbOTPLength.Items.RemoveAt(cbOTPLength.Items.Count - 1);
+				cbOTPLength.SelectedIndex = 0;
+			}
+			if (cbOTPFormat.Items.Contains("BASE26"))
+			{
+				cbOTPFormat.Items.Remove("BASE26");
+				cbOTPFormat.SelectedIndex = 0;
+			}
+
+			pbTOTPLifetime.Maximum = OTP.TOTPTimestep;
+			pbTOTPLifetime.Value = OTP.RemainingSeconds;
+
+			SetEnabled(true, cbOTPFormat, cbOTPLength, cbOTPHashFunc, tbTOTPTimestep, lTimestep, pbTOTPLifetime, gTime);
+			SetVisible(false, tbHOTPCounter, lCounter, tbYandexPin, lYandexPin);
+			SetVisible(true, lFormat, lLength, lHash);
+		}
+
+		private void AdjustFields_Steam()
+		{
+			if (!cbOTPLength.Items.Contains("5"))
+			{
+				cbOTPLength.Items.Add("5"); ;
+				cbOTPLength.SelectedIndex = cbOTPLength.Items.Count - 1;
+			}
+			if (cbOTPFormat.Items.Contains("BASE26"))
+			{
+				cbOTPFormat.Items.Remove("BASE26");
+				cbOTPFormat.SelectedIndex = 0;
+			}
+
+			pbTOTPLifetime.Maximum = OTP.TOTPTimestep;
+			pbTOTPLifetime.Value = OTP.RemainingSeconds;
+
+			SetEnabled(true, cbOTPFormat, cbOTPHashFunc, pbTOTPLifetime, gTime);
+			SetEnabled(false, cbOTPLength);
+			SetVisible(false, tbTOTPTimestep, lTimestep, tbHOTPCounter, lCounter, tbYandexPin, lYandexPin);
+			SetVisible(true, lFormat, lLength, cbOTPLength, lHash);
+		}
+
+		private void AdjustFields_HOTP()
+		{
+			if (cbOTPLength.Items.Contains("5"))
+			{
+				cbOTPLength.Items.RemoveAt(cbOTPLength.Items.Count - 1);
+				cbOTPLength.SelectedIndex = 0;
+			}
+			if (cbOTPFormat.Items.Contains("BASE26"))
+			{
+				cbOTPFormat.Items.Remove("BASE26");
+				cbOTPFormat.SelectedIndex = 0;
+			}
+
+			SetEnabled(true, cbOTPFormat, cbOTPLength, cbOTPHashFunc, tbHOTPCounter, lCounter);
+			SetVisible(false, tbTOTPTimestep, lTimestep, tbYandexPin, lYandexPin, pbTOTPLifetime, gTime);
+			SetVisible(true, lFormat, lLength, lHash);
+		}
+
+		private void AdjustFields_Yandex()
+		{
+			if (cbOTPLength.Items.Contains("5"))
+			{
+				cbOTPLength.Items.RemoveAt(cbOTPLength.Items.Count - 1);
+				cbOTPLength.SelectedIndex = 0;
+			}
+			if (!cbOTPFormat.Items.Contains("BASE26"))
+			{
+				cbOTPFormat.Items.Add("BASE26");
+				cbOTPFormat.SelectedIndex = cbOTPFormat.Items.Count - 1;
+			}
+
+			pbTOTPLifetime.Maximum = OTP.TOTPTimestep;
+			pbTOTPLifetime.Value = OTP.RemainingSeconds;
+
+			cbOTPLength.SelectedIndex = 2; //8
+			
+			SetEnabled(true, tbYandexPin, lYandexPin, pbTOTPLifetime, gTime);
+			SetVisible(false, tbTOTPTimestep, lTimestep, cbOTPFormat, cbOTPLength, cbOTPHashFunc, tbHOTPCounter, lCounter);
+			SetVisible(false, lFormat, lLength, lHash);
 		}
 
 		private void OnFormClosing(object sender, FormClosingEventArgs e)

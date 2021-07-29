@@ -14,7 +14,8 @@ namespace KeePassOTP
 	{
 		HOTP = 0,
 		TOTP,
-		STEAM
+		STEAM,
+		YANDEX
 	}
 
 	public enum KPOTPHash : int
@@ -53,6 +54,13 @@ namespace KeePassOTP
 		}
 
 		public KPOTPEncoding Encoding = KPOTPEncoding.BASE32;
+
+		private string m_YandexPin = string.Empty;
+		public string YandexPin
+		{
+			get { return m_YandexPin; }
+			set { m_YandexPin = value; }
+		}
 
 		public int m_length = 6;
 		public int Length
@@ -104,7 +112,20 @@ namespace KeePassOTP
 			set { SetOTPAuthString(value); }
 		}
 
-		public bool Valid { get { return (m_key != null) && !m_seed.IsEmpty; } }
+		public bool Valid 
+		{ 
+			get 
+			{
+				if (Type == KPOTPType.YANDEX)
+				{
+					if (string.IsNullOrEmpty(YandexPin)) return false;
+					int l;
+					if (!KeePassOTP.YandexPin.Verify(YandexPin, out l)) return false;
+					return !m_seed.IsEmpty && !string.IsNullOrEmpty(YandexPin);
+				}
+				else return (m_key != null) && !m_seed.IsEmpty; 
+			} 
+		}
 
 		public TimeSpan OTPTimeCorrection = TimeSpan.Zero;
 		private DateTime UtcNow { get { return DateTime.UtcNow - OTPTimeCorrection; } }
@@ -147,7 +168,18 @@ namespace KeePassOTP
 			//List of time correction data is filled asynchronously
 			//Call it synchronously as it is required now!
 			if (CheckTime && Type != KPOTPType.HOTP) GetTimeCorrection(m_url);
-			byte[] data = (Type == KPOTPType.HOTP) ? GetHOTPData(ShowNext) : GetTOTPData(ShowNext);
+
+			if (Type == KPOTPType.YANDEX)
+			{
+				return GetYandexData(ShowNext);
+			}
+			byte[] data;
+			switch (Type)
+			{
+				case KPOTPType.HOTP: data = GetHOTPData(ShowNext); break;
+				default: data = GetTOTPData(ShowNext); break;
+			}
+			if (data == null) return string.Empty;
 			byte[] hash = ComputeHash(data);
 			MemUtil.ZeroByteArray(data);
 			int offset = hash[hash.Length - 1] & 0xF;
@@ -158,8 +190,11 @@ namespace KeePassOTP
 							 (hash[offset + 3] & 0xFF);
 
 			string result = string.Empty;
-			if (Type != KPOTPType.STEAM) result = (binary % (int)Math.Pow(10, Length)).ToString().PadLeft(Length, '0');
-			else result = GetSteamData(binary);
+			switch (Type)
+			{
+				case KPOTPType.STEAM: result = GetSteamString(binary); break;
+				default: result = (binary % (int)Math.Pow(10, Length)).ToString().PadLeft(Length, '0'); break;
+			}
 
 			return result + (string.IsNullOrEmpty(m_url) || m_timeCorrectionUrls.ContainsKey(m_url) ? string.Empty : "*");
 		}
@@ -173,6 +208,26 @@ namespace KeePassOTP
 			otp = otp.Substring(0, split) + " " + otp.Substring(split);
 			if (!bFinal) otp += "*";
 			return otp;
+		}
+		private string GetYandexData(bool showNext)
+		{
+			return GetYandexData(showNext, Ticks);
+		}
+		private string GetYandexData(bool showNext, long ticks)
+		{
+			YandexSecret ys;
+			YandexPin yp;
+			if (!YandexSecret.TryCreate(OTPSeed, out ys)) return null;
+			if (!KeePassOTP.YandexPin.TryCreate(YandexPin, out yp)) return null;
+			try
+			{
+				YaOtp yo = new YaOtp(ys, yp, () => showNext ? DateTime.UtcNow.AddSeconds(30) : DateTime.UtcNow);
+				return yo.ComputeOtp();
+			}
+			catch
+			{
+				return null;
+			}
 		}
 
 		private byte[] GetHOTPData(bool showNext)
@@ -191,7 +246,19 @@ namespace KeePassOTP
 		private static readonly char[] aSteamChars = new char[] { '2', '3', '4', '5',
 			'6', '7', '8', '9', 'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P',
 			'Q', 'R', 'T', 'V', 'W', 'X', 'Y' };
-		private string GetSteamData(int binary)
+		private string GetSteamString(int binary)
+		{
+			string result = string.Empty;
+			for (int i = 0; i < Length; i++)
+			{
+				result += aSteamChars[binary % aSteamChars.Length];
+				binary /= aSteamChars.Length;
+			}
+
+			return result;
+		}
+
+		private string GetYandexString(int binary)
 		{
 			string result = string.Empty;
 			for (int i = 0; i < Length; i++)
@@ -252,6 +319,8 @@ namespace KeePassOTP
 				otpSuffix += "&issuer=" + Encode(Issuer, false);
 			if (Type == KPOTPType.STEAM)
 				otpSuffix += "&encoder=steam";
+			else if (Type == KPOTPType.YANDEX)
+				otpSuffix += "&yandexpin=" + Encode(YandexPin,false) + "&encoder=yandex"; 
 			return new ProtectedString(true, otpPrefix) + m_seed + new ProtectedString(true, otpSuffix);
 		}
 
@@ -348,6 +417,11 @@ namespace KeePassOTP
 			string sIssuerParameter = parameters.Get("issuer");
 			if (!string.IsNullOrEmpty(sIssuerParameter)) Issuer = Decode(sIssuerParameter);
 
+			if (Type == KPOTPType.YANDEX)
+			{
+				YandexPin = parameters.Get("yandexpin");
+			}
+
 			//Remove %3d / %3D at the end of the seed
 			c = seed.ReadChars();
 			idx = c.Length - 3;
@@ -440,6 +514,7 @@ namespace KeePassOTP
 		{
 			ProtectedString work = SanitizeSeed(value, Encoding);
 			m_seed = work;
+			if (Type == KPOTPType.YANDEX) return;
 			try
 			{
 				if (Encoding == KPOTPEncoding.BASE32)
@@ -611,6 +686,7 @@ namespace KeePassOTP
 			if (otp1.Length != otp2.Length) return false;
 			if ((otp1.Type == KPOTPType.TOTP) && (otp1.TOTPTimestep != otp2.TOTPTimestep)) return false;
 			if ((otp1.Type == KPOTPType.TOTP) && (otp1.TimeCorrectionUrlOwn != otp2.TimeCorrectionUrlOwn)) return false;
+			if (otp1.Type == KPOTPType.YANDEX && otp1.YandexPin != otp2.YandexPin) return false;
 			if (otp1.TimeCorrectionUrlOwn && (otp1.Type == KPOTPType.TOTP))
 			{
 				if (otp1.TimeCorrectionUrl != otp2.TimeCorrectionUrl) return false;
