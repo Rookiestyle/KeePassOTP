@@ -34,7 +34,7 @@ namespace KeePassOTP
 			public PwDatabase OTPDB { get; private set; }
 
 			public const string DBNAME = "KeePassOTP.DB";
-			private const string UUID = "Entry UUID";
+			internal const string UUID = "Entry UUID";
 			private const string FILEFORMAT = "KeePass KDBX (2.x)";
 
 			private bool m_bOpening = false;
@@ -435,7 +435,7 @@ namespace KeePassOTP
 			public override OTPDefinition OTPDefined(PwEntry pe)
 			{
 				if (!SetEntry(pe, false)) return OTPDefinition.None;
-				bool bDB = StrUtil.StringToBool(m_pe.Strings.ReadSafe(DBNAME));
+				bool bDB = StrUtil.StringToBool(m_pe.CustomData.Get(DBNAME));
 				if (!bDB || !OTPDB_Exists) return OTPDefinition.None;
 				bool bCreated = false;
 				GetOTPEntry(false, out bCreated);
@@ -499,21 +499,21 @@ namespace KeePassOTP
 				}
 				m_peOTP.Strings.Set(Config.OTPFIELD, myOTP.OTPAuthString);
 				if (myOTP.TimeCorrectionUrlOwn)
-					m_peOTP.Strings.Set(Config.TIMECORRECTION, new ProtectedString(false, "OWNURL"));
+					m_peOTP.CustomData.Set(Config.TIMECORRECTION, "OWNURL");
 				else if (string.IsNullOrEmpty(myOTP.TimeCorrectionUrl) || (myOTP.TimeCorrectionUrl == "OFF"))
-					m_peOTP.Strings.Remove(Config.TIMECORRECTION);
+					m_peOTP.CustomData.Remove(Config.TIMECORRECTION);
 				else
-					m_peOTP.Strings.Set(Config.TIMECORRECTION, new ProtectedString(false, myOTP.TimeCorrectionUrl));
+					m_peOTP.CustomData.Set(Config.TIMECORRECTION, myOTP.TimeCorrectionUrl);
 				
 				Touch(m_peOTP);
 				if (myOTP.OTPSeed.IsEmpty)
-					m_pe.Strings.Remove(DBNAME);
+					m_pe.CustomData.Remove(DBNAME);
 				else
-					m_pe.Strings.Set(DBNAME, new ProtectedString(false, StrUtil.BoolToString(true)));
+					m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
 				FlagChanged(false);
 				FlagChanged(true);
 
-				m_pe.Touch(true);
+				m_pe.Touch(true, false);
 			}
 
 			public void UpdateOTPData(PwEntry pe, bool bBackup)
@@ -669,14 +669,17 @@ namespace KeePassOTP
 				PluginDebug.AddInfo("Get OTP settings", 0, "Uuid: " + m_pe.Uuid.ToHexString(), "OTP Uuid: " + m_peOTP.Uuid.ToHexString(), "Settings: " + settings);
 				*/
 				KeePassLib.Collections.ProtectedStringDictionary dStrings = new KeePassLib.Collections.ProtectedStringDictionary();
+				KeePassLib.Collections.StringDictionaryEx dCustomData = new KeePassLib.Collections.StringDictionaryEx();
 				try
 				{
 					dStrings = m_peOTP.Strings;
+					dCustomData = m_peOTP.CustomData;
 				}
 				catch { return EmptyKPOTDB; }
 
 				myOTP.OTPAuthString = dStrings.GetSafe(Config.OTPFIELD);
-				string timeCorrection = dStrings.ReadSafe(Config.TIMECORRECTION);
+				string timeCorrection = dCustomData.Get(Config.TIMECORRECTION);
+				timeCorrection = string.IsNullOrEmpty(timeCorrection) ? string.Empty : timeCorrection;
 				if (timeCorrection == "OWNURL")
 				{
 					myOTP.TimeCorrectionUrlOwn = true;
@@ -938,19 +941,19 @@ namespace KeePassOTP
 				{
 					m_pe = pe;
 					ProtectedString otpfield = m_pe.Strings.GetSafe(Config.OTPFIELD);
-					ProtectedString timecorrection = m_pe.Strings.GetSafe(Config.TIMECORRECTION);
+					string timecorrection = m_pe.CustomData.Get(Config.TIMECORRECTION);
 					if (otpfield.IsEmpty) continue;
 					bool bCreated = false;
 					GetOTPEntry(true, out bCreated);
 					m_peOTP.Strings.Set(Config.OTPFIELD, otpfield);
-					if (!timecorrection.IsEmpty) m_peOTP.Strings.Set(Config.TIMECORRECTION, timecorrection);
-					else m_peOTP.Strings.Remove(Config.TIMECORRECTION);
+					if (!string.IsNullOrEmpty(timecorrection)) m_peOTP.CustomData.Set(Config.TIMECORRECTION, timecorrection);
+					else m_peOTP.CustomData.Remove(Config.TIMECORRECTION);
 					//Seed has been added to OTP db, increase moved-counter
 					moved++;
 					m_pe.Strings.Remove(Config.OTPFIELD);
-					m_pe.Strings.Remove(Config.TIMECORRECTION);
-					m_pe.Strings.Set(DBNAME, new ProtectedString(false, StrUtil.BoolToString(true)));
-					m_pe.Touch(true);
+					m_pe.CustomData.Remove(Config.TIMECORRECTION);
+					m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
+					m_pe.Touch(true, false);
 					FlagChanged(false);
 				}
 				m_pe = peBackup;
@@ -970,12 +973,12 @@ namespace KeePassOTP
 					foreach (PwEntry pe in DB.RootGroup.GetEntries(true).Where(x => uuid.Equals(x.Uuid)))
 					{
 						pe.Strings.Set(Config.OTPFIELD, peOTP.Strings.GetSafe(Config.OTPFIELD));
-						if (peOTP.Strings.Exists(Config.TIMECORRECTION))
-							pe.Strings.Set(Config.TIMECORRECTION, peOTP.Strings.GetSafe(Config.TIMECORRECTION));
+						if (peOTP.CustomData.Exists(Config.TIMECORRECTION))
+							pe.CustomData.Set(Config.TIMECORRECTION, peOTP.CustomData.Get(Config.TIMECORRECTION));
 						else
-							pe.Strings.Remove(Config.TIMECORRECTION);
-						pe.Strings.Remove(DBNAME);
-						pe.Touch(true);
+							pe.CustomData.Remove(Config.TIMECORRECTION);
+						pe.CustomData.Remove(DBNAME);
+						pe.Touch(true, false);
 						moved++;
 					}
 				}

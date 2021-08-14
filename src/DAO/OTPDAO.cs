@@ -258,6 +258,7 @@ namespace KeePassOTP
 			OTPAuthFormatCorrection = 8,
 			CleanOTPDB = 16, //Remove outdated entries from OTP-DB
 			ProcessReferences = 32,
+			EntryStrings2CustomData = 64,
 		}
 
 		public static bool CheckAndMigrate(PwDatabase db)
@@ -337,6 +338,13 @@ namespace KeePassOTP
 				int r = ProcessReferences(db);
 				bMigrated |= r > 0;
 				if (r >= 0) omStatusNew |= OTP_Migrations.ProcessReferences;
+			}
+
+			if (MigrationRequired(OTP_Migrations.EntryStrings2CustomData, omFlags, omStatusOld))
+			{
+				int r = Strings2CustomData(db);
+				bMigrated |= r > 0;
+				if (r >= 0) omStatusNew |= OTP_Migrations.EntryStrings2CustomData;
 			}
 
 			if ((omStatusNew != omStatusOld) || bMigrated)
@@ -420,6 +428,47 @@ namespace KeePassOTP
 					pe.CreateBackup(otpdb);
 					pe.Strings.Set(Config.OTPFIELD, otp.OTPAuthString);
 				}
+			}
+			return i;
+		}
+
+		private static int Strings2CustomData(PwDatabase db)
+		{
+			//Get DB to work on
+			PwDatabase otpdb = db;
+			OTPDAO.OTPHandler_DB h = GetOTPHandler(db);
+			if (h != null)
+			{
+				if (!h.EnsureOTPUsagePossible(null)) return -1;
+				otpdb = h.OTPDB;
+			}
+			int i = 0;
+			KeePassLib.Delegates.GFunc<PwEntry, string, bool> FieldMoved = delegate (PwEntry pe, string sField)
+			{
+				if (!pe.Strings.Exists(sField)) return false;
+				string sValue = pe.Strings.ReadSafe(sField);
+				pe.Strings.Remove(sField);
+				if (!string.IsNullOrEmpty(sValue))
+					pe.CustomData.Set(sField, sValue);
+				return true;
+            };
+
+            foreach (PwEntry pe in otpdb.RootGroup.GetEntries(true))
+			{
+				bool bMoved = FieldMoved(pe, Config.TIMECORRECTION);
+				bMoved |= FieldMoved(pe, OTPHandler_DB.DBNAME);
+				if (!bMoved) continue;
+				i++;
+				pe.Touch(true, false);
+
+				PwUuid pwUuid = new PwUuid(MemUtil.HexStringToByteArray(pe.Strings.ReadSafe(OTPHandler_DB.UUID)));
+				PwEntry peMain = db.RootGroup.FindEntry(pwUuid, true);
+				if (peMain != null)
+                {
+					peMain.Strings.Remove(OTPHandler_DB.DBNAME);
+					peMain.CustomData.Set(OTPHandler_DB.DBNAME, StrUtil.BoolToString(true)); 
+					peMain.Touch(true, false);
+                }
 			}
 			return i;
 		}

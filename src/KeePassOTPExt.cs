@@ -506,8 +506,17 @@ namespace KeePassOTP
 				string dbName = UrlUtil.GetFileName(db.IOConnectionInfo.Path);
 				if (!string.IsNullOrEmpty(db.Name))
 					dbName = db.Name + " (" + dbName + ")";
-				string sSearch = Config.UseDBForOTPSeeds(db) ? OTPDAO.OTPHandler_DB.DBNAME : Config.OTPFIELD;
-				var entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(sSearch)).ToList();
+				List<PwEntry> entries = null;
+				if (Config.UseDBForOTPSeeds(db))
+				{
+					entries = db.RootGroup.GetEntries(true).Where(
+						x => x.CustomData.Exists(OTPDAO.OTPHandler_DB.DBNAME)
+							&& StrUtil.StringToBool(x.CustomData.Get(OTPDAO.OTPHandler_DB.DBNAME))).ToList();
+				}
+				else
+				{
+					entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)).ToList();
+				}
 				if (!Program.Config.Integration.AutoTypeExpiredCanMatch) // Remove expired entries
 				{
 					entries = entries.Where(x => !x.Expires || x.ExpiryTime >= dtExpired).ToList();

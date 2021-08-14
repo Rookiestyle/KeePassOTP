@@ -69,7 +69,7 @@ namespace KeePassOTP
 				if (myOTP.OTPSeed.IsEmpty)
 				{
 					pe.Strings.Remove(Config.OTPFIELD);
-					pe.Strings.Remove(Config.TIMECORRECTION);
+					pe.CustomData.Remove(Config.TIMECORRECTION);
 				}
 				else
 				{
@@ -77,13 +77,13 @@ namespace KeePassOTP
 					//pe.Strings.Set(Config.SEED, myOTP.OTPSeed);
 					pe.Strings.Set(Config.OTPFIELD, myOTP.OTPAuthString);
 					if (myOTP.TimeCorrectionUrlOwn)
-						pe.Strings.Set(Config.TIMECORRECTION, new ProtectedString(false, "OWNURL"));
+						pe.CustomData.Set(Config.TIMECORRECTION, "OWNURL");
 					else if (string.IsNullOrEmpty(myOTP.TimeCorrectionUrl) || (myOTP.TimeCorrectionUrl == "OFF"))
-						pe.Strings.Remove(Config.TIMECORRECTION);
+						pe.CustomData.Remove(Config.TIMECORRECTION);
 					else
-						pe.Strings.Set(Config.TIMECORRECTION, new ProtectedString(false, myOTP.TimeCorrectionUrl));
+						pe.CustomData.Set(Config.TIMECORRECTION, myOTP.TimeCorrectionUrl);
 				}
-				pe.Touch(true);
+				pe.Touch(true, false);
 			}
 
 			private EntryOTP EnsureEntry(PwEntry pe)
@@ -130,7 +130,8 @@ namespace KeePassOTP
 				myOTP.OTPSeed = pe.Strings.GetSafe(Config.SEED);
 				*/
 				myOTP.OTPAuthString = pe.Strings.Get(Config.OTPFIELD);
-				string timeCorrection = pe.Strings.ReadSafe(Config.TIMECORRECTION);
+				string timeCorrection = pe.CustomData.Get(Config.TIMECORRECTION);
+				timeCorrection = string.IsNullOrEmpty(timeCorrection) ? string.Empty : timeCorrection;
 				if (timeCorrection == "OWNURL")
 				{
 					myOTP.TimeCorrectionUrlOwn = true;
