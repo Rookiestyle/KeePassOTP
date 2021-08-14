@@ -684,10 +684,10 @@ namespace KeePassOTP
 			if (otp1.Hash != otp2.Hash) return false;
 			if (otp1.Type != otp2.Type) return false;
 			if (otp1.Length != otp2.Length) return false;
-			if ((otp1.Type == KPOTPType.TOTP) && (otp1.TOTPTimestep != otp2.TOTPTimestep)) return false;
-			if ((otp1.Type == KPOTPType.TOTP) && (otp1.TimeCorrectionUrlOwn != otp2.TimeCorrectionUrlOwn)) return false;
+			if ((otp1.Type != KPOTPType.HOTP) && (otp1.TOTPTimestep != otp2.TOTPTimestep)) return false;
+			if ((otp1.Type != KPOTPType.HOTP) && (otp1.TimeCorrectionUrlOwn != otp2.TimeCorrectionUrlOwn)) return false;
 			if (otp1.Type == KPOTPType.YANDEX && otp1.YandexPin != otp2.YandexPin) return false;
-			if (otp1.TimeCorrectionUrlOwn && (otp1.Type == KPOTPType.TOTP))
+			if (otp1.Type != KPOTPType.HOTP)
 			{
 				if (otp1.TimeCorrectionUrl != otp2.TimeCorrectionUrl) return false;
 				if ((otp1.TimeCorrectionUrl == "OWNURL") && !string.IsNullOrEmpty(url) && (otp2.TimeCorrectionUrl != url)) return false;

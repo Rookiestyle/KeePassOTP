@@ -26,6 +26,8 @@ namespace KeePassOTP
 		private bool m_NoUpdate = true;
 		private string m_BackupURL;
 
+		private bool m_bFormClosing = false;
+
 		public KeePassOTPSetup()
 		{
 			//
@@ -186,7 +188,7 @@ namespace KeePassOTP
 			else if (OTP.Type == KPOTPType.YANDEX)
 				AdjustFields_Yandex();
 
-			if (!tbTOTPTimeCorrectionURL.Focused)
+			if (!tbTOTPTimeCorrectionURL.Focused || m_bFormClosing)
 			{
 				if (totpTimeCorrectionType.SelectedIndex == 0)
 				{
@@ -333,6 +335,7 @@ namespace KeePassOTP
 		private void OnFormClosing(object sender, FormClosingEventArgs e)
 		{
 			m_timer.Tick -= OnValueChanged;
+			m_bFormClosing = true;
 			UpdatePreview();
 		}
 
@@ -369,7 +372,7 @@ namespace KeePassOTP
 				|| (OTP.TOTPTimestep != 30)
 				|| (OTP.Encoding != KPOTPEncoding.BASE32)
 				|| (OTP.Hash != KPOTPHash.SHA1)
-				|| (!string.IsNullOrEmpty(OTP.TimeCorrectionUrl) && !OTP.TimeCorrectionUrlOwn);
+				|| (!string.IsNullOrEmpty(OTP.TimeCorrectionUrl) || OTP.TimeCorrectionUrlOwn);
 		}
 
 		private void pbQR_DragDrop(object sender, DragEventArgs e)
