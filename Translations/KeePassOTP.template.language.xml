@@ -299,4 +299,20 @@ This message will not be shown again.</value>
     <key>OTP_Setup_DragDrop</key>
     <value>Drag &amp; drop a valid OTP QR code</value>
   </item>
+  <item>
+    <key>OTPRenewal</key>
+    <value>Renew copied OTP</value>
+  </item>
+  <item>
+    <key>OTPRenewal_Inactive</key>
+    <value>Never</value>
+  </item>
+  <item>
+    <key>OTPRenewal_RespectClipboardTimeout</key>
+    <value>Renew until clipboard gets cleared</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Renew once if soon to expire</value>
+  </item>
 </Translation>

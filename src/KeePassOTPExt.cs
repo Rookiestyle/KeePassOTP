@@ -376,7 +376,7 @@ namespace KeePassOTP
 		{
 			PluginDebug.AddInfo("Prepare options page", 0);
 			Options options = new Options();
-			options.cgbCheckTFA.Checked = Config.CheckTFA;
+			options.cbCheckTFA.Checked = Config.CheckTFA;
 			options.hkcKPOTP.HotKey = Config.Hotkey;
 			options.cbAutoSubmit.Checked = Config.KPOTPAutoSubmit;
 			options.tbPlaceholder.Text = Config.Placeholder;
@@ -404,11 +404,12 @@ namespace KeePassOTP
 				kvp.Key.PreloadOTPDB(kvp.Value.Preload);
 			}
 
-			Config.CheckTFA = options.cgbCheckTFA.Checked;
+			Config.CheckTFA = options.cbCheckTFA.Checked;
 			Config.Hotkey = options.hkcKPOTP.HotKey;
 			string sOldPlaceholder = Config.Placeholder;
 			Config.KPOTPAutoSubmit = options.cbAutoSubmit.Checked;
 			Config.Placeholder = options.tbPlaceholder.Text;
+			Config.OTPRenewal = options.GetOTPRenewal();
 			if ((sOldPlaceholder != Config.Placeholder)
 				&& (Tools.AskYesNo(string.Format(PluginTranslate.MigratePlaceholder, sOldPlaceholder, Config.Placeholder)) == DialogResult.Yes))
 				MigratePlacholderInOpenDatabases(sOldPlaceholder, Config.Placeholder);
@@ -616,7 +617,7 @@ namespace KeePassOTP
 
 		internal static bool CopyOTP(PwEntry pe)
 		{
-			if (!OTPDAO.EnsureOTPUsagePossible(pe)) 
+			if (!OTPDAO.EnsureOTPUsagePossible(pe))
 			{
 				PluginDebug.AddError("Copy OTP failed", 0, "Uuid: " + pe.Uuid.ToHexString(), "OTP db not unlocked");
 				return false;
@@ -627,8 +628,7 @@ namespace KeePassOTP
 				PluginDebug.AddError("Copy OTP failed", 0, "Uuid: " + pe.Uuid.ToHexString());
 				return false;
 			}
-			ClipboardUtil.CopyAndMinimize(myOTP.GetOTP(false, true), true, Program.MainForm, pe, Program.MainForm.DocumentManager.SafeFindContainerOf(pe));
-			Program.MainForm.StartClipboardCountdown();
+			CopyToClipboardAndStartClipboardCountdown(pe, myOTP);
 			PluginDebug.AddInfo("Copy OTP success", 0, "Uuid: " + pe.Uuid.ToString());
 			if (myOTP.Type == KPOTPType.HOTP)
 			{
@@ -636,6 +636,87 @@ namespace KeePassOTP
 				OTPDAO.SaveOTP(myOTP, pe);
 			}
 			return true;
+		}
+
+		private static Timer m_tClipboardRenewalTimer = null;
+		internal static void CopyToClipboardAndStartClipboardCountdown(PwEntry pe, KPOTP kOTP)
+		{
+			if (m_tClipboardRenewalTimer != null)
+            {
+				m_tClipboardRenewalTimer.Stop();
+				m_tClipboardRenewalTimer.Dispose();
+				m_tClipboardRenewalTimer = null;
+            }
+
+			//Copy OTP to clipboard
+			string sOTP = kOTP.GetOTP(false, true);
+			ClipboardUtil.CopyAndMinimize(sOTP, true, Program.MainForm, pe, Program.MainForm.DocumentManager.SafeFindContainerOf(pe));
+
+			//Start clipboard countdown
+			Program.MainForm.StartClipboardCountdown();
+
+			//Check whether renewal is required
+			if (Config.OTPRenewal == Config.OTPRenewal_Enum.Inactive) return;
+
+			//No renewal for HOTP to ensure counters remain in sync
+			if (kOTP.Type == KPOTPType.HOTP) return;
+
+			int iRemainingSeconds = Program.Config.Security.ClipboardClearAfterSeconds - kOTP.RemainingSeconds;
+			int iAdditionalRenewals = 0;
+
+			Config.OTPRenewal = Config.OTPRenewal_Enum.RespectClipboardTimeout;
+			if (Config.OTPRenewal == Config.OTPRenewal_Enum.PreventShortDuration)
+			{
+				//Renew OTP once if it will expire soon
+				if (kOTP.RemainingSeconds > Config.TOTPSoonExpiring) return;
+				iAdditionalRenewals = 1;
+			}
+			else if (Config.OTPRenewal == Config.OTPRenewal_Enum.RespectClipboardTimeout)
+			{
+				//Renew OTP once if it will expire soon and clipboard is not cleared at all
+				if ((Program.Config.Security.ClipboardClearAfterSeconds < 1) && (kOTP.RemainingSeconds < Config.TOTPSoonExpiring))
+					iAdditionalRenewals = 1;
+				else if (iRemainingSeconds < 0) return; //OTP lifetime is longer than clipboard countdown timer
+				else
+				{
+					iAdditionalRenewals = 1;
+					while (iRemainingSeconds > kOTP.TOTPTimestep)
+					{
+						iAdditionalRenewals++;
+						iRemainingSeconds -= kOTP.TOTPTimestep;
+					}
+				}
+			}
+
+			//If current OTP will expire before the clipboard will be cleared, copy new one as soon as neccessary
+			//Do _NOT_ extend the clipboard countdown
+
+			m_tClipboardRenewalTimer = new Timer();
+			m_tClipboardRenewalTimer.Tick += (o, e) =>
+			{
+				if (m_tClipboardRenewalTimer == null) return;
+				m_tClipboardRenewalTimer.Stop();
+				if (iAdditionalRenewals < 1 || Clipboard.GetText() != sOTP) //No renewal if something else is in the clipboard
+				{
+					m_tClipboardRenewalTimer.Dispose();
+					m_tClipboardRenewalTimer = null;
+					return;
+				}
+
+				//Set interval to lifetime ot OTP
+				m_tClipboardRenewalTimer.Interval = kOTP.TOTPTimestep * 1000;
+				m_tClipboardRenewalTimer.Start();
+				sOTP = kOTP.GetOTP(false, true);
+				iAdditionalRenewals--;
+
+				//Copy new OTP to clipboard
+				//Do NOT minimize again
+				ClipboardUtil.Copy(sOTP, false, false, null, null, Program.MainForm.Handle);
+				Program.MainForm.SetStatusEx("Update TOTP " + sOTP);
+			};
+			//m_tClipboardRenewalTimer.Tag = lParams;
+			m_tClipboardRenewalTimer.Interval = kOTP.RemainingSeconds * 1000;
+			m_tClipboardRenewalTimer.Start();
 		}
 
 		private void AutotypeOTP(PwEntry pe, bool FromTray)

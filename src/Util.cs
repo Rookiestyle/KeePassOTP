@@ -14,6 +14,12 @@ namespace KeePassOTP
 {
 	internal static class Config
 	{
+		internal enum OTPRenewal_Enum
+		{
+			Inactive,
+			RespectClipboardTimeout,
+			PreventShortDuration,
+        }
 		internal const string DefaultPlaceholder = "{KPOTP}";
 		internal const string OTPFIELD = "otp";
 		internal const string TIMECORRECTION = "KeePassOTP.TimeCorrection";
@@ -29,6 +35,7 @@ namespace KeePassOTP
 		private const string Config_KPOTPAutoSubmit = "KeePassOTP.KPOTPAutoSubmit";
 		private const string Config_ShowHintSyncRequiresUnlock = "KeePassOTP.ShowHintSyncRequiresUnlock";
 		private const string Config_ReadScreenForQRCodeExplanationShown = "KeePassOTP.ReadScreenForQRCodeExplanationShown";
+		private const string Config_OTPRenewal = "KeePassOTP.OTPRenewal"; 
 		private static int HotkeyID = -1;
 
 		internal static void Init()
@@ -63,11 +70,25 @@ namespace KeePassOTP
 			set { Program.Config.CustomConfig.SetBool(Config_ReadScreenForQRCodeExplanationShown, value); }
 		}
 		
-
 		internal static bool CheckTFA
 		{
 			get { return Program.Config.CustomConfig.GetBool(Config_CheckTFA, true); }
 			set { Program.Config.CustomConfig.SetBool(Config_CheckTFA, value); }
+		}
+
+		internal static OTPRenewal_Enum OTPRenewal
+		{
+			get
+			{
+				OTPRenewal_Enum r;
+				try
+				{
+					r = (OTPRenewal_Enum)Enum.Parse(typeof(OTPRenewal_Enum), Program.Config.CustomConfig.GetString(Config_OTPRenewal, OTPRenewal_Enum.PreventShortDuration.ToString()));
+				}
+				catch { r = OTPRenewal_Enum.PreventShortDuration; }
+				return r;
+			}
+			set { Program.Config.CustomConfig.SetString(Config_OTPRenewal, value.ToString()); }
 		}
 
 		#region Hotkey and placeholder

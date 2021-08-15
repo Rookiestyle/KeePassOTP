@@ -138,6 +138,10 @@ KeePass itself will drop to background for max {0} seconds to simplify reading t
 
 This message will not be shown again.";
 		public static readonly string OTP_Setup_DragDrop = @"Drag & drop a valid OTP QR code";
+		public static readonly string OTPRenewal = @"Renew copied OTP";
+		public static readonly string OTPRenewal_Inactive = @"Never";
+		public static readonly string OTPRenewal_RespectClipboardTimeout = @"Renew until clipboard gets cleared";
+		public static readonly string OTPRenewal_PreventShortDuration = @"Renew if soon to expire";
 		#endregion
 
 		#region NO changes in this area

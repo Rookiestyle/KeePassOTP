@@ -56,7 +56,7 @@ namespace KeePassOTP
 
 			tpGeneral.Text = KPRes.General;
 			gbAutotype.Text = KPRes.ConfigureAutoType;
-			cgbCheckTFA.Text = PluginTranslate.Options_CheckTFA;
+			cbCheckTFA.Text = PluginTranslate.Options_CheckTFA;
 			lHotkey.Text = PluginTranslate.Hotkey;
 			string sUrl = KPRes.Error;
 			try
@@ -118,6 +118,12 @@ namespace KeePassOTP
 				aLines[i] = aLines[i].Replace("{Options_Migrate2Entries}", PluginTranslate.Options_Migrate2Entries);
 			}
 			tbHelp.Lines = aLines;
+
+			gOtherOptions.Text = KPRes.Options;
+			lOTPRenewal.Text = PluginTranslate.OTPRenewal;
+			cbOTPRenewal.Items.Add(PluginTranslate.OTPRenewal_Inactive);
+			cbOTPRenewal.Items.Add(PluginTranslate.OTPRenewal_PreventShortDuration);
+			cbOTPRenewal.Items.Add(PluginTranslate.OTPRenewal_RespectClipboardTimeout);
 		}
 
 		private OTPDAO.OTPHandler_DB m_handler = null;
@@ -166,6 +172,8 @@ namespace KeePassOTP
 
 		public void InitEx(Dictionary<PwDatabase, DBSettings> dDB, PwDatabase current)
 		{
+			SetOTPRenewal();
+
 			bool bUnix = KeePassLib.Native.NativeLib.IsUnix();
 			hkcKPOTP.Enabled = !bUnix;
 			lHotkey.Enabled = !bUnix;
@@ -187,7 +195,21 @@ namespace KeePassOTP
 			else lbDB_SelectedIndexChanged(null, null);
 		}
 
-		private void cbUseDBForSeeds_CheckedChanged(object sender, EventArgs e)
+		private void SetOTPRenewal()
+		{
+			if (Config.OTPRenewal == Config.OTPRenewal_Enum.Inactive) cbOTPRenewal.SelectedIndex = 0;
+			else if (Config.OTPRenewal == Config.OTPRenewal_Enum.RespectClipboardTimeout) cbOTPRenewal.SelectedIndex = 2;
+			else cbOTPRenewal.SelectedIndex = 1;
+		}
+
+		internal Config.OTPRenewal_Enum GetOTPRenewal()
+        {
+			if (cbOTPRenewal.SelectedIndex == 0) return Config.OTPRenewal_Enum.Inactive;
+			else if (cbOTPRenewal.SelectedIndex == 2) return Config.OTPRenewal_Enum.RespectClipboardTimeout;
+			else return Config.OTPRenewal_Enum.PreventShortDuration;
+        }
+
+        private void cbUseDBForSeeds_CheckedChanged(object sender, EventArgs e)
 		{
 			PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
 			if (!cbUseDBForSeeds.Checked)

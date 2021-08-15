@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>17</TranslationVersion>
+  <TranslationVersion>18</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -167,8 +167,8 @@ Ist die OTP-Datenbank geöffnet?</value>
   <item>
     <key>Options_Check2FA_Help</key>
     <value>KeePassOTP lädt eine Liste Seiten von {0}, die 2FA (Zwei Faktor Authentifizierung) unterstützen.
-Im Anschluss daran, wird jede URL der Datenbank mit der Liste abgeglichen.
-Die OTP-Spalte wird darauf hinweisen, wenn 2FA möglich ist, aber noch nicht konfiguriert. Ein Doppelklick auf den Hinweis öffnet die jeweilige 2FA-Seite.
+Im Anschluss daran wird jede URL der Datenbank mit der Liste abgeglichen.
+Die OTP-Spalte wird darauf hinweisen, wenn 2FA möglich aber noch nicht konfiguriert ist. Ein Doppelklick auf den Hinweis öffnet die jeweilige 2FA-Seite.
 
 Die in der Datenbank gespeicherten URLs werden NICHT versendet!</value>
   </item>
@@ -230,7 +230,7 @@ Das kann zu Datenverlust führen.</value>
   </item>
   <item>
     <key>MigratePlaceholder</key>
-    <value>Der KeePassOTP wurde geändert und der vorher verwendete Platzhalter ist nicht mehr gültig.
+    <value>Der KeePassOTP Platzhalter wurde geändert und der vorher verwendete Platzhalter ist nicht mehr gültig.
 
 Alter Platzhalter: {0}
 Neuer Platzhalter: {1}
@@ -292,13 +292,29 @@ Tatsächliche Anzahl Datensätze: {0}</value>
   </item>
   <item>
     <key>ReadScreenForQRCodeExplain</key>
-    <value>KeePassOTP wird nach einem OTP QR code auf dem Bildschirm suchen.
+    <value>KeePassOTP wird nach einem OTP QR Code auf dem Bildschirm suchen.
 Um das zu erleichtern, wird KeePass selbst für maximal 30 Sekunden in den Hintergrund fallen.
 
 Dieses Hinweis wird nicht erneut angezeigt.</value>
   </item>
   <item>
     <key>OTP_Setup_DragDrop</key>
-    <value>Drag &amp; drop a valid OTP QR code</value>
+    <value>Ziehe einen gültigen OTP QR code hierhin</value>
+  </item>
+  <item>
+    <key>OTPRenewal</key>
+    <value>Kopiertes OTP aktualisieren</value>
+  </item>
+  <item>
+    <key>OTPRenewal_Inactive</key>
+    <value>Nie</value>
+  </item>
+  <item>
+    <key>OTPRenewal_RespectClipboardTimeout</key>
+    <value>Aktualisieren bis zum Leeren der Zwischenablage</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Einmaliges Aktualisieren bei kurzer Laufzeit</value>
   </item>
 </Translation>
