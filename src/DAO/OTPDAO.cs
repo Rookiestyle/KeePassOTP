@@ -455,20 +455,30 @@ namespace KeePassOTP
 
             foreach (PwEntry pe in otpdb.RootGroup.GetEntries(true))
 			{
+				if (!pe.Strings.Exists(Config.TIMECORRECTION)
+					&& !pe.Strings.Exists(OTPHandler_DB.DBNAME)
+					&& !pe.Strings.Exists(OTPHandler_DB.UUID))
+					continue;
 				bool bMoved = FieldMoved(pe, Config.TIMECORRECTION);
 				bMoved |= FieldMoved(pe, OTPHandler_DB.DBNAME);
-				if (!bMoved) continue;
+				if (bMoved) pe.Touch(true, false);
 				i++;
-				pe.Touch(true, false);
+				
+				//We're done if OTP secrets are stored within the entry
+				if (h == null) continue;
 
-				PwUuid pwUuid = new PwUuid(MemUtil.HexStringToByteArray(pe.Strings.ReadSafe(OTPHandler_DB.UUID)));
-				PwEntry peMain = db.RootGroup.FindEntry(pwUuid, true);
-				if (peMain != null)
-                {
-					peMain.Strings.Remove(OTPHandler_DB.DBNAME);
-					peMain.CustomData.Set(OTPHandler_DB.DBNAME, StrUtil.BoolToString(true)); 
-					peMain.Touch(true, false);
-                }
+				try
+				{
+					PwUuid pwUuid = new PwUuid(MemUtil.HexStringToByteArray(pe.Strings.ReadSafe(OTPHandler_DB.UUID)));
+					PwEntry peMain = db.RootGroup.FindEntry(pwUuid, true);
+					if (peMain != null)
+					{
+						peMain.Strings.Remove(OTPHandler_DB.DBNAME);
+						peMain.CustomData.Set(OTPHandler_DB.DBNAME, StrUtil.BoolToString(true));
+						peMain.Touch(true, false);
+					}
+				}
+				catch { }
 			}
 			return i;
 		}
