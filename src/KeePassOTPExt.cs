@@ -661,33 +661,40 @@ namespace KeePassOTP
 			//No renewal for HOTP to ensure counters remain in sync
 			if (kOTP.Type == KPOTPType.HOTP) return;
 
-			int iRemainingSeconds = Program.Config.Security.ClipboardClearAfterSeconds - kOTP.RemainingSeconds;
+			int iOTPValiditiy = kOTP.RemainingSeconds;
+			int iRemainingSeconds = Program.Config.Security.ClipboardClearAfterSeconds - iOTPValiditiy;
 			int iAdditionalRenewals = 0;
 
-			Config.OTPRenewal = Config.OTPRenewal_Enum.RespectClipboardTimeout;
-			if (Config.OTPRenewal == Config.OTPRenewal_Enum.PreventShortDuration)
+			bool bRestartClipboardCountdownOnce = false;
+			//Renew OTP once if it will expire soon 
+			//This applies for both PreventShortDuration as well as RespectClipboardTimeout
+			if (iOTPValiditiy < Config.TOTPSoonExpiring)
 			{
-				//Renew OTP once if it will expire soon
-				if (kOTP.RemainingSeconds > Config.TOTPSoonExpiring) return;
 				iAdditionalRenewals = 1;
+				//If clipboard countdown is active but lower then Config.TOTPSoonExpiring
+				//Restart clipboard countdown as well
+				bRestartClipboardCountdownOnce = Program.Config.Security.ClipboardClearAfterSeconds > 0
+					&& Program.Config.Security.ClipboardClearAfterSeconds <= Config.TOTPSoonExpiring;
 			}
+			else if (iRemainingSeconds < 0) //OTP lifetime is longer than clipboard countdown timer
+				iAdditionalRenewals = 0;
 			else if (Config.OTPRenewal == Config.OTPRenewal_Enum.RespectClipboardTimeout)
 			{
-				//Renew OTP once if it will expire soon and clipboard is not cleared at all
-				if ((Program.Config.Security.ClipboardClearAfterSeconds < 1) && (kOTP.RemainingSeconds < Config.TOTPSoonExpiring))
-					iAdditionalRenewals = 1;
-				else if (iRemainingSeconds < 0) return; //OTP lifetime is longer than clipboard countdown timer
-				else
+				iAdditionalRenewals = 1;
+				while (iRemainingSeconds > kOTP.TOTPTimestep)
 				{
-					iAdditionalRenewals = 1;
-					while (iRemainingSeconds > kOTP.TOTPTimestep)
-					{
-						iAdditionalRenewals++;
-						iRemainingSeconds -= kOTP.TOTPTimestep;
-					}
+					iAdditionalRenewals++;
+					iRemainingSeconds -= kOTP.TOTPTimestep;
 				}
 			}
+			PluginDebug.AddInfo("OTP renewal",
+				"Renewals: " + iAdditionalRenewals.ToString(),
+				"RestartClipboardCountdown: " + bRestartClipboardCountdownOnce,
+				"RenewalType: " + Config.OTPRenewal.ToString(),
+				"ClipboardTimeout: " + Program.Config.Security.ClipboardClearAfterSeconds.ToString(),
+				"OTP validity: " + iOTPValiditiy.ToString());
 
+			if (iAdditionalRenewals < 1) return;
 			//If current OTP will expire before the clipboard will be cleared, copy new one as soon as neccessary
 			//Do _NOT_ extend the clipboard countdown
 
@@ -712,7 +719,11 @@ namespace KeePassOTP
 				//Copy new OTP to clipboard
 				//Do NOT minimize again
 				ClipboardUtil.Copy(sOTP, false, false, null, null, Program.MainForm.Handle);
-				Program.MainForm.SetStatusEx("Update TOTP " + sOTP);
+				if (bRestartClipboardCountdownOnce)
+                {
+					bRestartClipboardCountdownOnce = false;
+					Program.MainForm.StartClipboardCountdown();
+				}
 			};
 			//m_tClipboardRenewalTimer.Tag = lParams;
 			m_tClipboardRenewalTimer.Interval = kOTP.RemainingSeconds * 1000;
