@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/rookiestyle/keepassotp)](https://www.gnu.org/licenses/gpl-3.0)
 
 KeePassOTP allows you to generate one time passwords (OTP).
-It supports both standard TOTP and standard HOTP as well as Steam OTP.
+It supports both standard TOTP and standard HOTP as well as Steam OTP and Yandex (Yandex.Key).
 
 Once set up, you can copy or auto-type the OTP.
 You may also create a QR code and scan it with an OTP app of your liking, e.g. andOTP, Google Authenticator etc.
