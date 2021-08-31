@@ -91,7 +91,7 @@ The OTP database will be opened everytime the main database is synchronized - ot
 
 >> OTP migration <<
 Depening on above options, OTP secrets are stored either within the respective entry or within a separate database.
-'{Options_Migrate2DB}' und '{Options_Migrate2Entries}' can be used to move the OTP secrets between those two locations.";
+'{Options_Migrate2DB}' and '{Options_Migrate2Entries}' can be used to move the OTP secrets between those two locations.";
 		public static readonly string MigrateOtherPlugins = @"Migrate from / to other plugins";
 		public static readonly string MigrateOtherPlugins_Delete = @"Remove {0} settings for successfully migrated entries?";
 		public static readonly string MigrateOtherPlugins_Result = @"{0} out of {1} entries were migrated successfully";
