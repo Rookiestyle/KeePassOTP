@@ -75,7 +75,7 @@ namespace PluginTools
 			AskOpen = KeePass.Program.CommandLineArgs["debugsaveonly"] == null;
 
 			DebugMode = KeePass.Program.CommandLineArgs[KeePass.App.AppDefs.CommandLineOptions.Debug] != null;
-			if (!DebugMode)
+			if (!DebugMode && (KeePass.Program.CommandLineArgs["debugplugin"] != null))
 			{
 				try
 				{
