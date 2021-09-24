@@ -1,10 +1,13 @@
 ﻿using KeePass.DataExchange;
+using KeePass.Resources;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;
 using PluginTools;
+using PluginTranslation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace KeePassOTP
 {
@@ -58,6 +61,15 @@ namespace KeePassOTP
 
 		public static void Init(bool bReload)
 		{
+			//Don't ask for consent if TFA check is already inactive
+			Config.CheckTFA_InfoShown |= !Config.CheckTFA;
+			if (!Config.CheckTFA_InfoShown)
+            {
+				string sQuestion = string.Format(PluginTranslate.Options_Check2FA_Help, TFA_JSON_FILE)
+					+ "\n\n" + KPRes.AskContinue;
+				Config.CheckTFA = DialogResult.Yes == Tools.AskYesNo(sQuestion);
+				Config.CheckTFA_InfoShown = true;
+			}
 			if (!Config.CheckTFA) return;
 			if ((m_LoadState == TFALoadProcess.Loaded) && !bReload) return;
 			if (bReload)

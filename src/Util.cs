@@ -70,9 +70,15 @@ namespace KeePassOTP
 			set { Program.Config.CustomConfig.SetBool(Config_ReadScreenForQRCodeExplanationShown, value); }
 		}
 		
+		internal static bool CheckTFA_InfoShown
+        {
+			get { return Program.Config.CustomConfig.GetBool(Config_CheckTFA + "_InfoShown", false); }
+			set { Program.Config.CustomConfig.SetBool(Config_CheckTFA + "_InfoShown", value); }
+		}
+
 		internal static bool CheckTFA
 		{
-			get { return Program.Config.CustomConfig.GetBool(Config_CheckTFA, true); }
+			get { return Program.Config.CustomConfig.GetBool(Config_CheckTFA, false); }
 			set { Program.Config.CustomConfig.SetBool(Config_CheckTFA, value); }
 		}
 
