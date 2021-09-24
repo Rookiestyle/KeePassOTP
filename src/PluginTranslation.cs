@@ -142,6 +142,7 @@ This message will not be shown again.";
 		public static readonly string OTPRenewal_Inactive = @"Never";
 		public static readonly string OTPRenewal_RespectClipboardTimeout = @"Renew until clipboard gets cleared";
 		public static readonly string OTPRenewal_PreventShortDuration = @"Renew if soon to expire";
+		public static readonly string OTPDisplayMode_label = @"OTP display mode:";
 		#endregion
 
 		#region NO changes in this area

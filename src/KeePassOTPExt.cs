@@ -58,6 +58,8 @@ namespace KeePassOTP
 			if (host == null) return false;
 			m_host = host;
 
+			CleanupColumns();
+
 			PluginTranslate.Init(this, Program.Translation.Properties.Iso6391Code);
 			Tools.DefaultCaption = PluginTranslate.PluginName;
 			Tools.PluginURL = "https://github.com/rookiestyle/keepassotp/";
@@ -93,6 +95,27 @@ namespace KeePassOTP
 			GlobalWindowManager.WindowAdded += GlobalWindowManager_WindowAdded;
 
 			return true;
+		}
+
+        private void CleanupColumns()
+        {
+			//Column KPOTP_Reduced has been removed (use KeePassOTP options instead)
+			//If column is currently displayed do the following:
+			// - Switch OTP display mode to reduced mode
+			// - Replace KPOTP_Reduced column by KPOTP column
+			var cReduced = Program.Config.MainWindow.EntryListColumns.FirstOrDefault(x => x.CustomName == "KPOTP_Reduced" && x.Type == KeePass.App.Configuration.AceColumnType.PluginExt);
+			if (cReduced == null) return;
+
+			var cFull = Program.Config.MainWindow.EntryListColumns.FirstOrDefault(x => x.CustomName == KeePassOTPColumnProvider.OTPColumn && x.Type == KeePass.App.Configuration.AceColumnType.PluginExt);
+			if (cFull == null) cReduced.CustomName = KeePassOTPColumnProvider.OTPColumn;
+			else
+			{
+				string sIndex = Program.Config.MainWindow.EntryListColumns.IndexOf(cReduced).ToString();
+				Program.Config.MainWindow.EntryListColumnDisplayOrder = Program.Config.MainWindow.EntryListColumnDisplayOrder.Replace(sIndex + " ", string.Empty);
+				Program.Config.MainWindow.EntryListColumnDisplayOrder = Program.Config.MainWindow.EntryListColumnDisplayOrder.Replace(" " + sIndex, string.Empty);
+				Program.Config.MainWindow.EntryListColumns.Remove(cReduced);
+			}
+			Config.OTPDisplay = false;
 		}
 
 		private void GlobalWindowManager_WindowAdded(object sender, GwmWindowEventArgs e)
@@ -409,6 +432,7 @@ namespace KeePassOTP
 			string sOldPlaceholder = Config.Placeholder;
 			Config.KPOTPAutoSubmit = options.cbAutoSubmit.Checked;
 			Config.Placeholder = options.tbPlaceholder.Text;
+			Config.OTPDisplay = options.GetOTPDisplay();
 			Config.OTPRenewal = options.GetOTPRenewal();
 			if ((sOldPlaceholder != Config.Placeholder)
 				&& (Tools.AskYesNo(string.Format(PluginTranslate.MigratePlaceholder, sOldPlaceholder, Config.Placeholder)) == DialogResult.Yes))

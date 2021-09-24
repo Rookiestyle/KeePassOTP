@@ -35,7 +35,8 @@ namespace KeePassOTP
 		private const string Config_KPOTPAutoSubmit = "KeePassOTP.KPOTPAutoSubmit";
 		private const string Config_ShowHintSyncRequiresUnlock = "KeePassOTP.ShowHintSyncRequiresUnlock";
 		private const string Config_ReadScreenForQRCodeExplanationShown = "KeePassOTP.ReadScreenForQRCodeExplanationShown";
-		private const string Config_OTPRenewal = "KeePassOTP.OTPRenewal"; 
+		private const string Config_OTPRenewal = "KeePassOTP.OTPRenewal";
+		private const string Config_OTPDisplay = "KeePassOTP.OTPDisplay"; 
 		private static int HotkeyID = -1;
 
 		internal static void Init()
@@ -81,6 +82,13 @@ namespace KeePassOTP
 			get { return Program.Config.CustomConfig.GetBool(Config_CheckTFA, false); }
 			set { Program.Config.CustomConfig.SetBool(Config_CheckTFA, value); }
 		}
+
+
+		internal static bool OTPDisplay
+        {
+            get { return Program.Config.CustomConfig.GetBool(Config_OTPDisplay, true); }
+			set { Program.Config.CustomConfig.SetBool(Config_OTPDisplay, value); }
+        }
 
 		internal static OTPRenewal_Enum OTPRenewal
 		{

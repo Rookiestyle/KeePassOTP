@@ -315,4 +315,8 @@ This message will not be shown again.</value>
     <key>OTPRenewal_PreventShortDuration</key>
     <value>Renew once if soon to expire</value>
   </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>OTP display mode:</value>
+  </item>
 </Translation>

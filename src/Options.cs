@@ -38,7 +38,7 @@ namespace KeePassOTP
 				return string.Empty;
 			}
 		}
-		public Dictionary<PwDatabase, DBSettings> OTPDBSettings {  get { return m_dDB; } }
+		public Dictionary<PwDatabase, DBSettings> OTPDBSettings { get { return m_dDB; } }
 		private Dictionary<PwDatabase, DBSettings> m_dDB = new Dictionary<PwDatabase, DBSettings>();
 
 		private const int ACTION_NONE = 0;
@@ -120,6 +120,9 @@ namespace KeePassOTP
 			tbHelp.Lines = aLines;
 
 			gOtherOptions.Text = KPRes.Options;
+			lOTPDisplay.Text = PluginTranslate.OTPDisplayMode_label;
+			cbOTPDisplay.Items.Add("OTP / " + PluginTranslate.SetupTFA);
+			cbOTPDisplay.Items.Add(PluginTranslate.TFADefined + " / " + PluginTranslate.SetupTFA);
 			lOTPRenewal.Text = PluginTranslate.OTPRenewal;
 			cbOTPRenewal.Items.Add(PluginTranslate.OTPRenewal_Inactive);
 			cbOTPRenewal.Items.Add(PluginTranslate.OTPRenewal_PreventShortDuration);
@@ -172,6 +175,7 @@ namespace KeePassOTP
 
 		public void InitEx(Dictionary<PwDatabase, DBSettings> dDB, PwDatabase current)
 		{
+			SetOTPDisplay();
 			SetOTPRenewal();
 
 			bool bUnix = KeePassLib.Native.NativeLib.IsUnix();
@@ -195,11 +199,22 @@ namespace KeePassOTP
 			else lbDB_SelectedIndexChanged(null, null);
 		}
 
+		private void SetOTPDisplay()
+		{
+			if (Config.OTPDisplay) cbOTPDisplay.SelectedIndex = 0;
+			else cbOTPDisplay.SelectedIndex = 1;
+		}
+
 		private void SetOTPRenewal()
 		{
 			if (Config.OTPRenewal == Config.OTPRenewal_Enum.Inactive) cbOTPRenewal.SelectedIndex = 0;
 			else if (Config.OTPRenewal == Config.OTPRenewal_Enum.RespectClipboardTimeout) cbOTPRenewal.SelectedIndex = 2;
 			else cbOTPRenewal.SelectedIndex = 1;
+		}
+
+		internal bool GetOTPDisplay()
+		{
+			return cbOTPDisplay.SelectedIndex == 0;
 		}
 
 		internal Config.OTPRenewal_Enum GetOTPRenewal()

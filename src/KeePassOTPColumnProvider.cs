@@ -10,12 +10,11 @@ namespace KeePassOTP
 {
 	internal class KeePassOTPColumnProvider : ColumnProvider
 	{
-		public const string OTPColumn_Verbose = "KPOTP";
-		public const string OTPColumn_Reduced = "KPOTP_Reduced";
+		public const string OTPColumn = "KPOTP";
 		private static Dictionary<string, bool> m_dTFAPossible = new Dictionary<string, bool>();
 		private System.Timers.Timer m_columnRefreshTimer = new System.Timers.Timer();
 
-		private readonly string[] ColumnName = new[] { OTPColumn_Verbose, OTPColumn_Reduced };
+		private readonly string[] ColumnName = new[] { OTPColumn };
 
 		public override string[] ColumnNames { get { return ColumnName; } }
 
@@ -33,7 +32,7 @@ namespace KeePassOTP
 				otp = OTPDAO.GetReadableOTP(pe);
 			if (!string.IsNullOrEmpty(otp))
 			{
-				if (bForUsage || strColumnName == OTPColumn_Verbose) return otp;
+				if (bForUsage || Config.OTPDisplay) return otp;
 				return PluginTranslation.PluginTranslate.TFADefined;
 			}
 
@@ -104,7 +103,7 @@ namespace KeePassOTP
 				if (KeePass.Program.MainForm.UIIsInteractionBlocked()) return;
 				if (!KeePass.Program.MainForm.Visible) return;
 				if (!KeePass.Program.MainForm.ActiveDatabase.IsOpen) return;
-				if (KeePass.Program.Config.MainWindow.EntryListColumns.Find(x => x.CustomName == OTPColumn_Verbose) == null) return;
+				if (KeePass.Program.Config.MainWindow.EntryListColumns.Find(x => x.CustomName == OTPColumn) == null) return;
 				PwGroup pg = KeePass.Program.MainForm.GetSelectedGroup();
 				if (pg == null) return;
 				bool bRefresh = pg.GetEntries(KeePass.Program.Config.MainWindow.ShowEntriesOfSubGroups).FirstOrDefault(x => OTPDAO.OTPDefined(x) == OTPDAO.OTPDefinition.Complete) != null;
@@ -122,7 +121,7 @@ namespace KeePassOTP
 		{
 			if (m_cpr == null) m_cpr = new ColumnProviderUpdate(this);
 			if (!m_cpr.Initialized) return false;
-			return m_cpr.UpdateEntryListColumn(OTPColumn_Verbose) != ColumnProviderUpdate.UpdateResult.Failed;
+			return m_cpr.UpdateEntryListColumn(OTPColumn) != ColumnProviderUpdate.UpdateResult.Failed;
 		}
 	}
 

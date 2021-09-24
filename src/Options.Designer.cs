@@ -30,6 +30,22 @@
 		{
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.gOtherOptions = new System.Windows.Forms.GroupBox();
+            this.tb2FAHelp = new System.Windows.Forms.TextBox();
+            this.cbCheckTFA = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lOTPDisplay = new System.Windows.Forms.Label();
+            this.lOTPRenewal = new System.Windows.Forms.Label();
+            this.cbOTPRenewal = new System.Windows.Forms.ComboBox();
+            this.gbAutotype = new System.Windows.Forms.GroupBox();
+            this.pPlaceholder = new System.Windows.Forms.Panel();
+            this.cbAutoSubmit = new System.Windows.Forms.CheckBox();
+            this.tbPlaceholder = new System.Windows.Forms.TextBox();
+            this.lPlaceholder = new System.Windows.Forms.Label();
+            this.pHotkey = new System.Windows.Forms.Panel();
+            this.hkcKPOTP = new KeePass.UI.HotKeyControlEx();
+            this.lHotkey = new System.Windows.Forms.Label();
             this.tpDatabases = new System.Windows.Forms.TabPage();
             this.tlp = new System.Windows.Forms.TableLayoutPanel();
             this.pButtons = new System.Windows.Forms.Panel();
@@ -47,37 +63,23 @@
             this.cbMigrate = new System.Windows.Forms.ComboBox();
             this.cbPreloadOTP = new System.Windows.Forms.CheckBox();
             this.cbUseDBForSeeds = new System.Windows.Forms.CheckBox();
-            this.tpGeneral = new System.Windows.Forms.TabPage();
-            this.gOtherOptions = new System.Windows.Forms.GroupBox();
-            this.gbAutotype = new System.Windows.Forms.GroupBox();
-            this.pPlaceholder = new System.Windows.Forms.Panel();
-            this.cbAutoSubmit = new System.Windows.Forms.CheckBox();
-            this.tbPlaceholder = new System.Windows.Forms.TextBox();
-            this.lPlaceholder = new System.Windows.Forms.Label();
-            this.pHotkey = new System.Windows.Forms.Panel();
-            this.hkcKPOTP = new KeePass.UI.HotKeyControlEx();
-            this.lHotkey = new System.Windows.Forms.Label();
             this.tpHelp = new System.Windows.Forms.TabPage();
             this.tbHelp = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tb2FAHelp = new System.Windows.Forms.TextBox();
-            this.lOTPRenewal = new System.Windows.Forms.Label();
-            this.cbOTPRenewal = new System.Windows.Forms.ComboBox();
-            this.cbCheckTFA = new System.Windows.Forms.CheckBox();
+            this.cbOTPDisplay = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
+            this.tpGeneral.SuspendLayout();
+            this.gOtherOptions.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.gbAutotype.SuspendLayout();
+            this.pPlaceholder.SuspendLayout();
+            this.pHotkey.SuspendLayout();
             this.tpDatabases.SuspendLayout();
             this.tlp.SuspendLayout();
             this.pButtons.SuspendLayout();
             this.pCheckboxes.SuspendLayout();
             this.gMigrate.SuspendLayout();
-            this.tpGeneral.SuspendLayout();
-            this.gOtherOptions.SuspendLayout();
-            this.gbAutotype.SuspendLayout();
-            this.pPlaceholder.SuspendLayout();
-            this.pHotkey.SuspendLayout();
             this.tpHelp.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -92,6 +94,186 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1387, 674);
             this.tabControl1.TabIndex = 2;
+            // 
+            // tpGeneral
+            // 
+            this.tpGeneral.Controls.Add(this.gOtherOptions);
+            this.tpGeneral.Controls.Add(this.gbAutotype);
+            this.tpGeneral.Location = new System.Drawing.Point(10, 48);
+            this.tpGeneral.Margin = new System.Windows.Forms.Padding(5);
+            this.tpGeneral.Name = "tpGeneral";
+            this.tpGeneral.Padding = new System.Windows.Forms.Padding(18, 15, 18, 15);
+            this.tpGeneral.Size = new System.Drawing.Size(1367, 616);
+            this.tpGeneral.TabIndex = 0;
+            this.tpGeneral.Text = "General";
+            this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // gOtherOptions
+            // 
+            this.gOtherOptions.AutoSize = true;
+            this.gOtherOptions.Controls.Add(this.tb2FAHelp);
+            this.gOtherOptions.Controls.Add(this.cbCheckTFA);
+            this.gOtherOptions.Controls.Add(this.panel1);
+            this.gOtherOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gOtherOptions.Location = new System.Drawing.Point(18, 216);
+            this.gOtherOptions.Name = "gOtherOptions";
+            this.gOtherOptions.Size = new System.Drawing.Size(1331, 385);
+            this.gOtherOptions.TabIndex = 13;
+            this.gOtherOptions.TabStop = false;
+            this.gOtherOptions.Text = "OTP Renewal";
+            // 
+            // tb2FAHelp
+            // 
+            this.tb2FAHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tb2FAHelp.Location = new System.Drawing.Point(3, 184);
+            this.tb2FAHelp.Margin = new System.Windows.Forms.Padding(5);
+            this.tb2FAHelp.Multiline = true;
+            this.tb2FAHelp.Name = "tb2FAHelp";
+            this.tb2FAHelp.ReadOnly = true;
+            this.tb2FAHelp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tb2FAHelp.Size = new System.Drawing.Size(1325, 198);
+            this.tb2FAHelp.TabIndex = 16;
+            // 
+            // cbCheckTFA
+            // 
+            this.cbCheckTFA.AutoSize = true;
+            this.cbCheckTFA.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbCheckTFA.Location = new System.Drawing.Point(3, 148);
+            this.cbCheckTFA.Name = "cbCheckTFA";
+            this.cbCheckTFA.Size = new System.Drawing.Size(1325, 36);
+            this.cbCheckTFA.TabIndex = 17;
+            this.cbCheckTFA.Text = "Check TFA";
+            this.cbCheckTFA.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cbOTPDisplay);
+            this.panel1.Controls.Add(this.lOTPDisplay);
+            this.panel1.Controls.Add(this.lOTPRenewal);
+            this.panel1.Controls.Add(this.cbOTPRenewal);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 34);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1325, 114);
+            this.panel1.TabIndex = 2;
+            // 
+            // lOTPDisplay
+            // 
+            this.lOTPDisplay.AutoSize = true;
+            this.lOTPDisplay.Location = new System.Drawing.Point(5, 17);
+            this.lOTPDisplay.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lOTPDisplay.Name = "lOTPDisplay";
+            this.lOTPDisplay.Size = new System.Drawing.Size(182, 32);
+            this.lOTPDisplay.TabIndex = 3;
+            this.lOTPDisplay.Text = "OTP Display:";
+            // 
+            // lOTPRenewal
+            // 
+            this.lOTPRenewal.AutoSize = true;
+            this.lOTPRenewal.Location = new System.Drawing.Point(5, 57);
+            this.lOTPRenewal.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lOTPRenewal.Name = "lOTPRenewal";
+            this.lOTPRenewal.Size = new System.Drawing.Size(199, 32);
+            this.lOTPRenewal.TabIndex = 3;
+            this.lOTPRenewal.Text = "OTP Renewal:";
+            // 
+            // cbOTPRenewal
+            // 
+            this.cbOTPRenewal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbOTPRenewal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOTPRenewal.FormattingEnabled = true;
+            this.cbOTPRenewal.Location = new System.Drawing.Point(520, 54);
+            this.cbOTPRenewal.Name = "cbOTPRenewal";
+            this.cbOTPRenewal.Size = new System.Drawing.Size(789, 39);
+            this.cbOTPRenewal.TabIndex = 2;
+            // 
+            // gbAutotype
+            // 
+            this.gbAutotype.Controls.Add(this.pPlaceholder);
+            this.gbAutotype.Controls.Add(this.pHotkey);
+            this.gbAutotype.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbAutotype.Location = new System.Drawing.Point(18, 15);
+            this.gbAutotype.Margin = new System.Windows.Forms.Padding(5);
+            this.gbAutotype.Name = "gbAutotype";
+            this.gbAutotype.Padding = new System.Windows.Forms.Padding(5);
+            this.gbAutotype.Size = new System.Drawing.Size(1331, 201);
+            this.gbAutotype.TabIndex = 12;
+            this.gbAutotype.TabStop = false;
+            this.gbAutotype.Text = "gbAutotype";
+            // 
+            // pPlaceholder
+            // 
+            this.pPlaceholder.Controls.Add(this.cbAutoSubmit);
+            this.pPlaceholder.Controls.Add(this.tbPlaceholder);
+            this.pPlaceholder.Controls.Add(this.lPlaceholder);
+            this.pPlaceholder.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pPlaceholder.Location = new System.Drawing.Point(5, 90);
+            this.pPlaceholder.Margin = new System.Windows.Forms.Padding(5);
+            this.pPlaceholder.Name = "pPlaceholder";
+            this.pPlaceholder.Size = new System.Drawing.Size(1321, 101);
+            this.pPlaceholder.TabIndex = 13;
+            // 
+            // cbAutoSubmit
+            // 
+            this.cbAutoSubmit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbAutoSubmit.AutoSize = true;
+            this.cbAutoSubmit.Location = new System.Drawing.Point(524, 48);
+            this.cbAutoSubmit.Margin = new System.Windows.Forms.Padding(5);
+            this.cbAutoSubmit.Name = "cbAutoSubmit";
+            this.cbAutoSubmit.Size = new System.Drawing.Size(287, 36);
+            this.cbAutoSubmit.TabIndex = 2;
+            this.cbAutoSubmit.Text = "Placholder + Enter";
+            this.cbAutoSubmit.UseVisualStyleBackColor = true;
+            // 
+            // tbPlaceholder
+            // 
+            this.tbPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbPlaceholder.Location = new System.Drawing.Point(518, 0);
+            this.tbPlaceholder.Margin = new System.Windows.Forms.Padding(5);
+            this.tbPlaceholder.Name = "tbPlaceholder";
+            this.tbPlaceholder.Size = new System.Drawing.Size(459, 38);
+            this.tbPlaceholder.TabIndex = 1;
+            this.tbPlaceholder.TextChanged += new System.EventHandler(this.tbPlaceholder_TextChanged);
+            // 
+            // lPlaceholder
+            // 
+            this.lPlaceholder.AutoSize = true;
+            this.lPlaceholder.Location = new System.Drawing.Point(0, 5);
+            this.lPlaceholder.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lPlaceholder.Name = "lPlaceholder";
+            this.lPlaceholder.Size = new System.Drawing.Size(175, 32);
+            this.lPlaceholder.TabIndex = 0;
+            this.lPlaceholder.Text = "Placeholder:";
+            // 
+            // pHotkey
+            // 
+            this.pHotkey.Controls.Add(this.hkcKPOTP);
+            this.pHotkey.Controls.Add(this.lHotkey);
+            this.pHotkey.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pHotkey.Location = new System.Drawing.Point(5, 36);
+            this.pHotkey.Margin = new System.Windows.Forms.Padding(5);
+            this.pHotkey.Name = "pHotkey";
+            this.pHotkey.Size = new System.Drawing.Size(1321, 54);
+            this.pHotkey.TabIndex = 12;
+            // 
+            // hkcKPOTP
+            // 
+            this.hkcKPOTP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hkcKPOTP.Location = new System.Drawing.Point(518, 0);
+            this.hkcKPOTP.Margin = new System.Windows.Forms.Padding(5);
+            this.hkcKPOTP.Name = "hkcKPOTP";
+            this.hkcKPOTP.Size = new System.Drawing.Size(459, 38);
+            this.hkcKPOTP.TabIndex = 1;
+            // 
+            // lHotkey
+            // 
+            this.lHotkey.AutoSize = true;
+            this.lHotkey.Location = new System.Drawing.Point(0, 5);
+            this.lHotkey.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lHotkey.Name = "lHotkey";
+            this.lHotkey.Size = new System.Drawing.Size(111, 32);
+            this.lHotkey.TabIndex = 0;
+            this.lHotkey.Text = "Hotkey:";
             // 
             // tpDatabases
             // 
@@ -323,121 +505,6 @@
             this.cbUseDBForSeeds.UseVisualStyleBackColor = true;
             this.cbUseDBForSeeds.CheckedChanged += new System.EventHandler(this.cbUseDBForSeeds_CheckedChanged);
             // 
-            // tpGeneral
-            // 
-            this.tpGeneral.Controls.Add(this.gOtherOptions);
-            this.tpGeneral.Controls.Add(this.gbAutotype);
-            this.tpGeneral.Location = new System.Drawing.Point(10, 48);
-            this.tpGeneral.Margin = new System.Windows.Forms.Padding(5);
-            this.tpGeneral.Name = "tpGeneral";
-            this.tpGeneral.Padding = new System.Windows.Forms.Padding(18, 15, 18, 15);
-            this.tpGeneral.Size = new System.Drawing.Size(1367, 616);
-            this.tpGeneral.TabIndex = 0;
-            this.tpGeneral.Text = "General";
-            this.tpGeneral.UseVisualStyleBackColor = true;
-            // 
-            // gOtherOptions
-            // 
-            this.gOtherOptions.AutoSize = true;
-            this.gOtherOptions.Controls.Add(this.tb2FAHelp);
-            this.gOtherOptions.Controls.Add(this.cbCheckTFA);
-            this.gOtherOptions.Controls.Add(this.panel1);
-            this.gOtherOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gOtherOptions.Location = new System.Drawing.Point(18, 216);
-            this.gOtherOptions.Name = "gOtherOptions";
-            this.gOtherOptions.Size = new System.Drawing.Size(1331, 385);
-            this.gOtherOptions.TabIndex = 13;
-            this.gOtherOptions.TabStop = false;
-            this.gOtherOptions.Text = "OTP Renewal";
-            // 
-            // gbAutotype
-            // 
-            this.gbAutotype.Controls.Add(this.pPlaceholder);
-            this.gbAutotype.Controls.Add(this.pHotkey);
-            this.gbAutotype.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbAutotype.Location = new System.Drawing.Point(18, 15);
-            this.gbAutotype.Margin = new System.Windows.Forms.Padding(5);
-            this.gbAutotype.Name = "gbAutotype";
-            this.gbAutotype.Padding = new System.Windows.Forms.Padding(5);
-            this.gbAutotype.Size = new System.Drawing.Size(1331, 201);
-            this.gbAutotype.TabIndex = 12;
-            this.gbAutotype.TabStop = false;
-            this.gbAutotype.Text = "gbAutotype";
-            // 
-            // pPlaceholder
-            // 
-            this.pPlaceholder.Controls.Add(this.cbAutoSubmit);
-            this.pPlaceholder.Controls.Add(this.tbPlaceholder);
-            this.pPlaceholder.Controls.Add(this.lPlaceholder);
-            this.pPlaceholder.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pPlaceholder.Location = new System.Drawing.Point(5, 90);
-            this.pPlaceholder.Margin = new System.Windows.Forms.Padding(5);
-            this.pPlaceholder.Name = "pPlaceholder";
-            this.pPlaceholder.Size = new System.Drawing.Size(1321, 101);
-            this.pPlaceholder.TabIndex = 13;
-            // 
-            // cbAutoSubmit
-            // 
-            this.cbAutoSubmit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbAutoSubmit.AutoSize = true;
-            this.cbAutoSubmit.Location = new System.Drawing.Point(524, 48);
-            this.cbAutoSubmit.Margin = new System.Windows.Forms.Padding(5);
-            this.cbAutoSubmit.Name = "cbAutoSubmit";
-            this.cbAutoSubmit.Size = new System.Drawing.Size(287, 36);
-            this.cbAutoSubmit.TabIndex = 2;
-            this.cbAutoSubmit.Text = "Placholder + Enter";
-            this.cbAutoSubmit.UseVisualStyleBackColor = true;
-            // 
-            // tbPlaceholder
-            // 
-            this.tbPlaceholder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbPlaceholder.Location = new System.Drawing.Point(518, 0);
-            this.tbPlaceholder.Margin = new System.Windows.Forms.Padding(5);
-            this.tbPlaceholder.Name = "tbPlaceholder";
-            this.tbPlaceholder.Size = new System.Drawing.Size(459, 38);
-            this.tbPlaceholder.TabIndex = 1;
-            this.tbPlaceholder.TextChanged += new System.EventHandler(this.tbPlaceholder_TextChanged);
-            // 
-            // lPlaceholder
-            // 
-            this.lPlaceholder.AutoSize = true;
-            this.lPlaceholder.Location = new System.Drawing.Point(0, 5);
-            this.lPlaceholder.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.lPlaceholder.Name = "lPlaceholder";
-            this.lPlaceholder.Size = new System.Drawing.Size(175, 32);
-            this.lPlaceholder.TabIndex = 0;
-            this.lPlaceholder.Text = "Placeholder:";
-            // 
-            // pHotkey
-            // 
-            this.pHotkey.Controls.Add(this.hkcKPOTP);
-            this.pHotkey.Controls.Add(this.lHotkey);
-            this.pHotkey.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pHotkey.Location = new System.Drawing.Point(5, 36);
-            this.pHotkey.Margin = new System.Windows.Forms.Padding(5);
-            this.pHotkey.Name = "pHotkey";
-            this.pHotkey.Size = new System.Drawing.Size(1321, 54);
-            this.pHotkey.TabIndex = 12;
-            // 
-            // hkcKPOTP
-            // 
-            this.hkcKPOTP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.hkcKPOTP.Location = new System.Drawing.Point(518, 0);
-            this.hkcKPOTP.Margin = new System.Windows.Forms.Padding(5);
-            this.hkcKPOTP.Name = "hkcKPOTP";
-            this.hkcKPOTP.Size = new System.Drawing.Size(459, 38);
-            this.hkcKPOTP.TabIndex = 1;
-            // 
-            // lHotkey
-            // 
-            this.lHotkey.AutoSize = true;
-            this.lHotkey.Location = new System.Drawing.Point(0, 5);
-            this.lHotkey.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.lHotkey.Name = "lHotkey";
-            this.lHotkey.Size = new System.Drawing.Size(111, 32);
-            this.lHotkey.TabIndex = 0;
-            this.lHotkey.Text = "Hotkey:";
-            // 
             // tpHelp
             // 
             this.tpHelp.Controls.Add(this.tbHelp);
@@ -462,58 +529,15 @@
             this.tbHelp.Size = new System.Drawing.Size(1331, 586);
             this.tbHelp.TabIndex = 0;
             // 
-            // panel1
+            // cbOTPDisplay
             // 
-            this.panel1.Controls.Add(this.lOTPRenewal);
-            this.panel1.Controls.Add(this.cbOTPRenewal);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 34);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1325, 86);
-            this.panel1.TabIndex = 2;
-            // 
-            // tb2FAHelp
-            // 
-            this.tb2FAHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tb2FAHelp.Location = new System.Drawing.Point(3, 120);
-            this.tb2FAHelp.Margin = new System.Windows.Forms.Padding(5);
-            this.tb2FAHelp.Multiline = true;
-            this.tb2FAHelp.Name = "tb2FAHelp";
-            this.tb2FAHelp.ReadOnly = true;
-            this.tb2FAHelp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tb2FAHelp.Size = new System.Drawing.Size(1325, 262);
-            this.tb2FAHelp.TabIndex = 16;
-            // 
-            // lOTPRenewal
-            // 
-            this.lOTPRenewal.AutoSize = true;
-            this.lOTPRenewal.Location = new System.Drawing.Point(5, 27);
-            this.lOTPRenewal.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.lOTPRenewal.Name = "lOTPRenewal";
-            this.lOTPRenewal.Size = new System.Drawing.Size(199, 32);
-            this.lOTPRenewal.TabIndex = 3;
-            this.lOTPRenewal.Text = "OTP Renewal:";
-            // 
-            // cbOTPRenewal
-            // 
-            this.cbOTPRenewal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOTPRenewal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOTPRenewal.FormattingEnabled = true;
-            this.cbOTPRenewal.Location = new System.Drawing.Point(520, 24);
-            this.cbOTPRenewal.Name = "cbOTPRenewal";
-            this.cbOTPRenewal.Size = new System.Drawing.Size(789, 39);
-            this.cbOTPRenewal.TabIndex = 2;
-            // 
-            // cbCheckTFA
-            // 
-            this.cbCheckTFA.AutoSize = true;
-            this.cbCheckTFA.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cbCheckTFA.Location = new System.Drawing.Point(3, 120);
-            this.cbCheckTFA.Name = "cbCheckTFA";
-            this.cbCheckTFA.Size = new System.Drawing.Size(1325, 36);
-            this.cbCheckTFA.TabIndex = 17;
-            this.cbCheckTFA.Text = "Check TFA";
-            this.cbCheckTFA.UseVisualStyleBackColor = true;
+            this.cbOTPDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbOTPDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOTPDisplay.FormattingEnabled = true;
+            this.cbOTPDisplay.Location = new System.Drawing.Point(520, 8);
+            this.cbOTPDisplay.Name = "cbOTPDisplay";
+            this.cbOTPDisplay.Size = new System.Drawing.Size(789, 39);
+            this.cbOTPDisplay.TabIndex = 4;
             // 
             // Options
             // 
@@ -526,6 +550,17 @@
             this.Size = new System.Drawing.Size(1387, 674);
             this.Resize += new System.EventHandler(this.Options_Resize);
             this.tabControl1.ResumeLayout(false);
+            this.tpGeneral.ResumeLayout(false);
+            this.tpGeneral.PerformLayout();
+            this.gOtherOptions.ResumeLayout(false);
+            this.gOtherOptions.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.gbAutotype.ResumeLayout(false);
+            this.pPlaceholder.ResumeLayout(false);
+            this.pPlaceholder.PerformLayout();
+            this.pHotkey.ResumeLayout(false);
+            this.pHotkey.PerformLayout();
             this.tpDatabases.ResumeLayout(false);
             this.tlp.ResumeLayout(false);
             this.tlp.PerformLayout();
@@ -534,19 +569,8 @@
             this.pCheckboxes.ResumeLayout(false);
             this.pCheckboxes.PerformLayout();
             this.gMigrate.ResumeLayout(false);
-            this.tpGeneral.ResumeLayout(false);
-            this.tpGeneral.PerformLayout();
-            this.gOtherOptions.ResumeLayout(false);
-            this.gOtherOptions.PerformLayout();
-            this.gbAutotype.ResumeLayout(false);
-            this.pPlaceholder.ResumeLayout(false);
-            this.pPlaceholder.PerformLayout();
-            this.pHotkey.ResumeLayout(false);
-            this.pHotkey.PerformLayout();
             this.tpHelp.ResumeLayout(false);
             this.tpHelp.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -586,8 +610,10 @@
         private System.Windows.Forms.GroupBox gOtherOptions;
         private System.Windows.Forms.TextBox tb2FAHelp;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lOTPDisplay;
         private System.Windows.Forms.Label lOTPRenewal;
         private System.Windows.Forms.ComboBox cbOTPRenewal;
         internal System.Windows.Forms.CheckBox cbCheckTFA;
+        private System.Windows.Forms.ComboBox cbOTPDisplay;
     }
 }

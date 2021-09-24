@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>18</TranslationVersion>
+  <TranslationVersion>19</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -316,5 +316,9 @@ Dieses Hinweis wird nicht erneut angezeigt.</value>
   <item>
     <key>OTPRenewal_PreventShortDuration</key>
     <value>Einmaliges Aktualisieren bei kurzer Laufzeit</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>OTP Anzeige:</value>
   </item>
 </Translation>
