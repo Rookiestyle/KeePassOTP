@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>19</TranslationVersion>
+  <TranslationVersion>20</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -122,6 +122,11 @@
     <value>Alle OTP-Schlüssel werden in einer seperaten Datenbank gespeichert. Diese Datenbank wird Bestandteil der Hauptdatenbank, die die eigentlichen Einträge enthält.
 
 Bitte definiere den Hauptschlüssel für diese Datenbank im nächsten Fenster.</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>Klicke '{0}' zum Fortfahren.
+Klicke '{1}' zum Speichern der OTP-Schlüssel innerhalb der jeweiligen Einträge.</value>
   </item>
   <item>
     <key>Options_CheckTFA</key>

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 using KeePass;
 using KeePass.Forms;
+using KeePass.Resources;
 using KeePassLib;
 using KeePassLib.Security;
 using KeePassLib.Utility;
 using PluginTools;
+using PluginTranslation;
 
 namespace KeePassOTP
 {
@@ -101,8 +104,16 @@ namespace KeePassOTP
 		{
 			if (pe == null) return null;
 			PwDatabase db = pe.GetDB();
-			OTPHandler_Base h = GetOTPHandler(db);
-			if (h != null) return h;
+			return GetOTPHandler(pe, db);
+		}
+
+		private static OTPHandler_Base GetOTPHandler(PwEntry pe, PwDatabase db)
+		{
+			if (pe != null && db != null)
+			{
+				OTPHandler_Base h = GetOTPHandler(db);
+				if (h != null) return h;
+			}
 			if (!m_EntryOTPDAOHandler.ContainsKey(ENTRYHANDLER)) m_EntryOTPDAOHandler[ENTRYHANDLER] = new OTPHandler_Entry();
 			return m_EntryOTPDAOHandler[ENTRYHANDLER];
 		}
@@ -136,7 +147,24 @@ namespace KeePassOTP
 
 		public static bool EnsureOTPSetupPossible(PwEntry pe)
 		{
-			OTPHandler_Base h = GetOTPHandler(pe);
+			var db = pe.GetDB();
+			if (db == null) return false;
+
+			bool bExists = db.CustomData.Exists(Config.DBUsage);
+			if (!bExists)
+            {
+				string sQuestion = PluginTranslate.OTP_CreateDB_PWHint + 
+					"\n\n\n" + 
+					string.Format(PluginTranslate.OTP_CreateDB_Question_Addendum, 
+						KPRes.Yes, KPRes.No, KPRes.Cancel);
+				DialogResult dr = MessageBox.Show(sQuestion, PluginTranslate.PluginName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+				if (dr == DialogResult.Cancel) return false;
+				db.UseDBForOTPSeeds(dr == DialogResult.Yes);
+				db.Modified = true;
+				db.SettingsChanged = DateTime.UtcNow;
+				Program.MainForm.UpdateUI(false, null, false, null, false, null, Program.MainForm.ActiveDatabase == db);
+            }
+			OTPHandler_Base h = GetOTPHandler(pe, db);
 			return h.EnsureOTPSetupPossible(pe);
 		}
 

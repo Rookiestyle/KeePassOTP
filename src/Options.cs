@@ -239,7 +239,7 @@ namespace KeePassOTP
 					}
 					else
 					{
-						dr = MessageBox.Show(string.Format(PluginTranslate.ConfirmOTPDBDelete, DialogResult.Yes.ToString(), DialogResult.No.ToString()),
+						dr = MessageBox.Show(string.Format(PluginTranslate.ConfirmOTPDBDelete, KPRes.Yes, KPRes.No),
 							PluginTranslate.PluginName,
 							MessageBoxButtons.YesNoCancel, 
 							MessageBoxIcon.Question,

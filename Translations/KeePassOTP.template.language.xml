@@ -124,6 +124,10 @@
 Please provide the masterkey for your OTP secrets in the next form.</value>
   </item>
   <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>Click '{0}' to continue or click '{1}' to store OTP secrets within the respective entries.</value>
+  </item>
+  <item>
     <key>Options_CheckTFA</key>
     <value>Indicate if 2FA usage is possible</value>
   </item>
@@ -313,7 +317,7 @@ This message will not be shown again.</value>
   </item>
   <item>
     <key>OTPRenewal_PreventShortDuration</key>
-    <value>Renew once if soon to expire</value>
+    <value>Renew if soon to expire</value>
   </item>
   <item>
     <key>OTPDisplayMode_label</key>

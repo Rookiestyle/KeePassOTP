@@ -61,8 +61,9 @@ namespace KeePassOTP
 
 		public static void Init(bool bReload)
 		{
-			//Don't ask for consent if TFA check is already inactive
+			//If TFA check is disabled, this was done on purpose => Don't show info
 			Config.CheckTFA_InfoShown |= !Config.CheckTFA;
+
 			if (!Config.CheckTFA_InfoShown)
             {
 				string sQuestion = string.Format(PluginTranslate.Options_Check2FA_Help, TFA_JSON_FILE)
