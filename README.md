@@ -21,11 +21,13 @@ Functionality provided
 - Support TOTP and HOTP as well as Steam OTP and Yandex (Yandex.Key)
 - Secure storage of OTP secrets
 - Auto-Type or Copy OTP using the KeePass tray icon
+- Indicate possible usage of OTP / two factor authentication (requires [internet access](#two-factor-authentication--internet-access))
 
 ## Table of Contents
 
 - [Configuration](#configuration)
 - [Usage](#usage)
+- [Two factor authentication / Why does KeePassOTP access the internet?](#two-factor-authentication--internet-access)
 - [Translations](#translations)
 - [Download](#download)
 - [Requirements](#requirements)
@@ -83,6 +85,16 @@ There are multiple convenient ways to use the one time passwords.
   - Using a configurable hotkey working inside and outside KeePass
   - Using KeePass' tray icon
  
+## Two factor authentication / Internet access
+
+KeePassOTP can use the [OTP column](#use-otp-data) to highlight entries where you can set up two-factor authentication.  If you doubleclick this hint, KeePassOTP will open the corresponding website to setup two-factor authentication.  
+
+For that purpose, KeePassOTP will download a list of sites supporting two factor authentication during KeePass start from https://2fa.directory/api/v2/tfa.json.  
+This list is then compared it with all URLs defined in the database.  
+Neither your URLs nor any other information from your database will be sent.
+
+You can toggle this feature in [KeePassOTP's options](#configuration).
+
 ## Translations
 
 KeePassOTP is provided with English language built-in and allows usage of translation files.
