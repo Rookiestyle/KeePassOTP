@@ -504,7 +504,11 @@ namespace KeePassOTP
 					m_peOTP.CustomData.Remove(Config.TIMECORRECTION);
 				else
 					m_peOTP.CustomData.Set(Config.TIMECORRECTION, myOTP.TimeCorrectionUrl);
-				
+				if (myOTP.RecoveryCodes == null || myOTP.RecoveryCodes.IsEmpty)
+					m_peOTP.Strings.Remove(Config.RECOVERY);
+				else
+					m_peOTP.Strings.Set(Config.RECOVERY, myOTP.RecoveryCodes);
+
 				Touch(m_peOTP);
 				if (myOTP.OTPSeed.IsEmpty)
 					m_pe.CustomData.Remove(DBNAME);
@@ -678,6 +682,7 @@ namespace KeePassOTP
 				catch { return EmptyKPOTDB; }
 
 				myOTP.OTPAuthString = dStrings.GetSafe(Config.OTPFIELD);
+				myOTP.RecoveryCodes = dStrings.GetSafe(Config.RECOVERY);
 				string timeCorrection = dCustomData.Get(Config.TIMECORRECTION);
 				timeCorrection = string.IsNullOrEmpty(timeCorrection) ? string.Empty : timeCorrection;
 				if (timeCorrection == "OWNURL")
@@ -941,16 +946,20 @@ namespace KeePassOTP
 				{
 					m_pe = pe;
 					ProtectedString otpfield = m_pe.Strings.GetSafe(Config.OTPFIELD);
+					ProtectedString recovery = m_pe.Strings.GetSafe(Config.RECOVERY);
 					string timecorrection = m_pe.CustomData.Get(Config.TIMECORRECTION);
 					if (otpfield.IsEmpty) continue;
 					bool bCreated = false;
 					GetOTPEntry(true, out bCreated);
 					m_peOTP.Strings.Set(Config.OTPFIELD, otpfield);
+					if (!recovery.IsEmpty) m_peOTP.Strings.Set(Config.RECOVERY, recovery);
+					else m_peOTP.Strings.Remove(Config.RECOVERY);
 					if (!string.IsNullOrEmpty(timecorrection)) m_peOTP.CustomData.Set(Config.TIMECORRECTION, timecorrection);
 					else m_peOTP.CustomData.Remove(Config.TIMECORRECTION);
 					//Seed has been added to OTP db, increase moved-counter
 					moved++;
 					m_pe.Strings.Remove(Config.OTPFIELD);
+					m_pe.Strings.Remove(Config.RECOVERY); 
 					m_pe.CustomData.Remove(Config.TIMECORRECTION);
 					m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
 					m_pe.Touch(true, false);
@@ -973,6 +982,7 @@ namespace KeePassOTP
 					foreach (PwEntry pe in DB.RootGroup.GetEntries(true).Where(x => uuid.Equals(x.Uuid)))
 					{
 						pe.Strings.Set(Config.OTPFIELD, peOTP.Strings.GetSafe(Config.OTPFIELD));
+						if (peOTP.Strings.Exists(Config.RECOVERY)) pe.Strings.Set(Config.RECOVERY, peOTP.Strings.GetSafe(Config.RECOVERY));
 						if (peOTP.CustomData.Exists(Config.TIMECORRECTION))
 							pe.CustomData.Set(Config.TIMECORRECTION, peOTP.CustomData.Get(Config.TIMECORRECTION));
 						else

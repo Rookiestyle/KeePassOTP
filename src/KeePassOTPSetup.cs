@@ -43,6 +43,11 @@ namespace KeePassOTP
 		public void InitEx()
 		{
 			Text = PluginTranslate.PluginName;
+
+			tpSetup.Text = PluginTranslate.SeedSettings;
+			tpRecovery.Text = PluginTranslate.RecoveryCodes;
+			tpAdvanced.Text = PluginTranslate.AdvancedOptions;
+
 			gSeed.Text = PluginTranslate.SeedSettings;
 			gOTP.Text = PluginTranslate.OTPSettings;
 			gTime.Text = PluginTranslate.TimeCorrection;
@@ -60,6 +65,11 @@ namespace KeePassOTP
 			pbSearchScreen.Image = Resources.qr_code_screencapture;
 			pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
 
+			label1.Text = PluginTranslate.OTP_Setup_DragDrop;
+			label2.Text = PluginTranslate.ReadScreenForQRCode;
+			var c = Tools.FindToolStripMenuItem(Program.MainForm.MainMenu.Items,"m_menuHelp", false);
+			if (c != null) gQRHelp.Text = c.Text;
+			else gQRHelp.Text = "QR";
 
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionOff);
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionEntry);
@@ -94,19 +104,24 @@ namespace KeePassOTP
 			tbHOTPCounter.Text = OTP.HOTPCounter.ToString();
 			tbYandexPin.Text = OTP.YandexPin;
 
+			SetRecoveryCodes(OTP.RecoveryCodes);
+
 			if (bCheckAdvancedMode)
 			{
 				CheckAdvancedMode();
 				return;
 			}
-			if (OTP.TimeCorrectionUrlOwn)
-				totpTimeCorrectionType.SelectedIndex = 1;
-			else if (string.IsNullOrEmpty(OTP.TimeCorrectionUrl) || (OTP.TimeCorrectionUrl == "OFF"))
-				totpTimeCorrectionType.SelectedIndex = 0;
-			else
+			if (cbAdvanced.Checked)
 			{
-				totpTimeCorrectionType.SelectedIndex = 2;
-				tbTOTPTimeCorrectionURL.Text = OTP.TimeCorrectionUrl;
+				if (OTP.TimeCorrectionUrlOwn)
+					totpTimeCorrectionType.SelectedIndex = 1;
+				else if (string.IsNullOrEmpty(OTP.TimeCorrectionUrl) || (OTP.TimeCorrectionUrl == "OFF"))
+					totpTimeCorrectionType.SelectedIndex = 0;
+				else
+				{
+					totpTimeCorrectionType.SelectedIndex = 2;
+					tbTOTPTimeCorrectionURL.Text = OTP.TimeCorrectionUrl;
+				}
 			}
 		}
 
@@ -157,25 +172,29 @@ namespace KeePassOTP
 
 			else OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
 
-			if (cbOTPFormat.SelectedIndex == 0) OTP.Encoding = KPOTPEncoding.BASE32;
-			if (cbOTPFormat.SelectedIndex == 1) OTP.Encoding = KPOTPEncoding.BASE64;
-			if (cbOTPFormat.SelectedIndex == 2) OTP.Encoding = KPOTPEncoding.HEX;
-			if (cbOTPFormat.SelectedIndex == 3) OTP.Encoding = KPOTPEncoding.UTF8;
+			int iFormat; int iLength; int iHash; int iType;
+			string sTimestep;
+			GetOTPSettingsInt(out iFormat, out iLength, out sTimestep, out iHash, out iType);
 
-			OTP.Length = cbOTPLength.SelectedIndex + 6;
+			if (iFormat == 0) OTP.Encoding = KPOTPEncoding.BASE32;
+			if (iFormat == 1) OTP.Encoding = KPOTPEncoding.BASE64;
+			if (iFormat == 2) OTP.Encoding = KPOTPEncoding.HEX;
+			if (iFormat == 3) OTP.Encoding = KPOTPEncoding.UTF8;
+
+			OTP.Length = iLength + 6;
 
 			int dummy = -1;
-			if (int.TryParse(tbTOTPTimestep.Text, out dummy)) OTP.TOTPTimestep = dummy;
+			if (int.TryParse(sTimestep, out dummy)) OTP.TOTPTimestep = dummy;
 			if (int.TryParse(tbHOTPCounter.Text, out dummy)) OTP.HOTPCounter = dummy;
 
-			if (cbOTPHashFunc.SelectedIndex == 0) OTP.Hash = KPOTPHash.SHA1;
-			if (cbOTPHashFunc.SelectedIndex == 1) OTP.Hash = KPOTPHash.SHA256;
-			if (cbOTPHashFunc.SelectedIndex == 2) OTP.Hash = KPOTPHash.SHA512;
+			if (iHash == 0) OTP.Hash = KPOTPHash.SHA1;
+			if (iHash == 1) OTP.Hash = KPOTPHash.SHA256;
+			if (iHash == 2) OTP.Hash = KPOTPHash.SHA512;
 
-			if (cbOTPType.SelectedIndex == 0) OTP.Type = KPOTPType.HOTP;
-			else if (cbOTPType.SelectedIndex == 1) OTP.Type = KPOTPType.TOTP;
-			else if (cbOTPType.SelectedIndex == 2) OTP.Type = KPOTPType.STEAM;
-			else if (cbOTPType.SelectedIndex == 3) OTP.Type = KPOTPType.YANDEX;
+			if (iType == 0) OTP.Type = KPOTPType.HOTP;
+			else if (iType == 1) OTP.Type = KPOTPType.TOTP;
+			else if (iType == 2) OTP.Type = KPOTPType.STEAM;
+			else if (iType == 3) OTP.Type = KPOTPType.YANDEX;
 
 			OTP.YandexPin = tbYandexPin.Text;
 
@@ -190,11 +209,14 @@ namespace KeePassOTP
 
 			if (!tbTOTPTimeCorrectionURL.Focused || m_bFormClosing)
 			{
-				if (totpTimeCorrectionType.SelectedIndex == 0)
+				if (totpTimeCorrectionType.SelectedIndex == 0 || !cbAdvanced.Checked)
 				{
 					if (!tbTOTPTimeCorrectionURL.ReadOnly) m_BackupURL = tbTOTPTimeCorrectionURL.Text;
-					tbTOTPTimeCorrectionURL.Text = string.Empty;
-					tbTOTPTimeCorrectionURL.ReadOnly = true;
+					if (cbAdvanced.Checked)
+					{
+						tbTOTPTimeCorrectionURL.Text = string.Empty;
+						tbTOTPTimeCorrectionURL.ReadOnly = true;
+					}
 					OTP.TimeCorrectionUrlOwn = false;
 					OTP.TimeCorrectionUrl = string.Empty;
 				}
@@ -230,22 +252,51 @@ namespace KeePassOTP
 				pbTOTPLifetime.ForeColor = System.Drawing.SystemColors.Highlight;
 			}
 
+			OTP.RecoveryCodes = GetRecoveryCodes();
+
 			otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
 			otpPreviewNext.Text = "Next: " + (string.IsNullOrEmpty(otpValue) ? "N/A" : otpValue);
 		}
 
-		private void SetEnabled(bool bEnabled, params Control[] controls)
+        private void GetOTPSettingsInt(out int iFormat, out int iLength, out string sTimestep, out int iHash, out int iType)
+        {
+			iFormat = cbAdvanced.Checked ? cbOTPFormat.SelectedIndex : 0;
+			iLength = cbAdvanced.Checked ? cbOTPLength.SelectedIndex : 0;
+			sTimestep = cbAdvanced.Checked ? tbTOTPTimestep.Text : "30";
+			iHash = cbAdvanced.Checked ? cbOTPHashFunc.SelectedIndex : 0;
+			iType = cbAdvanced.Checked ? cbOTPType.SelectedIndex : 1;
+		}
+
+		private ProtectedString GetRecoveryCodes()
+        {
+			ProtectedString psCodes = ProtectedString.EmptyEx;
+			foreach (var sCode in tbRecovery.Lines)
+			{
+				if (string.IsNullOrEmpty(sCode)) continue;
+				if (!psCodes.IsEmpty) psCodes += new ProtectedString(true, new byte[] { (byte)'\n' });
+				psCodes += new ProtectedString(true, sCode);
+			}
+			return psCodes;
+		}
+
+		private void SetRecoveryCodes(ProtectedString lCodes)
+        {
+			if (lCodes == null || lCodes.IsEmpty) return;
+			tbRecovery.Lines = lCodes.ReadString().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private void SetEnabled(bool bEnabled, params Control[] controls)
 		{
 			foreach (var c in controls)
 			{
-				c.Enabled = bEnabled;
-				if (bEnabled) c.Visible = bEnabled && (c != gTime || cbAdvanced.Checked);
+				c.Enabled = bEnabled && cbAdvanced.Checked;
+				if (bEnabled) c.Visible = bEnabled;
 			}
 		}
 
 		private void SetVisible(bool bEnabled, params Control[] controls)
 		{
-			foreach (var c in controls) c.Visible= bEnabled;
+			foreach (var c in controls) c.Visible = bEnabled;
 		}
 
 		private void AdjustFields_TOTP()
@@ -346,23 +397,7 @@ namespace KeePassOTP
 
 		private void cbAdvanced_CheckedChanged(object sender, EventArgs e)
 		{
-			gOTP.Visible = gTime.Visible = cbAdvanced.Checked;
-			if (cbAdvanced.Checked)
-			{
-				Height += (gOTP.Height + gTime.Height);
-			}
-			else
-			{
-				Height -= (gOTP.Height + gTime.Height);
-				cbOTPFormat.SelectedIndex = 0;
-				cbOTPLength.SelectedIndex = 0;
-				tbTOTPTimestep.Text = "30";
-				cbOTPHashFunc.SelectedIndex = 0;
-				cbOTPType.SelectedIndex = 1;
-
-				totpTimeCorrectionType.SelectedIndex = 0;
-				UpdatePreview();
-			}
+			gOTP.Enabled = gTime.Enabled = cbAdvanced.Checked;
 		}
 
 		private void CheckAdvancedMode()
@@ -511,6 +546,8 @@ namespace KeePassOTP
 		{
 			pbQR.Image = Resources.qr_code;
 			((Control)pbQR).AllowDrop = true;
+			label1.Top = pbQR.Top + pbQR.Height / 2 - label1.Height / 2;
+			label2.Top = pbSearchScreen.Top + pbSearchScreen.Height / 2 - label2.Height / 2;
 		}
 
 		private void bSearchScreen_Click(object sender, EventArgs e)
@@ -624,5 +661,5 @@ namespace KeePassOTP
 		{
 			toolTip1.Show(PluginTranslate.ReadScreenForQRCode, pbSearchScreen);
 		}
-	}
+    }
 }
