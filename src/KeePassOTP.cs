@@ -148,6 +148,8 @@ namespace KeePassOTP
 			}
 		}
 
+		public ProtectedString RecoveryCodes = ProtectedString.EmptyEx;
+
 		static KPOTP()
 		{
 			miConfigureWebClient = typeof(IOConnection).GetMethod("ConfigureWebClient",
@@ -156,6 +158,11 @@ namespace KeePassOTP
 				new Type[] { typeof(System.Net.WebClient) },
 				null);
 		}
+
+		public KPOTP()
+        {
+
+        }
 
 		public string GetOTP()
 		{
@@ -693,6 +700,7 @@ namespace KeePassOTP
 				if ((otp1.TimeCorrectionUrl == "OWNURL") && !string.IsNullOrEmpty(url) && (otp2.TimeCorrectionUrl != url)) return false;
 				if ((otp2.TimeCorrectionUrl == "OWNURL") && !string.IsNullOrEmpty(url) && (otp1.TimeCorrectionUrl != url)) return false;
 			}
+			if (!otp1.RecoveryCodes.Equals(otp2.RecoveryCodes, false)) return false;
 
 			if (otp1.Type == KPOTPType.HOTP && (otp1.HOTPCounter != otp2.HOTPCounter))
 			{
@@ -702,7 +710,7 @@ namespace KeePassOTP
 			return true;
 		}
 
-		public KPOTP Clone()
+        public KPOTP Clone()
 		{
 			KPOTP result = new KPOTP();
 
@@ -718,6 +726,7 @@ namespace KeePassOTP
 			result.TimeCorrectionUrlOwn = this.TimeCorrectionUrlOwn;
 			result.TOTPTimestep = this.TOTPTimestep;
 			result.OTPTimeCorrection = this.OTPTimeCorrection;
+			result.RecoveryCodes = new ProtectedString(true, this.RecoveryCodes.ReadUtf8());
 
 			return result;
 		}

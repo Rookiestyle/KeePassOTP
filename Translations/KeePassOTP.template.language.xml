@@ -323,4 +323,8 @@ This message will not be shown again.</value>
     <key>OTPDisplayMode_label</key>
     <value>OTP display mode:</value>
   </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Recovery Codes</value>
+  </item>
 </Translation>

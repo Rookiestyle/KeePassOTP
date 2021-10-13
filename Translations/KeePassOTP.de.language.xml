@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>20</TranslationVersion>
+  <TranslationVersion>21</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -293,7 +293,7 @@ Tatsächliche Anzahl Datensätze: {0}</value>
   </item>
   <item>
     <key>ReadScreenForQRCode</key>
-    <value>Vom Bildschrim lesen</value>
+    <value>Lese QR Code vom Bildschirm</value>
   </item>
   <item>
     <key>ReadScreenForQRCodeExplain</key>
@@ -304,7 +304,7 @@ Dieses Hinweis wird nicht erneut angezeigt.</value>
   </item>
   <item>
     <key>OTP_Setup_DragDrop</key>
-    <value>Ziehe einen gültigen OTP QR code hierhin</value>
+    <value>Ziehe einen gültigen OTP QR Code hierhin</value>
   </item>
   <item>
     <key>OTPRenewal</key>

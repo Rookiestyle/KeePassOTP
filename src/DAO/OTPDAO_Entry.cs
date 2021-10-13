@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using KeePass;
 using KeePassLib;
 using KeePassLib.Security;
@@ -70,12 +71,15 @@ namespace KeePassOTP
 				{
 					pe.Strings.Remove(Config.OTPFIELD);
 					pe.CustomData.Remove(Config.TIMECORRECTION);
+					pe.Strings.Remove(Config.RECOVERY);
 				}
 				else
 				{
 					//pe.Strings.Set(Config.SETTINGS, new ProtectedString(false, otpSettings));
 					//pe.Strings.Set(Config.SEED, myOTP.OTPSeed);
 					pe.Strings.Set(Config.OTPFIELD, myOTP.OTPAuthString);
+					if (myOTP.RecoveryCodes.IsEmpty) pe.Strings.Remove(Config.RECOVERY);
+					else pe.Strings.Set(Config.RECOVERY, myOTP.RecoveryCodes); 
 					if (myOTP.TimeCorrectionUrlOwn)
 						pe.CustomData.Set(Config.TIMECORRECTION, "OWNURL");
 					else if (string.IsNullOrEmpty(myOTP.TimeCorrectionUrl) || (myOTP.TimeCorrectionUrl == "OFF"))
@@ -86,10 +90,11 @@ namespace KeePassOTP
 				pe.Touch(true, false);
 			}
 
-			private EntryOTP EnsureEntry(PwEntry pe)
+            private EntryOTP EnsureEntry(PwEntry pe)
 			{
 				EntryOTP otp;
-				if (m_dEntryOTPData.TryGetValue(pe, out otp) && !IgnoreBuffer) return otp;
+				if (m_dEntryOTPData.TryGetValue(pe, out otp) && !IgnoreBuffer) 
+					return otp;
 				otp.db = pe.GetDB();
 				otp.Loaded = true;
 				otp.OTPDefined = OTPDefined(pe);
@@ -113,7 +118,7 @@ namespace KeePassOTP
 				return otp;
 			}
 
-			public override OTPDefinition OTPDefined(PwEntry pe)
+            public override OTPDefinition OTPDefined(PwEntry pe)
 			{
 				return pe.Strings.Exists(Config.OTPFIELD) ? OTPDefinition.Complete : OTPDefinition.None;
 			}
@@ -130,6 +135,7 @@ namespace KeePassOTP
 				myOTP.OTPSeed = pe.Strings.GetSafe(Config.SEED);
 				*/
 				myOTP.OTPAuthString = pe.Strings.Get(Config.OTPFIELD);
+				myOTP.RecoveryCodes = pe.Strings.GetSafe(Config.RECOVERY);
 				string timeCorrection = pe.CustomData.Get(Config.TIMECORRECTION);
 				timeCorrection = string.IsNullOrEmpty(timeCorrection) ? string.Empty : timeCorrection;
 				if (timeCorrection == "OWNURL")

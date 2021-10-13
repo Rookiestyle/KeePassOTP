@@ -779,6 +779,38 @@ namespace KeePassOTP
 				if (string.IsNullOrEmpty(otp.Issuer)) otp.Issuer = PluginTranslation.PluginTranslate.PluginName;
 				otp.Label = GetDereferencedString(pe, pe.Strings.ReadSafe(PwDefs.UserNameField));
 			}
+
+			public static ProtectedString ConvertToString(List<ProtectedString> lCodes)
+			{
+				ProtectedString psResult = ProtectedString.EmptyEx;
+				for (int i = 0; i < lCodes.Count; i++)
+                {
+					if (i > 0) psResult += new ProtectedString(true, new byte[] { (byte)'\n' });
+					psResult += lCodes[i];
+                }
+				return psResult;
+			}
+
+			protected static List<ProtectedString> ConvertFromString(ProtectedString psCodes)
+            {
+				List<ProtectedString> lCodes = new List<ProtectedString>();
+				if (psCodes == null || psCodes.IsEmpty) return lCodes;
+				var cChars = psCodes.ReadChars();
+
+				ProtectedString ps = ProtectedString.EmptyEx;
+				foreach (var c in cChars)
+                {
+					if (c == '\n' || c == '\r')
+					{
+						if (!ps.IsEmpty) lCodes.Add(ps);
+						ps = ProtectedString.EmptyEx;
+					}
+					else ps += new ProtectedString(true, new byte[] { (byte)c });
+				}
+				if (!ps.IsEmpty) lCodes.Add(ps);
+				MemUtil.ZeroArray(cChars);
+				return lCodes;
+            }
 		}
 	}
 }
