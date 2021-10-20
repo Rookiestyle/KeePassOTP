@@ -315,4 +315,16 @@ This message will not be shown again.</value>
     <key>OTPRenewal_PreventShortDuration</key>
     <value>Renovar uma vez se em breve expirar</value>
   </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Renovar se logo expirar</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>Modo de exibição OTP:</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Códigos de Recuperação</value>
+  </item>
 </Translation>
