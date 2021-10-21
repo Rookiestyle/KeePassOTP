@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>9</TranslationVersion>
+  <TranslationVersion>10</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -275,10 +275,6 @@ Quantidade encontrada de entradas OTP: {0}</value>
   <item>
     <key>SelectSingleEntry</key>
     <value>Verifique a única entrada a ser usada</value>
-  </item>
-  <item>
-    <key>SelectSingleEntry</key>
-    <value>Por favor, marque uma única entrada para usar</value>
   </item>
   <item>
     <key>Issuer</key>
