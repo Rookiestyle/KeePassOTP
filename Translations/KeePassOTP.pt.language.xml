@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>8</TranslationVersion>
+  <TranslationVersion>9</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -277,27 +277,31 @@ Quantidade encontrada de entradas OTP: {0}</value>
     <value>Verifique a única entrada a ser usada</value>
   </item>
   <item>
+    <key>SelectSingleEntry</key>
+    <value>Por favor, marque uma única entrada para usar</value>
+  </item>
+  <item>
     <key>Issuer</key>
     <value>Emitente</value>
   </item>
- <item>
+  <item>
     <key>CheckingTFA</key>
-    <value>Checando 2FA</value>
+    <value>Checar 2FA</value>
   </item>
   <item>
     <key>ReadScreenForQRCode</key>
-    <value>Ler código QR OTP da tela</value>
+    <value>Leia o código QR de OTP da tela</value>
   </item>
   <item>
     <key>ReadScreenForQRCodeExplain</key>
-    <value>KeePassOTP agora irá tentar encontrar e ler o código QR OTP de sua tela.
-O próprio KeePass vai ficar em segundo-plano pelo máx. {0} segundos para simplificar a leitura do código QR OTP.
+    <value>O KeePassOTP agora tentará encontrar e ler o código QR OTP da sua tela.
+O próprio KeePass soltará em segundo plano por {0} segundos máximos para simplificar a leitura do código QR OTP.
 
-This message will not be shown again.</value>
+Esta mensagem não será mostrada novamente.</value>
   </item>
   <item>
     <key>OTP_Setup_DragDrop</key>
-    <value>Arrastar &amp; soltar um código QR OTP válido</value>
+    <value>Soltar &amp; soltar um código QR OTP válido</value>
   </item>
   <item>
     <key>OTPRenewal</key>
@@ -309,15 +313,11 @@ This message will not be shown again.</value>
   </item>
   <item>
     <key>OTPRenewal_RespectClipboardTimeout</key>
-    <value>Renovar até que a área de transferência seja limpa</value>
+    <value>Renovar até que a área de transferência seja apagada</value>
   </item>
   <item>
     <key>OTPRenewal_PreventShortDuration</key>
-    <value>Renovar uma vez se em breve expirar</value>
-  </item>
-  <item>
-    <key>OTPRenewal_PreventShortDuration</key>
-    <value>Renovar se logo expirar</value>
+    <value>Renovar se expirar em breve</value>
   </item>
   <item>
     <key>OTPDisplayMode_label</key>
