@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>7</TranslationVersion>
+  <TranslationVersion>8</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -314,5 +314,17 @@ This message will not be shown again.</value>
   <item>
     <key>OTPRenewal_PreventShortDuration</key>
     <value>Renovar uma vez se em breve expirar</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Renovar se logo expirar</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>Modo de exibição OTP:</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Códigos de Recuperação</value>
   </item>
 </Translation>
