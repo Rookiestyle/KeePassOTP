@@ -91,6 +91,8 @@ namespace KeePassOTP
 			m_timer.Interval = 1000;
 			m_timer.Tick += OnValueChanged;
 			m_timer.Start();
+
+			ActiveControl = tbOTPSeed;
 		}
 
 		private void InitSettings(bool bCheckAdvancedMode)

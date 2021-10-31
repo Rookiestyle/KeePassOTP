@@ -106,7 +106,7 @@ namespace KeePassOTP
             this.gSeed.Name = "gSeed";
             this.gSeed.Padding = new System.Windows.Forms.Padding(5);
             this.gSeed.Size = new System.Drawing.Size(912, 196);
-            this.gSeed.TabIndex = 2;
+            this.gSeed.TabIndex = 100;
             this.gSeed.TabStop = false;
             this.gSeed.Text = "Seed data";
             // 
@@ -150,7 +150,7 @@ namespace KeePassOTP
             this.tbOTPSeed.Margin = new System.Windows.Forms.Padding(5);
             this.tbOTPSeed.Name = "tbOTPSeed";
             this.tbOTPSeed.Size = new System.Drawing.Size(708, 38);
-            this.tbOTPSeed.TabIndex = 100;
+            this.tbOTPSeed.TabIndex = 101;
             this.tbOTPSeed.Leave += new System.EventHandler(this.OnValueChanged);
             // 
             // lSeed
@@ -170,7 +170,7 @@ namespace KeePassOTP
             this.buttonOK.Margin = new System.Windows.Forms.Padding(5);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(178, 46);
-            this.buttonOK.TabIndex = 400;
+            this.buttonOK.TabIndex = 901;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             // 
@@ -182,7 +182,7 @@ namespace KeePassOTP
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(5);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(178, 46);
-            this.buttonCancel.TabIndex = 410;
+            this.buttonCancel.TabIndex = 902;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
@@ -196,7 +196,7 @@ namespace KeePassOTP
             this.tcSetup.Name = "tcSetup";
             this.tcSetup.SelectedIndex = 0;
             this.tcSetup.Size = new System.Drawing.Size(938, 596);
-            this.tcSetup.TabIndex = 411;
+            this.tcSetup.TabIndex = 1;
             // 
             // tpSetup
             // 
@@ -294,7 +294,7 @@ namespace KeePassOTP
             this.tbRecovery.Name = "tbRecovery";
             this.tbRecovery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbRecovery.Size = new System.Drawing.Size(836, 481);
-            this.tbRecovery.TabIndex = 0;
+            this.tbRecovery.TabIndex = 201;
             // 
             // tpAdvanced
             // 
@@ -323,7 +323,7 @@ namespace KeePassOTP
             this.gTime.Name = "gTime";
             this.gTime.Padding = new System.Windows.Forms.Padding(5);
             this.gTime.Size = new System.Drawing.Size(912, 194);
-            this.gTime.TabIndex = 13;
+            this.gTime.TabIndex = 401;
             this.gTime.TabStop = false;
             this.gTime.Text = "Time correction - TOTP && Steam only";
             // 
@@ -363,7 +363,7 @@ namespace KeePassOTP
             this.totpTimeCorrectionType.Margin = new System.Windows.Forms.Padding(5);
             this.totpTimeCorrectionType.Name = "totpTimeCorrectionType";
             this.totpTimeCorrectionType.Size = new System.Drawing.Size(708, 39);
-            this.totpTimeCorrectionType.TabIndex = 300;
+            this.totpTimeCorrectionType.TabIndex = 402;
             // 
             // tbTOTPTimeCorrectionURL
             // 
@@ -371,7 +371,7 @@ namespace KeePassOTP
             this.tbTOTPTimeCorrectionURL.Margin = new System.Windows.Forms.Padding(5);
             this.tbTOTPTimeCorrectionURL.Name = "tbTOTPTimeCorrectionURL";
             this.tbTOTPTimeCorrectionURL.Size = new System.Drawing.Size(708, 38);
-            this.tbTOTPTimeCorrectionURL.TabIndex = 310;
+            this.tbTOTPTimeCorrectionURL.TabIndex = 403;
             // 
             // lURL
             // 
@@ -404,7 +404,7 @@ namespace KeePassOTP
             this.gOTP.Name = "gOTP";
             this.gOTP.Padding = new System.Windows.Forms.Padding(5);
             this.gOTP.Size = new System.Drawing.Size(912, 273);
-            this.gOTP.TabIndex = 12;
+            this.gOTP.TabIndex = 302;
             this.gOTP.TabStop = false;
             this.gOTP.Text = "OTP settings";
             // 
@@ -423,7 +423,7 @@ namespace KeePassOTP
             this.tbYandexPin.Margin = new System.Windows.Forms.Padding(5);
             this.tbYandexPin.Name = "tbYandexPin";
             this.tbYandexPin.Size = new System.Drawing.Size(175, 38);
-            this.tbYandexPin.TabIndex = 5221;
+            this.tbYandexPin.TabIndex = 304;
             // 
             // cbOTPFormat
             // 
@@ -438,7 +438,7 @@ namespace KeePassOTP
             this.cbOTPFormat.Margin = new System.Windows.Forms.Padding(5);
             this.cbOTPFormat.Name = "cbOTPFormat";
             this.cbOTPFormat.Size = new System.Drawing.Size(212, 39);
-            this.cbOTPFormat.TabIndex = 230;
+            this.cbOTPFormat.TabIndex = 305;
             // 
             // lFormat
             // 
@@ -455,7 +455,7 @@ namespace KeePassOTP
             this.tbTOTPTimestep.Margin = new System.Windows.Forms.Padding(5);
             this.tbTOTPTimestep.Name = "tbTOTPTimestep";
             this.tbTOTPTimestep.Size = new System.Drawing.Size(175, 38);
-            this.tbTOTPTimestep.TabIndex = 210;
+            this.tbTOTPTimestep.TabIndex = 304;
             // 
             // lTimestep
             // 
@@ -472,7 +472,7 @@ namespace KeePassOTP
             this.tbHOTPCounter.Margin = new System.Windows.Forms.Padding(5);
             this.tbHOTPCounter.Name = "tbHOTPCounter";
             this.tbHOTPCounter.Size = new System.Drawing.Size(175, 38);
-            this.tbHOTPCounter.TabIndex = 5220;
+            this.tbHOTPCounter.TabIndex = 304;
             // 
             // lCounter
             // 
@@ -495,7 +495,7 @@ namespace KeePassOTP
             this.cbOTPHashFunc.Margin = new System.Windows.Forms.Padding(5);
             this.cbOTPHashFunc.Name = "cbOTPHashFunc";
             this.cbOTPHashFunc.Size = new System.Drawing.Size(212, 39);
-            this.cbOTPHashFunc.TabIndex = 250;
+            this.cbOTPHashFunc.TabIndex = 307;
             // 
             // cbOTPLength
             // 
@@ -511,7 +511,7 @@ namespace KeePassOTP
             this.cbOTPLength.Margin = new System.Windows.Forms.Padding(5);
             this.cbOTPLength.Name = "cbOTPLength";
             this.cbOTPLength.Size = new System.Drawing.Size(212, 39);
-            this.cbOTPLength.TabIndex = 240;
+            this.cbOTPLength.TabIndex = 306;
             // 
             // cbOTPType
             // 
@@ -526,7 +526,7 @@ namespace KeePassOTP
             this.cbOTPType.Margin = new System.Windows.Forms.Padding(5);
             this.cbOTPType.Name = "cbOTPType";
             this.cbOTPType.Size = new System.Drawing.Size(212, 39);
-            this.cbOTPType.TabIndex = 200;
+            this.cbOTPType.TabIndex = 303;
             // 
             // lHash
             // 
@@ -565,7 +565,7 @@ namespace KeePassOTP
             this.cbAdvanced.Margin = new System.Windows.Forms.Padding(5);
             this.cbAdvanced.Name = "cbAdvanced";
             this.cbAdvanced.Size = new System.Drawing.Size(912, 36);
-            this.cbAdvanced.TabIndex = 14;
+            this.cbAdvanced.TabIndex = 301;
             this.cbAdvanced.Text = "cbAdvanced";
             this.cbAdvanced.UseVisualStyleBackColor = true;
             this.cbAdvanced.CheckedChanged += new System.EventHandler(this.cbAdvanced_CheckedChanged);
