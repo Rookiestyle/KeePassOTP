@@ -524,7 +524,7 @@ namespace KeePassOTP
 			PluginDebug.AddInfo("Tray setup: Start", 0);
 			m_TrayMenu.DropDownItems.Clear();
 			List<PwDatabase> lDB = m_host.MainWindow.DocumentManager.GetOpenDatabases();
-			Dictionary<string, List<PwEntry>> dEntries = new Dictionary<string, List<PwEntry>>();
+			Dictionary<PwDatabase, List<PwEntry>> dEntries = new Dictionary<PwDatabase, List<PwEntry>>();
 			DateTime dtExpired = DateTime.UtcNow;
 			foreach (PwDatabase db in lDB)
 			{
@@ -560,7 +560,7 @@ namespace KeePassOTP
 					}
 				}
 				entries.Sort(SortEntries);
-				dEntries.Add(dbName, entries);
+				dEntries.Add(db, entries);
 			}
 			foreach (var kvp in dEntries)
 			{
@@ -570,7 +570,13 @@ namespace KeePassOTP
 					parent = m_TrayMenu;
 				else
 				{
-					parent = new ToolStripMenuItem(kvp.Key);
+					string dbName = UrlUtil.GetFileName(kvp.Key.IOConnectionInfo.Path);
+					if (!string.IsNullOrEmpty(kvp.Key.Name))
+						dbName = kvp.Key.Name + " (" + dbName + ")";
+
+					parent = new ToolStripMenuItem(dbName);
+					if (!UIUtil.ColorsEqual(kvp.Key.Color, Color.Empty)) 
+						parent.Image = UIUtil.CreateColorBitmap24(parent.Height, parent.Height, kvp.Key.Color);
 					m_TrayMenu.DropDownItems.Add(parent);
 				}
 				foreach (PwEntry pe in kvp.Value)
@@ -587,6 +593,11 @@ namespace KeePassOTP
 					entry.Name = "KPOTP_" + pe.Uuid.ToString();
 					entry.Click += OnOTPTray;
 					entry.Tag = pe;
+					if (PwUuid.Zero != pe.CustomIconUuid)
+						entry.Image = kvp.Key.GetCustomIcon(pe.CustomIconUuid, entry.Height, entry.Height);
+					if (entry.Image == null)
+						entry.Image = m_host.MainWindow.ClientIcons.Images[(int)pe.IconId];
+
 					parent.DropDownItems.Add(entry);
 				}
 			}
