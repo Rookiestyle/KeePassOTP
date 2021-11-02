@@ -97,8 +97,8 @@ namespace KeePassOTP
 			return true;
 		}
 
-        private void CleanupColumns()
-        {
+		private void CleanupColumns()
+		{
 			//Column KPOTP_Reduced has been removed (use KeePassOTP options instead)
 			//If column is currently displayed do the following:
 			// - Switch OTP display mode to reduced mode
@@ -288,13 +288,13 @@ namespace KeePassOTP
 				f.Height += 5;
 				Timer tClose = new Timer();
 				tClose.Interval = 30000;
-				tClose.Tick += (o, e1) => 
+				tClose.Tick += (o, e1) =>
 				{
 					tClose.Stop();
 					tClose.Dispose();
 					if (f != null) f.Close();
 				};
-				f.Shown += (o, e2) => 
+				f.Shown += (o, e2) =>
 				{
 					KeePass.UI.GlobalWindowManager.AddWindow(f, f);
 					tClose.Start();
@@ -380,7 +380,7 @@ namespace KeePassOTP
 			{
 				ToolStripMenuItem autotype = (ToolStripMenuItem)autotypes[0];
 				m_MainMenuAutotype.Text = Config.Placeholder;
-				m_MainMenuAutotype.Name = PluginTranslate.PluginName+"AutoTypeMainMenu";
+				m_MainMenuAutotype.Name = PluginTranslate.PluginName + "AutoTypeMainMenu";
 				m_MainMenuAutotype.Image = autotype.DropDownItems[0].Image;
 				m_MainMenuAutotype.Click += OnOTPAutotype;
 				autotype.DropDownItems.Add(m_MainMenuAutotype);
@@ -507,6 +507,7 @@ namespace KeePassOTP
 		private void AddTray()
 		{
 			m_TrayMenu = new ToolStripMenuItem();
+			m_TrayMenu.Image = SmallIcon;
 			m_host.MainWindow.TrayContextMenu.Items.Insert(0, m_TrayMenu);
 			m_host.MainWindow.TrayContextMenu.Opening += OnTrayOpening;
 		}
@@ -677,11 +678,11 @@ namespace KeePassOTP
 		internal static void CopyToClipboardAndStartClipboardCountdown(PwEntry pe, KPOTP kOTP)
 		{
 			if (m_tClipboardRenewalTimer != null)
-            {
+			{
 				m_tClipboardRenewalTimer.Stop();
 				m_tClipboardRenewalTimer.Dispose();
 				m_tClipboardRenewalTimer = null;
-            }
+			}
 
 			//Copy OTP to clipboard
 			string sOTP = kOTP.GetOTP(false, true);
@@ -755,7 +756,7 @@ namespace KeePassOTP
 				//Do NOT minimize again
 				ClipboardUtil.Copy(sOTP, false, false, null, null, Program.MainForm.Handle);
 				if (bRestartClipboardCountdownOnce)
-                {
+				{
 					bRestartClipboardCountdownOnce = false;
 					Program.MainForm.StartClipboardCountdown();
 				}
@@ -842,7 +843,7 @@ namespace KeePassOTP
 			get { return Icon_Setup; }
 		}
 	}
-	public class QRForm: Form, KeePass.UI.IGwmWindow
+	public class QRForm : Form, KeePass.UI.IGwmWindow
 	{
 		public bool CanCloseWithoutDataLoss { get { return true; } }
 	}
