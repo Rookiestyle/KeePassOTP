@@ -145,6 +145,8 @@ This message will not be shown again.";
 		public static readonly string OTPRenewal_PreventShortDuration = @"Renew if soon to expire";
 		public static readonly string OTPDisplayMode_label = @"OTP display mode:";
 		public static readonly string RecoveryCodes = @"Recovery codes";
+		public static readonly string TFA_SetupURL = @"Setup";
+		public static readonly string TFA_RecoveryURL = @"Recovery";
 		#endregion
 
 		#region NO changes in this area

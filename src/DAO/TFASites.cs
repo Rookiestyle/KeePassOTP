@@ -2,6 +2,7 @@
 using KeePass.Resources;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;
+using Newtonsoft.Json.Linq;
 using PluginTools;
 using PluginTranslation;
 using System;
@@ -14,7 +15,7 @@ namespace KeePassOTP
 	public static class TFASites
 	{
 		//const string TFA_JSON_FILE = "https://twofactorauth.org/api/v2/tfa.json";
-		const string TFA_JSON_FILE_DEFAULT = "https://2fa.directory/api/v2/tfa.json";
+		const string TFA_JSON_FILE_DEFAULT = "https://2fa.directory/api/v3/tfa.json";
 
 		public static string TFA_JSON_FILE
 		{
@@ -31,19 +32,22 @@ namespace KeePassOTP
 			Error,
 		}
 
-		private class TFAData
+		internal class TFAData
 		{
-			public string name;
-			public string url;
+			public string domain;
 			public string img;
-			public bool tfa;
-			public bool sms;
-			public bool email;
-			public bool phone;
-			public bool software;
-			public bool hardware;
-			public string doc;
-			public string category;
+			public string url;
+			public List<string> tfa = new List<string>();
+			public string documentation;
+			public string recovery;
+			public string notes;
+			public string contact;
+			public List<string> regions;
+			public List<string> additional_domains;
+			public List<string> custom_software;
+			public List<string> custom_hardware;
+			public List<string> keywords;
+			public bool tfa_possible {  get { return tfa.Count > 0; } }
 		}
 
 		private enum TFALoadProcess
@@ -88,7 +92,15 @@ namespace KeePassOTP
 			if (IsTFAPossible(url) != TFAPossible.Yes) return string.Empty;
 			TFAData tfa;
 			if (!m_dTFA.TryGetValue(url, out tfa)) return string.Empty;
-			return !string.IsNullOrEmpty(tfa.doc) ? tfa.doc : url;
+			return !string.IsNullOrEmpty(tfa.documentation) ? tfa.documentation : url;
+		}
+
+		internal static TFAData GetTFAData(string url)
+        {
+			if (IsTFAPossible(url) != TFAPossible.Yes) return null;
+			TFAData tfa;
+			if (m_dTFA.TryGetValue(url, out tfa)) return tfa;
+			return null;
 		}
 
 		public static TFAPossible IsTFAPossible(string url)
@@ -97,7 +109,7 @@ namespace KeePassOTP
 			TFAData tfa;
 			if (m_dTFA.TryGetValue(url, out tfa))
 			{
-				if (tfa.tfa) return TFAPossible.Yes;
+				if (tfa.tfa_possible) return TFAPossible.Yes;
 				else return TFAPossible.No;
 			}
 			lock (m_TFAReadLock)
@@ -106,7 +118,7 @@ namespace KeePassOTP
 				{
 					if (m_RetryReadOTPSites == null)
 					{
-						m_RetryReadOTPSites = new System.Windows.Forms.Timer();
+						m_RetryReadOTPSites = new Timer();
 						m_RetryReadOTPSites.Tick += OnRereadOTPSitesTimerTick;
 						m_RetryReadOTPSites.Interval = 30 * 1000;
 						m_RetryReadOTPSites.Enabled = false;
@@ -125,11 +137,11 @@ namespace KeePassOTP
                 tfa = m_dTFA.FirstOrDefault(x => IsRegexMatch(x.Key, url)).Value;
 				if (tfa == null)
 				{
-					tfa = new TFAData() { tfa = false };
+					tfa = new TFAData();
 					m_dTFA[url] = tfa;
 				}
 				else m_dTFA[url] = tfa;
-				if (tfa.tfa) return TFAPossible.Yes;
+				if (tfa.tfa_possible) return TFAPossible.Yes;
 				else return TFAPossible.No;
 			}
 		}
@@ -142,7 +154,7 @@ namespace KeePassOTP
 			}
 		}
 
-		private static System.Windows.Forms.Timer m_RetryReadOTPSites = null;
+		private static Timer m_RetryReadOTPSites = null;
 		private static void TriggerReadOTPSites()
 		{
 			if (m_RetryReadOTPSites.Enabled) return;
@@ -155,6 +167,21 @@ namespace KeePassOTP
 			m_RetryReadOTPSites.Enabled = false;
 		}
 
+		private static string GetJSonString(JToken t, string sName)
+		{
+			string sResult = t.Value<string>(sName);
+			return string.IsNullOrEmpty(sResult) ? string.Empty : sResult;
+		}
+
+		private static List<string> GetJSonList(JToken jt, string sName)
+		{
+			List<string> lResult = new List<string>();
+			var jArrayName = jt.Value<JArray>(sName);
+			if (jArrayName == null) return lResult;
+			foreach (var at in jArrayName.Children().ToList()) lResult.Add(at.ToString());
+			return lResult;
+		}
+
 		private static void ReadOTPSites(object s)
 		{
 			lock (m_TFAReadLock)
@@ -165,7 +192,7 @@ namespace KeePassOTP
 				m_LoadState = TFALoadProcess.Loading;
 			}
 			m_dTFA.Clear();
-			JsonObject j = null;
+			JArray ja = null;
 			bool bException = false;
 			IOConnectionInfo ioc = IOConnectionInfo.FromPath(TFA_JSON_FILE);
 			bool bExists = false;
@@ -175,7 +202,12 @@ namespace KeePassOTP
 			{
 				bExists = IOConnection.FileExists(ioc, true);
 				byte[] b = IOConnection.ReadFile(ioc);
-				if (b != null) j = new JsonObject(new CharStream(StrUtil.Utf8.GetString(b)));
+				if (b != null)
+				{
+					string content = StrUtil.Utf8.GetString(b);
+					ja = Newtonsoft.Json.JsonConvert.DeserializeObject(content) as JArray;
+
+				}
 			}
 			catch (System.Net.WebException exWeb)
 			{
@@ -190,7 +222,7 @@ namespace KeePassOTP
 				PluginDebug.AddError("Error reading OTP sites", 0, "Error: " + ex.Message);
 				bException = true;
 			}
-			if (j == null)
+			if (ja == null)
 			{
 				if (!bExists || bNoInternet)
 				{
@@ -199,31 +231,34 @@ namespace KeePassOTP
 				}
 				else lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.FileNotFound; }
 				if (!bException) PluginDebug.AddError("Error reading OTP sites", 0);
-				return;
+				//return;
 			}
 			DateTime dtStart = DateTime.Now;
-			foreach (KeyValuePair<string, object> kvp in j.Items)
-			{
-				List<string> keys = (kvp.Value as JsonObject).Items.Keys.ToList();
-				for (int i = 0; i < keys.Count; i++)
-				{
-					JsonObject k = (kvp.Value as JsonObject).GetValue<JsonObject>(keys[i]);
-					TFAData tfa = new TFAData();
-					var tfaDetails = k.GetValueArray<string>("tfa");
-					tfa.tfa = tfaDetails != null && tfaDetails.Length > 0;
-					if (!tfa.tfa) continue;
-					tfa.name = k.GetValue<string>("name");
-					tfa.sms = tfaDetails.Contains("sms") ||	k.GetValue<bool>("sms", false);
-					tfa.email = tfaDetails.Contains("email") || k.GetValue<bool>("email", false);
-					tfa.phone = tfaDetails.Contains("phone") || k.GetValue<bool>("phone", false);
-					tfa.software = tfaDetails.Contains("software") || k.GetValue<bool>("software", false);
-					tfa.hardware = tfaDetails.Contains("hardwar") || k.GetValue<bool>("hardware", false);
-					tfa.url = k.GetValue<string>("url");
-					tfa.img = k.GetValue<string>("img");
-					tfa.doc = k.GetValue<string>("doc");
-					tfa.category = kvp.Key;
-					m_dTFA[CreatePattern(tfa.url)] = tfa;
-				}
+
+			foreach (JToken jtEntryContainer in ja)
+            {
+				var lEntry = jtEntryContainer.Children().ToList();
+				if (lEntry.Count != 2) continue;
+				JToken jtEntry = lEntry[1];
+				TFAData tfa = new TFAData();
+				tfa.domain = GetJSonString(jtEntry, "domain");
+				string sDomain = tfa.domain.ToLowerInvariant();
+				if (!sDomain.StartsWith("http://") && !sDomain.StartsWith("https://")) tfa.domain = "https://" + tfa.domain;
+
+				tfa.img = GetJSonString(jtEntry, "img");
+				tfa.url = GetJSonString(jtEntry, "url");
+				if (string.IsNullOrEmpty(tfa.url)) tfa.url = tfa.domain;
+				tfa.tfa = GetJSonList(jtEntry, "tfa");
+				tfa.documentation = GetJSonString(jtEntry, "documentation");
+				tfa.recovery = GetJSonString(jtEntry, "recovery");
+				tfa.notes = GetJSonString(jtEntry, "notes");
+				tfa.contact = GetJSonString(jtEntry, "contact");
+				tfa.regions = GetJSonList(jtEntry, "regions");
+				tfa.additional_domains = GetJSonList(jtEntry, "additional_domains");
+				tfa.custom_software = GetJSonList(jtEntry, "custom_software");
+				tfa.custom_hardware = GetJSonList(jtEntry, "custom_hardware");
+				tfa.keywords = GetJSonList(jtEntry, "keywords");
+				m_dTFA[CreatePattern(tfa.domain)] = tfa;
 			}
 			DateTime dtEnd = DateTime.Now;
 			lock (m_TFAReadLock)

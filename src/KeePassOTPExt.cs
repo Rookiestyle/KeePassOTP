@@ -120,6 +120,7 @@ namespace KeePassOTP
 
 		private void GlobalWindowManager_WindowAdded(object sender, GwmWindowEventArgs e)
 		{
+			if (e.Form is PwEntryForm) e.Form.Shown += OnEntryFormShown;
 			if (!m_bOTPHotkeyPressed) return;
 			if (!(e.Form is AutoTypeCtxForm)) return;
 
@@ -140,6 +141,16 @@ namespace KeePassOTP
 			//simply to close it
 			//We do not want to display an entry selection form with less then 2 entries
 			if (lCtx.Count < 2) e.Form.Shown += OnAutoTypeFormShown;
+		}
+
+		private void OnEntryFormShown(object sender, EventArgs e)
+		{
+			PwEntryForm pef = sender as PwEntryForm;
+			if (pef == null) return;
+			pef.Shown -= OnEntryFormShown;
+
+			var kef = new KPOTP_Details();
+			kef.InitEx(pef);
 		}
 
 		private void OnAutoTypeFormShown(object sender, EventArgs e)
@@ -232,6 +243,10 @@ namespace KeePassOTP
 			otpSetup.OTP = OTPDAO.GetOTP(pe);
 			otpSetup.EntryUrl = pe.Strings.GetSafe(PwDefs.UrlField).ReadString();
 			otpSetup.InitEx();
+
+			KPOTP_Details d = new KPOTP_Details();
+			d.InitEx(otpSetup, TFASites.GetTFAData(pe.Strings.ReadSafe(PwDefs.UrlField)));
+
 			if (otpSetup.ShowDialog(m_host.MainWindow) == DialogResult.OK)
 				OTPDAO.SaveOTP(otpSetup.OTP, pe);
 			otpSetup.Dispose();

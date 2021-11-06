@@ -74,6 +74,12 @@
       <DependentUpon>GoogleAuthenticatorImportSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="HotkeyManager.cs" />
+    <Compile Include="KPOTP_Details.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KPOTP_Details.Designer.cs">
+      <DependentUpon>KPOTP_Details.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migration.cs" />
     <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -131,9 +137,14 @@
       <PlgxReference>bin\Release\protobuf-net.dll</PlgxReference>
       <PlgxReference>bin\Release\zxing.dll</PlgxReference>
       <PlgxReference>bin\Release\zxing.presentation.dll</PlgxReference>
+	  <PlgxReference>bin\Release\Newtonsoft.Json.dll</PlgxReference>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+			<ExcludeFromPlgx />
+		</PackageReference>
     <PackageReference Include="PlgxTool">
       <Version>1.0.0</Version>
       <ExcludeFromPlgx />

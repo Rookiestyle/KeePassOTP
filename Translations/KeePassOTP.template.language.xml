@@ -325,6 +325,14 @@ This message will not be shown again.</value>
   </item>
   <item>
     <key>RecoveryCodes</key>
-    <value>Recovery Codes</value>
+    <value>Recovery codes</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>Setup</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>Recovery</value>
   </item>
 </Translation>
