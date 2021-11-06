@@ -525,62 +525,56 @@ namespace KeePassOTP
 			PluginDebug.AddInfo("Tray setup: Start", 0);
 			m_TrayMenu.DropDownItems.Clear();
 			List<PwDatabase> lDB = m_host.MainWindow.DocumentManager.GetOpenDatabases();
-			Dictionary<PwDatabase, List<PwEntry>> dEntries = new Dictionary<PwDatabase, List<PwEntry>>();
+			List<Tray_Database> lDB_Entries = new List<Tray_Database>();
 			DateTime dtExpired = DateTime.UtcNow;
+			bool bAdjustedEntryColor = false;
 			foreach (PwDatabase db in lDB)
 			{
-				string dbName = UrlUtil.GetFileName(db.IOConnectionInfo.Path);
-				if (!string.IsNullOrEmpty(db.Name))
-					dbName = db.Name + " (" + dbName + ")";
-				List<PwEntry> entries = null;
+				var tdb = new Tray_Database(db);
 				if (Config.UseDBForOTPSeeds(db))
 				{
-					entries = db.RootGroup.GetEntries(true).Where(
+					tdb.Entries = db.RootGroup.GetEntries(true).Where(
 						x => x.CustomData.Exists(OTPDAO.OTPHandler_DB.DBNAME)
 							&& StrUtil.StringToBool(x.CustomData.Get(OTPDAO.OTPHandler_DB.DBNAME))).ToList();
 				}
 				else
 				{
-					entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)).ToList();
+					tdb.Entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)).ToList();
 				}
 				if (!Program.Config.Integration.AutoTypeExpiredCanMatch) // Remove expired entries
 				{
-					entries = entries.Where(x => !x.Expires || x.ExpiryTime >= dtExpired).ToList();
+					tdb.Entries = tdb.Entries.Where(x => !x.Expires || x.ExpiryTime >= dtExpired).ToList();
 				}
-				PluginDebug.AddInfo("Tray setup: Check database", 0, "DB: " + dbName, "Entries: " + entries.Count.ToString());
-				if (entries.Count == 0) continue;
+				PluginDebug.AddInfo("Tray setup: Check database", 0, "DB: " + tdb.DBName, "Entries: " + tdb.Entries.Count.ToString());
+				if (tdb.Entries.Count == 0) continue;
 				//Ignore deleted entries
 				PwGroup pgRecycle = db.RecycleBinEnabled ? db.RootGroup.FindGroup(db.RecycleBinUuid, true) : null;
 				if (pgRecycle != null)
 				{
-					for (int i = entries.Count - 1; i >= 0; i--)
+					for (int i = tdb.Entries.Count - 1; i >= 0; i--)
 					{
-						PwEntry pe = entries[i];
+						PwEntry pe = tdb.Entries[i];
 						if (pe.IsContainedIn(pgRecycle))
-							entries.Remove(pe);
+							tdb.Entries.Remove(pe);
 					}
 				}
-				entries.Sort(SortEntries);
-				dEntries.Add(db, entries);
+				tdb.Entries.Sort(SortEntries);
+				lDB_Entries.Add(tdb);
 			}
-			foreach (var kvp in dEntries)
+			foreach (var tdb in lDB_Entries)
 			{
 				ToolStripMenuItem parent = null;
 				//If entries of only one DB are found don't include the DB as additional menu level
-				if (dEntries.Count == 1)
+				if (lDB_Entries.Count == 1)
 					parent = m_TrayMenu;
 				else
 				{
-					string dbName = UrlUtil.GetFileName(kvp.Key.IOConnectionInfo.Path);
-					if (!string.IsNullOrEmpty(kvp.Key.Name))
-						dbName = kvp.Key.Name + " (" + dbName + ")";
-
-					parent = new ToolStripMenuItem(dbName);
-					if (!UIUtil.ColorsEqual(kvp.Key.Color, Color.Empty)) 
-						parent.Image = UIUtil.CreateColorBitmap24(parent.Height, parent.Height, kvp.Key.Color);
+					parent = new ToolStripMenuItem(tdb.DBName);
+					if (!UIUtil.ColorsEqual(tdb.DBColor, Color.Empty))
+						parent.Image = UIUtil.CreateColorBitmap24(parent.Height, parent.Height, tdb.DBColor);
 					m_TrayMenu.DropDownItems.Add(parent);
 				}
-				foreach (PwEntry pe in kvp.Value)
+				foreach (PwEntry pe in tdb.Entries)
 				{
 					ToolStripMenuItem entry = new ToolStripMenuItem();
 					string[] text = GetTrayText(pe);
@@ -595,15 +589,66 @@ namespace KeePassOTP
 					entry.Click += OnOTPTray;
 					entry.Tag = pe;
 					if (PwUuid.Zero != pe.CustomIconUuid)
-						entry.Image = kvp.Key.GetCustomIcon(pe.CustomIconUuid, entry.Height, entry.Height);
+						entry.Image = tdb.GetCustomIcon(pe.CustomIconUuid, entry.Height, entry.Height);
 					if (entry.Image == null)
 						entry.Image = m_host.MainWindow.ClientIcons.Images[(int)pe.IconId];
 
+					bAdjustedEntryColor |= AdjustEntryColor(entry);
 					parent.DropDownItems.Add(entry);
 				}
 			}
-			m_TrayMenu.Enabled = dEntries.Count > 0;
+			m_TrayMenu.Enabled = lDB_Entries.Count > 0;
 			m_TrayMenu.Text = m_TrayMenu.Enabled ? PluginTranslate.OTPCopyTrayEntries : PluginTranslate.OTPCopyTrayNoEntries;
+
+			if (bAdjustedEntryColor) AdjustToolStripRender();
+		}
+
+		private void AdjustToolStripRender()
+		{
+			//KeePass uses one out of many own toolstrip renderers
+			//If we use color coding, enforce usage of our colors
+			//This is experimental and can be switched off in KeePass' config file!
+			if (Config.TrayColorCodeMode != Config.Tray_ColorCoding.On) return;
+
+			var rPrev = m_host.MainWindow.TrayContextMenu.Renderer;
+			m_host.MainWindow.TrayContextMenu.Renderer = new Tray_Renderer(rPrev as ToolStripProfessionalRenderer);
+			m_host.MainWindow.TrayContextMenu.Closed += CleanupRenderer;
+		}
+
+		private void CleanupRenderer(object sender, ToolStripDropDownClosedEventArgs e)
+		{
+			m_host.MainWindow.TrayContextMenu.Closed -= CleanupRenderer;
+
+			//Don't restore
+			//Set 'Renderer' to null instead to use use whatever is assigned to ToolStripManager.Renderer
+			//This way, a change of the renderer will be considered next time the context menu is displayed
+			m_host.MainWindow.TrayContextMenu.Renderer = null;
+		}
+
+		private bool AdjustEntryColor(ToolStripMenuItem entry)
+		{
+			//KeePass uses one out of many own toolstrip renderers
+			//If we use color coding, enforce usage of our colors
+			//This is experimental and can be switched off in KeePass' config file!
+			bool bAdjusted = false;
+
+			if (Config.TrayColorCodeMode == Config.Tray_ColorCoding.Off) return bAdjusted;
+
+			PwEntry pe = entry.Tag as PwEntry;
+			if (pe == null) return bAdjusted;
+
+			if (!UIUtil.ColorsEqual(pe.ForegroundColor, Color.Empty) && !UIUtil.ColorsEqual(pe.ForegroundColor, entry.ForeColor))
+			{
+				entry.ForeColor = pe.ForegroundColor;
+				bAdjusted = true;
+			}
+			if (!UIUtil.ColorsEqual(pe.BackgroundColor, Color.Empty) && !UIUtil.ColorsEqual(pe.BackgroundColor, entry.BackColor))
+			{
+				entry.BackColor = pe.BackgroundColor;
+				bAdjusted = true;
+			}
+			if (bAdjusted) entry.Name = "KeePassOTP_Tray_" + pe.Uuid.ToHexString();
+			return bAdjusted;
 		}
 
 		private string[] GetTrayText(PwEntry pe)

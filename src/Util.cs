@@ -6,6 +6,7 @@ using PluginTools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -14,6 +15,11 @@ namespace KeePassOTP
 {
 	internal static class Config
 	{
+		internal enum Tray_ColorCoding
+        {
+			Off,
+			On,
+        }
 		internal enum OTPRenewal_Enum
 		{
 			Inactive,
@@ -49,6 +55,24 @@ namespace KeePassOTP
 		{
 			PTHotKeyManager.UnregisterHotKey(HotkeyID);
 		}
+
+		internal static Tray_ColorCoding TrayColorCodeMode
+        {
+			get
+            {
+				Tray_ColorCoding r;
+				try
+				{
+					r = (Tray_ColorCoding)Enum.Parse(typeof(Tray_ColorCoding), Program.Config.CustomConfig.GetString("KeePassOTP.TrayColorCodeMode", Tray_ColorCoding.On.ToString()));
+				}
+				catch 
+				{
+					r = Tray_ColorCoding.On;
+					Program.Config.CustomConfig.SetString ("KeePassOTP.TrayColorCodeMode", string.Empty);
+				}
+				return r;
+            }
+        }
 
 		internal static bool KPOTPAutoSubmit
 		{
@@ -731,6 +755,98 @@ namespace KeePassOTP
 			T[] result = new T[length];
 			Array.Copy(data, index, result, 0, length);
 			return result;
+		}
+	}
+
+	internal class Tray_Database
+    {
+		private PwDatabase _db;
+		private string _DB_DisplayName;
+		internal Color DBColor
+        {
+            get
+            {
+				if (_db == null || !_db.IsOpen) return Color.Empty;
+				return _db.Color;
+            }
+        }
+        internal string DBName { get { return _DB_DisplayName; } }
+		internal List<PwEntry> Entries;
+		internal Tray_Database(PwDatabase db)
+        {
+			_db = db;
+			_DB_DisplayName = UrlUtil.GetFileName(db.IOConnectionInfo.Path);
+			if (!string.IsNullOrEmpty(_db.Name))
+				_DB_DisplayName = _db.Name + " (" + _DB_DisplayName + ")";
+			Entries = new List<PwEntry>();
+        }
+
+        internal Image GetCustomIcon(PwUuid customIconUuid, int width, int height)
+        {
+			return _db.GetCustomIcon(customIconUuid, width, height);
+		}
+    }
+
+	internal class Tray_Renderer : ToolStripProfessionalRenderer
+    {
+		ToolStripProfessionalRenderer _prev;
+		private Type _prevType;
+		private static Dictionary<Type, List<MethodInfo>> _dMethods = new Dictionary<Type, List<MethodInfo>>();
+		internal ToolStripProfessionalRenderer PreviousRenderer { get { return _prev; } }
+		internal Tray_Renderer(ToolStripProfessionalRenderer rPrev) : base()
+        {
+			_prev = rPrev;
+			_prevType = rPrev.GetType();
+			if (!_dMethods.ContainsKey(_prevType))
+			{
+				_dMethods[_prevType] = _prevType.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).ToList();
+				PluginDebug.AddInfo("Adjusting tray renderer", 0, 
+				"Renderer: " + _prevType.FullName, 
+				"Methods: " + _dMethods[_prevType].Count.ToString());
+			}
+		}
+
+		private bool CallRealMethod<T>(string meth, T e)
+		{
+			var m = _dMethods[_prevType].FirstOrDefault(x => x.Name == meth);
+			if (m == null) return false;
+			try
+			{
+				m.Invoke(_prev, new object[] { e });
+				return true;
+			}
+			catch (Exception ex)
+			{ 
+				return false; 
+			}
+		}
+		protected override void OnRenderButtonBackground(ToolStripItemRenderEventArgs e)
+		{
+			if (CallRealMethod("OnRenderButtonBackground", e)) return;
+			base.OnRenderButtonBackground(e);
+		}
+
+		protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e)
+		{
+			if (CallRealMethod("OnRenderItemCheck", e)) return;
+			base.OnRenderItemCheck(e);
+		}
+
+        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+        {
+			if (CallRealMethod("OnRenderMenuItemBackground", e)) return;
+            base.OnRenderMenuItemBackground(e);
+        }
+        protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+		{
+			bool bCallPrev = true;
+			if (e != null && e.Item != null && e.Item.Tag is PwEntry)
+            {
+				PwEntry pe = e.Item.Tag as PwEntry;
+				bCallPrev = e.Item.Name != "KeePassOTP_Tray_" + pe.Uuid.ToHexString();
+            }
+			if (bCallPrev && CallRealMethod("OnRenderItemText", e)) return;
+			base.OnRenderItemText(e);
 		}
 	}
 }
