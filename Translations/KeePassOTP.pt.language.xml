@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>10</TranslationVersion>
+  <TranslationVersion>11</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -322,5 +322,17 @@ Esta mensagem não será mostrada novamente.</value>
   <item>
     <key>RecoveryCodes</key>
     <value>Códigos de Recuperação</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Códigos de recuperação</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>Configurar</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>Recuperar</value>
   </item>
 </Translation>
