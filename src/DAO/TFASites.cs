@@ -8,6 +8,7 @@ using PluginTranslation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace KeePassOTP
@@ -48,6 +49,7 @@ namespace KeePassOTP
 			public List<string> custom_hardware;
 			public List<string> keywords;
 			public bool tfa_possible {  get { return tfa.Count > 0; } }
+			public Regex RegexUrl = null;
 		}
 
 		private enum TFALoadProcess
@@ -129,12 +131,19 @@ namespace KeePassOTP
 
 				if (m_LoadState == TFALoadProcess.FileNotFound) return TFAPossible.Unknown;
 				if (m_LoadState != TFALoadProcess.Loaded) return TFAPossible.Error;
-				KeePassLib.Delegates.GFunc<string, string, bool> IsRegexMatch = (string sRegex, string sUrl) =>
-				  {
-					  System.Text.RegularExpressions.Regex r = new System.Text.RegularExpressions.Regex(sRegex);
-					  return r.IsMatch(sUrl);
-				  };
-                tfa = m_dTFA.FirstOrDefault(x => IsRegexMatch(x.Key, url)).Value;
+				KeePassLib.Delegates.GFunc<Regex, string, bool> IsRegexMatch = (Regex r, string sUrl) =>
+				{
+					try
+					{
+						return r != null ? r.IsMatch(sUrl) : false;
+					}
+					catch (Exception ex)
+                    {
+						PluginDebug.AddError("Error in URL regex matching", 0, "Error: " + ex.Message, "Regex: " + r.ToString());
+						return false;
+                    }
+				};
+				tfa = m_dTFA.FirstOrDefault(x => IsRegexMatch(x.Value.RegexUrl, url)).Value;
 				if (tfa == null)
 				{
 					tfa = new TFAData();
@@ -258,7 +267,9 @@ namespace KeePassOTP
 				tfa.custom_software = GetJSonList(jtEntry, "custom_software");
 				tfa.custom_hardware = GetJSonList(jtEntry, "custom_hardware");
 				tfa.keywords = GetJSonList(jtEntry, "keywords");
-				m_dTFA[CreatePattern(tfa.domain)] = tfa;
+				string sRegexPattern = CreatePattern(tfa.domain);
+				tfa.RegexUrl = new Regex(sRegexPattern);
+				m_dTFA[sRegexPattern] = tfa;
 			}
 			DateTime dtEnd = DateTime.Now;
 			lock (m_TFAReadLock)
