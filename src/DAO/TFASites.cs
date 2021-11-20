@@ -240,7 +240,7 @@ namespace KeePassOTP
 				}
 				else lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.FileNotFound; }
 				if (!bException) PluginDebug.AddError("Error reading OTP sites", 0);
-				//return;
+				return;
 			}
 			DateTime dtStart = DateTime.Now;
 
