@@ -118,6 +118,20 @@ Please follow these links to download the plugin file itself.
 
 If you're interested in any of the available translations in addition, please download them from the [Translations](Translations) folder.
 
+
+#### Chocolatey
+Or [install automaticly via Chocolatey](https://community.chocolatey.org/packages/keepass-plugin-keepassotp#install):
+
+```
+choco install keepass-plugin-keepassotp
+```
+
+To [upgrade KeePass Plugin KeePassOTP](https://community.chocolatey.org/packages/keepass-plugin-keepassotp#upgrade) to the [latest release version](https://community.chocolatey.org/packages/keepass-plugin-keepassotp#versionhistory) for enjoying the newest features, run the following command from the command line or from PowerShell:
+
+```
+choco upgrade keepass-plugin-keepassotp
+```
+
 ## Requirements
 
 - KeePass version 2.42
