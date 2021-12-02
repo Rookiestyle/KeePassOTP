@@ -29,7 +29,7 @@ Functionality provided
 - [Usage](#usage)
 - [Two factor authentication / Why does KeePassOTP access the internet?](#two-factor-authentication--internet-access)
 - [Translations](#translations)
-- [Download](#download)
+- [Download & updates](#download--updates)
 - [Requirements](#requirements)
 
 ## Configuration
@@ -109,7 +109,7 @@ Example: `KeePassOTP.de.language.xml`
 The language identifier in the filename must match the language identifier inside the KeePass language that you can select using *View -> Change language...*
 This identifier is shown there as well, if you have [EarlyUpdateCheck](https://github.com/rookiestyle/earlyupdatecheck) installed.
 
-## Download
+## Download & updates
 
 Please follow these links to download the plugin file itself.
 
@@ -117,6 +117,9 @@ Please follow these links to download the plugin file itself.
 - [Download history](https://github.com/rookiestyle/keepassotp/releases)
 
 If you're interested in any of the available translations in addition, please download them from the [Translations](Translations) folder.
+
+In addition to the manual way of downloading the plugin, you can use [EarlyUpdateCheck](https://github.com/rookiestyle/earlyupdatecheck/) to update both the plugin and its translations automatically.  
+See the [one click plugin update wiki](https://github.com/Rookiestyle/EarlyUpdateCheck/wiki/One-click-plugin-update) for more details.
 
 ## Requirements
 
