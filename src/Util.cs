@@ -38,6 +38,7 @@ namespace KeePassOTP
 
 		private const string Config_CheckTFA = "KeePassOTP.CheckTFA";
 		private const string Config_Hotkey = "KeePassOTP.Hotkey";
+		private const string Config_HotkeyIsLocal = "KeePassOTP.HotkeyIsLocal";
 		private const string Config_Placeholder = "KeePassOTP.Placeholder";
 		private const string Config_KPOTPAutoSubmit = "KeePassOTP.KPOTPAutoSubmit";
 		private const string Config_ShowHintSyncRequiresUnlock = "KeePassOTP.ShowHintSyncRequiresUnlock";
@@ -160,16 +161,31 @@ namespace KeePassOTP
 			return true;
 		}
 
+		internal static ToolStripMenuItem OTPCopyItem = null;
+
 		internal static Keys Hotkey
 		{
 			get { return GetHotkey(); }
 			set { SetHotkey(value); }
 		}
+
+		internal static bool HotkeyIsLocal
+        {
+			get { return Program.Config.CustomConfig.GetBool(Config_HotkeyIsLocal, false); }
+			set { Program.Config.CustomConfig.SetBool(Config_HotkeyIsLocal, value); }
+		}
+
 		private static void SetHotkey(Keys value)
 		{
+			if (OTPCopyItem != null)
+			{
+				//KeePass.UI.UIUtil.AssignShortcut(OTPCopyItem, Keys.None);
+				KeePass.UI.UIUtil.AssignShortcut(OTPCopyItem, value);
+			}
 			PTHotKeyManager.UnregisterHotKey(HotkeyID);
+			HotkeyID = -1;
 			Program.Config.CustomConfig.SetString(Config_Hotkey, value.ToString());
-			if (value != Keys.None)	HotkeyID = PTHotKeyManager.RegisterHotKey(value);
+			if (!HotkeyIsLocal && value != Keys.None) HotkeyID = PTHotKeyManager.RegisterHotKey(value);
 		}
 		private static Keys GetHotkey()
 		{

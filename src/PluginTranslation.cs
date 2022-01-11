@@ -405,6 +405,14 @@ This message will not be shown again.";
 		/// Recovery
 		/// </summary>
 		public static readonly string TFA_RecoveryURL = @"Recovery";
+		/// <summary>
+		/// Local hotkey
+		/// </summary>
+		public static readonly string LocalHotkey = @"Local hotkey";
+		/// <summary>
+		/// The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard
+		/// </summary>
+		public static readonly string LocalHotkeyTooltip = @"The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard";
 		#endregion
 
 		#region NO changes in this area

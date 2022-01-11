@@ -213,7 +213,8 @@ namespace KeePassOTP
 		#region Entry context menu
 		private void OnEntryContextMenuOpening(object sender, EventArgs e)
 		{
-			m_ContextMenuCopy.ShortcutKeys = m_MainMenuCopy.ShortcutKeys = Config.Hotkey;
+			m_ContextMenuCopy.ShowShortcutKeys = true;
+			m_ContextMenuCopy.ShortcutKeyDisplayString = UIUtil.GetKeysName(m_MainMenuCopy.ShortcutKeys);
 			if (m_host.MainWindow.GetSelectedEntriesCount() != 1)
 			{
 				m_ContextMenu.Enabled = m_ContextMenuAutotype.Enabled = false;
@@ -230,7 +231,7 @@ namespace KeePassOTP
 
 		private void OnEntryContextMenuClosing(object sender, EventArgs e)
 		{
-			m_ContextMenuCopy.ShortcutKeys = m_MainMenuCopy.ShortcutKeys = Keys.None;
+			UIUtil.AssignShortcut(m_ContextMenuCopy, Keys.None);
 		}
 
 		private void OnOTPSetup(object sender, EventArgs e)
@@ -406,6 +407,8 @@ namespace KeePassOTP
 			m_Options.Click += (o, e) => Tools.ShowOptions();
 			m_host.MainWindow.ToolsMenu.DropDownItems.Add(m_Options);
 
+			Config.OTPCopyItem = m_MainMenuCopy;
+
 			Tools.OptionsFormShown += OptionsFormShown;
 			Tools.OptionsFormClosed += OptionsFormClosed;
 		}
@@ -416,6 +419,7 @@ namespace KeePassOTP
 			Options options = new Options();
 			options.cbCheckTFA.Checked = Config.CheckTFA;
 			options.hkcKPOTP.HotKey = Config.Hotkey;
+			options.cbLocalHotkey.Checked = Config.HotkeyIsLocal;
 			options.cbAutoSubmit.Checked = Config.KPOTPAutoSubmit;
 			options.tbPlaceholder.Text = Config.Placeholder;
 			Dictionary<PwDatabase, Options.DBSettings> dDB = new Dictionary<PwDatabase, Options.DBSettings>();
@@ -443,6 +447,7 @@ namespace KeePassOTP
 			}
 
 			Config.CheckTFA = options.cbCheckTFA.Checked;
+			Config.HotkeyIsLocal = options.cbLocalHotkey.Checked;
 			Config.Hotkey = options.hkcKPOTP.HotKey;
 			string sOldPlaceholder = Config.Placeholder;
 			Config.KPOTPAutoSubmit = options.cbAutoSubmit.Checked;

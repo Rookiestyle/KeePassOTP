@@ -35,6 +35,7 @@
             this.tb2FAHelp = new System.Windows.Forms.TextBox();
             this.cbCheckTFA = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbOTPDisplay = new System.Windows.Forms.ComboBox();
             this.lOTPDisplay = new System.Windows.Forms.Label();
             this.lOTPRenewal = new System.Windows.Forms.Label();
             this.cbOTPRenewal = new System.Windows.Forms.ComboBox();
@@ -44,6 +45,7 @@
             this.tbPlaceholder = new System.Windows.Forms.TextBox();
             this.lPlaceholder = new System.Windows.Forms.Label();
             this.pHotkey = new System.Windows.Forms.Panel();
+            this.cbLocalHotkey = new System.Windows.Forms.CheckBox();
             this.hkcKPOTP = new KeePass.UI.HotKeyControlEx();
             this.lHotkey = new System.Windows.Forms.Label();
             this.tpDatabases = new System.Windows.Forms.TabPage();
@@ -66,7 +68,6 @@
             this.tpHelp = new System.Windows.Forms.TabPage();
             this.tbHelp = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cbOTPDisplay = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.gOtherOptions.SuspendLayout();
@@ -156,6 +157,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1325, 114);
             this.panel1.TabIndex = 2;
+            // 
+            // cbOTPDisplay
+            // 
+            this.cbOTPDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbOTPDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOTPDisplay.FormattingEnabled = true;
+            this.cbOTPDisplay.Location = new System.Drawing.Point(520, 8);
+            this.cbOTPDisplay.Name = "cbOTPDisplay";
+            this.cbOTPDisplay.Size = new System.Drawing.Size(789, 39);
+            this.cbOTPDisplay.TabIndex = 4;
             // 
             // lOTPDisplay
             // 
@@ -247,6 +258,7 @@
             // 
             // pHotkey
             // 
+            this.pHotkey.Controls.Add(this.cbLocalHotkey);
             this.pHotkey.Controls.Add(this.hkcKPOTP);
             this.pHotkey.Controls.Add(this.lHotkey);
             this.pHotkey.Dock = System.Windows.Forms.DockStyle.Top;
@@ -255,6 +267,17 @@
             this.pHotkey.Name = "pHotkey";
             this.pHotkey.Size = new System.Drawing.Size(1321, 54);
             this.pHotkey.TabIndex = 12;
+            // 
+            // cbLocalHotkey
+            // 
+            this.cbLocalHotkey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbLocalHotkey.Location = new System.Drawing.Point(987, 5);
+            this.cbLocalHotkey.Margin = new System.Windows.Forms.Padding(5);
+            this.cbLocalHotkey.Name = "cbLocalHotkey";
+            this.cbLocalHotkey.Size = new System.Drawing.Size(320, 34);
+            this.cbLocalHotkey.TabIndex = 3;
+            this.cbLocalHotkey.Text = "Copy instead of auto-type";
+            this.cbLocalHotkey.UseVisualStyleBackColor = true;
             // 
             // hkcKPOTP
             // 
@@ -529,16 +552,6 @@
             this.tbHelp.Size = new System.Drawing.Size(1331, 586);
             this.tbHelp.TabIndex = 0;
             // 
-            // cbOTPDisplay
-            // 
-            this.cbOTPDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbOTPDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOTPDisplay.FormattingEnabled = true;
-            this.cbOTPDisplay.Location = new System.Drawing.Point(520, 8);
-            this.cbOTPDisplay.Name = "cbOTPDisplay";
-            this.cbOTPDisplay.Size = new System.Drawing.Size(789, 39);
-            this.cbOTPDisplay.TabIndex = 4;
-            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -615,5 +628,6 @@
         private System.Windows.Forms.ComboBox cbOTPRenewal;
         internal System.Windows.Forms.CheckBox cbCheckTFA;
         private System.Windows.Forms.ComboBox cbOTPDisplay;
+        internal System.Windows.Forms.CheckBox cbLocalHotkey;
     }
 }

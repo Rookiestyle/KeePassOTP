@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>21</TranslationVersion>
+  <TranslationVersion>22</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -325,5 +325,25 @@ Dieses Hinweis wird nicht erneut angezeigt.</value>
   <item>
     <key>OTPDisplayMode_label</key>
     <value>OTP Anzeige:</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Recovery codes</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>Setup</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>Recovery</value>
+  </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>KeePass intern</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>Der Hotkey ist nur innerhalb von KeePass aktiv und wird das OTP in die Zwischenablage kopieren.</value>
   </item>
 </Translation>

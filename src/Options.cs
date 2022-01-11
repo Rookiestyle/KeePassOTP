@@ -56,6 +56,8 @@ namespace KeePassOTP
 
 			tpGeneral.Text = KPRes.General;
 			gbAutotype.Text = KPRes.ConfigureAutoType;
+			cbLocalHotkey.Text = PluginTranslate.LocalHotkey;
+			toolTip1.SetToolTip(cbLocalHotkey, PluginTranslate.LocalHotkeyTooltip);
 			cbCheckTFA.Text = PluginTranslate.Options_CheckTFA;
 			lHotkey.Text = PluginTranslate.Hotkey;
 			string sUrl = KPRes.Error;
