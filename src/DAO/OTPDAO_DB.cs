@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -784,6 +785,7 @@ namespace KeePassOTP
 			private CompositeKey OTPDB_RequestPassword(bool bSetNewPassword, out bool bCancel)
 			{
 				bCancel = false;
+				//Create masterkey on secure desktop
 				if (!bSetNewPassword && Program.Config.Security.MasterKeyOnSecureDesktop &&
 					KeePass.Util.WinUtil.IsAtLeastWindows2000 && !NativeLib.IsUnix())
 				{
@@ -792,6 +794,8 @@ namespace KeePassOTP
 					catch (Exception ex) { Tools.ShowError(ex.Message); }
 					return ck;
 				}
+
+				//Create masterkey on current desktop
 				if (!bSetNewPassword)
 				{
 					KeyPromptForm kpf = new KeyPromptForm();
@@ -800,6 +804,23 @@ namespace KeePassOTP
 					if (bCancel) return new CompositeKey();
 					return kpf.CompositeKey;
 				}
+
+				//Change masterkey on secure desktop
+				if (bSetNewPassword && Program.Config.Security.MasterKeyOnSecureDesktop &&
+					KeePass.Util.WinUtil.IsAtLeastWindows2000 && !NativeLib.IsUnix()
+					&& Tools.KeePassVersion >= new Version(2, 50)) /*Not implemented for versions below 2.50*/
+				{
+					CompositeKey ck = new CompositeKey();
+					try { ck = OTPDB_RequestPasswordSecure(bSetNewPassword, out bCancel); }
+					catch (Exception ex) 
+					{
+						ck = OTPDB.MasterKey;
+						Tools.ShowError(ex.Message); 
+					}
+					return bCancel ? OTPDB.MasterKey : ck;
+				}
+				
+				//Change masterkey on current desktop
 				KeyCreationForm kcf = new KeyCreationForm();
 				kcf.InitEx(null, true);
 				bCancel = kcf.ShowDialog() != DialogResult.OK;
@@ -837,7 +858,44 @@ namespace KeePassOTP
 				return c.Invoke(null);
 			}
 
+			private static MethodInfo m_mkpfSecureDesktopShowDialog = typeof(KeyPromptForm).GetMethod("ShowDialog", BindingFlags.Static | BindingFlags.NonPublic);
+			private static MethodInfo m_mkcfSecureDesktopShowDialog = typeof(KeyCreationForm).GetMethod("ShowDialog", BindingFlags.Static | BindingFlags.NonPublic);
 			private CompositeKey OTPDB_RequestPasswordSecure(bool bSetNewPassword, out bool bCancel)
+            {
+				//Starting with KeePass 2.50 a dialog on secure desktop needs to be created differently
+				if (m_mkpfSecureDesktopShowDialog !=  null)
+					return OTPDB_RequestPasswordSecure_2(bSetNewPassword, out bCancel);
+				return OTPDB_RequestPasswordSecure_1(bSetNewPassword, out bCancel);
+			}	
+
+			private CompositeKey OTPDB_RequestPasswordSecure_2(bool bSetNewPassword, out bool bCancel)
+            {
+				CompositeKey ck = new CompositeKey();
+				object oResult = null;
+				object drResult = null;
+				if (!bSetNewPassword)
+				{
+					object[] oParams = new object[4] { null, true, GetKeyPromptFormTitle(), oResult };
+					drResult = m_mkpfSecureDesktopShowDialog.Invoke(null, oParams);
+					oResult = oParams[3];
+				}
+				else
+				{
+					object[] oParams = new object[3] { null, true, oResult };
+					drResult = m_mkcfSecureDesktopShowDialog.Invoke(null, oParams);
+					oResult = oParams[2];
+				}
+				bCancel = false;
+				if (drResult is DialogResult && (DialogResult)drResult == DialogResult.OK)
+				{
+					var fCK = oResult.GetType().GetField("CompositeKey");
+					if (fCK != null) ck = fCK.GetValue(oResult) as CompositeKey;
+				}
+				else bCancel = true;
+				return ck;
+			}
+
+			private CompositeKey OTPDB_RequestPasswordSecure_1(bool bSetNewPassword, out bool bCancel)
 			{
 				var kpfParams = Create_OdKpfConstructParams(OTPDB.IOConnectionInfo, false, true);
 
@@ -875,11 +933,16 @@ namespace KeePassOTP
 
 			private void SetKeyPromptFormTitle(KeyPromptForm kpf)
 			{
-				string title = string.Format(PluginTranslate.OTP_OpenDB, string.IsNullOrEmpty(DB.Name) ? UrlUtil.GetFileName(DB.IOConnectionInfo.Path) : DB.Name);
+				string title = GetKeyPromptFormTitle();
 				kpf.InitEx(OTPDB.IOConnectionInfo, false, false, title);
 			}
 
-			private void KeySources_Clear()
+            private string GetKeyPromptFormTitle()
+            {
+				return string.Format(PluginTranslate.OTP_OpenDB, string.IsNullOrEmpty(DB.Name) ? UrlUtil.GetFileName(DB.IOConnectionInfo.Path) : DB.Name);
+			}
+
+            private void KeySources_Clear()
 			{
 				Program.Config.Defaults.SetKeySources(EmptyIOC, null);
 			}
