@@ -4,14 +4,14 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>11</TranslationVersion>
+  <TranslationVersion>12</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
   </item>
   <item>
     <key>OTPCopyTrayEntries</key>
-    <value>Preenchimento Automático KPOTP ([Ctrl] para Copiar)</value>
+    <value>Preenchimento Automático KPOTP ([Ctrl] para copiar)</value>
   </item>
   <item>
     <key>Empty</key>
@@ -23,7 +23,7 @@
   </item>
   <item>
     <key>OTPSetup</key>
-    <value>Configuração de OTP...</value>
+    <value>Configurar OTP...</value>
   </item>
   <item>
     <key>OTPCopy</key>
@@ -59,7 +59,7 @@
   </item>
   <item>
     <key>OTPSettings</key>
-    <value>Configurações de OTP</value>
+    <value>Configurações OTP</value>
   </item>
   <item>
     <key>OTPType</key>
@@ -71,7 +71,7 @@
   </item>
   <item>
     <key>OTPHash</key>
-    <value>Hash:</value>
+    <value>Soma:</value>
   </item>
   <item>
     <key>OTPTimestep</key>
@@ -107,11 +107,11 @@
   </item>
   <item>
     <key>SetupTFA</key>
-    <value>Configuração TFA</value>
+    <value>Configurar 2FA</value>
   </item>
   <item>
 	<key>TFADefined</key>
-	<value>TFA configurado</value>
+	<value>2FA configurado</value>
   </item>
   <item>
     <key>OTP_OpenDB</key>
@@ -124,8 +124,12 @@
 Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
   </item>
   <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>Clique '{0}' para continuar ou clique '{1}' para armazenar segredos OTP no interior das respectivas entradas.</value>
+  </item>
+  <item>  
     <key>Options_CheckTFA</key>
-    <value>Indique se o uso de TFA é possível</value>
+    <value>Indicar se uso 2FA é possível</value>
   </item>
   <item>
     <key>Options_OTPSettings</key>
@@ -189,7 +193,7 @@ Dependendo das opções acima, os segredos OTP são armazenados na respectiva en
   </item>
   <item>
     <key>MigrateOtherPlugins</key>
-    <value>Migrar de / para outros plug-ins</value>
+    <value>Migrar de / para outros plugins</value>
   </item>
   <item>
     <key>MigrateOtherPlugins_Delete</key>
@@ -201,7 +205,7 @@ Dependendo das opções acima, os segredos OTP são armazenados na respectiva en
   </item>
   <item>
     <key>Hotkey</key>
-    <value>Tecla de atalho KeePassOTP:</value>
+    <value>Atalho do KeePassOTP:</value>
   </item>
   <item>
     <key>HintSyncRequiresUnlock</key>
@@ -282,11 +286,11 @@ Quantidade encontrada de entradas OTP: {0}</value>
   </item>
   <item>
     <key>CheckingTFA</key>
-    <value>Checar 2FA</value>
+    <value>Checando 2FA</value>
   </item>
   <item>
     <key>ReadScreenForQRCode</key>
-    <value>Leia o código QR de OTP da tela</value>
+    <value>Ler código OTP no QR na tela</value>
   </item>
   <item>
     <key>ReadScreenForQRCodeExplain</key>
@@ -297,7 +301,7 @@ Esta mensagem não será mostrada novamente.</value>
   </item>
   <item>
     <key>OTP_Setup_DragDrop</key>
-    <value>Soltar &amp; soltar um código QR OTP válido</value>
+    <value>Arrastar &amp; soltar um código QR OTP válido</value>
   </item>
   <item>
     <key>OTPRenewal</key>
@@ -309,7 +313,7 @@ Esta mensagem não será mostrada novamente.</value>
   </item>
   <item>
     <key>OTPRenewal_RespectClipboardTimeout</key>
-    <value>Renovar até que a área de transferência seja apagada</value>
+    <value>Renovar até que a área de transferência seja limpa</value>
   </item>
   <item>
     <key>OTPRenewal_PreventShortDuration</key>
