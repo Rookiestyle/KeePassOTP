@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>12</TranslationVersion>
+  <TranslationVersion>13</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -75,7 +75,7 @@
   </item>
   <item>
     <key>OTPTimestep</key>
-    <value>Passo de tempo:</value>
+    <value>Duração:</value>
   </item>
   <item>
     <key>OTPCounter</key>
