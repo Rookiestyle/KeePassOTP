@@ -335,4 +335,12 @@ This message will not be shown again.</value>
     <key>TFA_RecoveryURL</key>
     <value>Recovery</value>
   </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>Local hotkey</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard</value>
+  </item>
 </Translation>
