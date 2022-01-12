@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>12</TranslationVersion>
+  <TranslationVersion>13</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -15,7 +15,7 @@
   </item>
   <item>
     <key>Empty</key>
-    <value>N/A Uuid: {0}</value>
+    <value>Sem Uuid: {0}</value>
   </item>
   <item>
     <key>Group</key>
@@ -43,7 +43,7 @@
   </item>
   <item>
     <key>SeedSettings</key>
-    <value>Configurações de sementes</value>
+    <value>Configurações da semente</value>
   </item>
   <item>
     <key>Seed</key>
@@ -75,7 +75,7 @@
   </item>
   <item>
     <key>OTPTimestep</key>
-    <value>Passo de tempo:</value>
+    <value>Duração:</value>
   </item>
   <item>
     <key>OTPCounter</key>
@@ -127,13 +127,13 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
     <key>OTP_CreateDB_Question_Addendum</key>
     <value>Clique '{0}' para continuar ou clique '{1}' para armazenar segredos OTP no interior das respectivas entradas.</value>
   </item>
-  <item>  
+  <item>
     <key>Options_CheckTFA</key>
     <value>Indicar se uso 2FA é possível</value>
   </item>
   <item>
     <key>Options_OTPSettings</key>
-    <value>Configurações de OTP (específico do banco de dados)</value>
+    <value>Configurações OTP (específico do banco de dados)</value>
   </item>
   <item>
     <key>Options_UseOTPDB</key>
@@ -145,11 +145,11 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
   </item>
   <item>
     <key>Options_Migrate2DB</key>
-    <value>Entrada -&gt; DB</value>
+    <value>Entrada -&gt; BD</value>
   </item>
   <item>
     <key>Options_Migrate2DBHint</key>
-    <value>Mova os segredos OTP para separar o banco de dados</value>
+    <value>Mova os segredos OTP para separar o BD</value>
   </item>
   <item>
     <key>Options_Migrate2Entries</key>
@@ -172,8 +172,8 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
     <value>KeePassOTP baixará uma lista de sites que suportam a autenticação de dois fatores em {0}
 Esta lista é então comparada com todos os URLs definidos no banco de dados, seus URLs não serão enviados.
 
-A coluna OTP mostrará se TFA é possível, mas ainda não está configurado.
-Clicar duas vezes nesta dica abrirá a página de configuração TFA.</value>
+A coluna OTP mostrará se 2FA é possível, mas ainda não está configurado.
+Clicar duas vezes nesta dica abrirá a página de configuração 2FA.</value>
   </item>
   <item>
     <key>Options_Help</key>
@@ -197,7 +197,7 @@ Dependendo das opções acima, os segredos OTP são armazenados na respectiva en
   </item>
   <item>
     <key>MigrateOtherPlugins_Delete</key>
-    <value>Remover configurações de {0} para entradas migradas com sucesso?</value>
+    <value>Remove {0} configurações para entradas migradas com sucesso?</value>
   </item>
   <item>
     <key>MigrateOtherPlugins_Result</key>
@@ -334,5 +334,13 @@ Esta mensagem não será mostrada novamente.</value>
   <item>
     <key>TFA_RecoveryURL</key>
     <value>Recuperar</value>
+  </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>Atalho local</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>O atalho irá funcionar somente no interior do KeePass e em vez de auto-digitar, ele copiará o valor OTP para a área de transferência</value>                                                                                                                               
   </item>
 </Translation>
