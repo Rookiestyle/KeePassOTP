@@ -235,6 +235,8 @@ namespace KeePassOTP
             this.pbQR.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbQR.TabIndex = 413;
             this.pbQR.TabStop = false;
+            this.pbQR.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbQR_DragDrop);
+            this.pbQR.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbQR_DragEnter);
             this.pbQR.MouseHover += new System.EventHandler(this.pbQR_MouseHover);
             // 
             // label2
