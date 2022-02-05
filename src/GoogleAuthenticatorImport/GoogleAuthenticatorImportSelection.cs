@@ -44,7 +44,11 @@ namespace KeePassOTP
 			{
 				ListViewItem lvi = new ListViewItem();
 				lvi.Text = otp.Issuer;
-				string label = string.IsNullOrEmpty(otp.Issuer) ? otp.Name : otp.Name.Remove(0, otp.Issuer.Length + 1);
+				string label = otp.Name;
+				//Label might be prefixed by <Issuer>: 
+				//to be precise: Label SHOULD be prefixed in this way...
+				if (!string.IsNullOrEmpty(otp.Issuer) && otp.Name.StartsWith(otp.Issuer + ":"))
+					label = otp.Name.Remove(0, otp.Issuer.Length + 1);
 				lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, label));
 				lvEntries.Items.Add(lvi);
 			}
