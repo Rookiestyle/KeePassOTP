@@ -83,7 +83,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Time correction - not applicable for HOTP</value>
+    <value>Time correction - TOTP &amp;&amp; Steam only</value>
   </item>
   <item>
     <key>URL</key>
@@ -342,5 +342,17 @@ This message will not be shown again.</value>
   <item>
     <key>LocalHotkeyTooltip</key>
     <value>The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard</value>
+  </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Next:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>N/A</value>
   </item>
 </Translation>

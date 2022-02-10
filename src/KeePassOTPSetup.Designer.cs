@@ -275,6 +275,7 @@ namespace KeePassOTP
             this.label1.Size = new System.Drawing.Size(60, 31);
             this.label1.TabIndex = 414;
             this.label1.Text = "N/A";
+            this.label1.UseMnemonic = false;
             this.label1.MouseHover += new System.EventHandler(this.pbQR_MouseHover);
             // 
             // tpRecovery
