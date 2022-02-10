@@ -155,7 +155,7 @@ namespace KeePassOTP
 				try
 				{
 					int iCount;
-					ProtectedString psGoogleAuth = PSConvert.ParseGoogleAuthExport(tbOTPSeed.Text, out iCount);
+					ProtectedString psGoogleAuth = GoogleAuth.ParseGoogleAuthExport(tbOTPSeed.Text, out iCount);
 					if ((iCount == 1) && (psGoogleAuth.Length > 0))
 					{
 						//tbOTPSeed.Text = psGoogleAuth.ReadString();
@@ -242,7 +242,7 @@ namespace KeePassOTP
 			totpTimeCorrectionValue.Text = OTP.OTPTimeCorrection.ToString();
 
 			string otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(false, true)) : PluginTranslate.Error;
-			otpPreview.Text = PluginTranslate.CurrentOTP.ToString() + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable.ToString() : otpValue);
+			otpPreview.Text = PluginTranslate.CurrentOTP + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable : otpValue);
 			if ((OTP.Type != KPOTPType.HOTP) && OTP.RemainingSeconds <= Config.TOTPSoonExpiring)
 			{
 				otpPreview.ForeColor = System.Drawing.Color.Red;
@@ -257,7 +257,7 @@ namespace KeePassOTP
 			OTP.RecoveryCodes = GetRecoveryCodes();
 
 			otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
-			otpPreviewNext.Text = PluginTranslate.NextOTP.ToString() + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable.ToString() : otpValue);
+			otpPreviewNext.Text = PluginTranslate.NextOTP + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable : otpValue);
 		}
 
         private void GetOTPSettingsInt(out int iFormat, out int iLength, out string sTimestep, out int iHash, out int iType)
@@ -470,7 +470,7 @@ namespace KeePassOTP
 			if (otp.ReadString().ToLowerInvariant().StartsWith("otpauth-migration://offline?data="))
 			{
 				int iOTPCount = 0;
-				try { otp = PSConvert.ParseGoogleAuthExport(otp.ReadString(), out iOTPCount); }
+				try { otp = GoogleAuth.ParseGoogleAuthExport(otp.ReadString(), out iOTPCount); }
 				catch { }
 				if (iOTPCount > 1) Tools.ShowError(string.Format(PluginTranslate.ErrorGoogleAuthImportCount, iOTPCount.ToString()));
 				else if (iOTPCount == 0) Tools.ShowError(PluginTranslate.ErrorGoogleAuthImport);

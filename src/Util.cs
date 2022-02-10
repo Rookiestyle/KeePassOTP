@@ -16,20 +16,20 @@ namespace KeePassOTP
 	internal static class Config
 	{
 		internal enum Tray_ColorCoding
-        {
+		{
 			Off,
 			On,
-        }
+		}
 		internal enum OTPRenewal_Enum
 		{
 			Inactive,
 			RespectClipboardTimeout,
 			PreventShortDuration,
-        }
+		}
 		internal const string DefaultPlaceholder = "{KPOTP}";
 		internal const string OTPFIELD = "otp";
 		internal const string TIMECORRECTION = "KeePassOTP.TimeCorrection";
-		internal const string RECOVERY = "KeePassOTP.RecoveryCodes"; 
+		internal const string RECOVERY = "KeePassOTP.RecoveryCodes";
 		internal const string DBKeySources = "KeePassOTP.KeySources";
 		internal const string DBUsage = "KeePassOTP.UseDBForOTPSeeds";
 		internal const string DBPreload = "KeePassOTP.PreloadOTP";
@@ -44,7 +44,7 @@ namespace KeePassOTP
 		private const string Config_ShowHintSyncRequiresUnlock = "KeePassOTP.ShowHintSyncRequiresUnlock";
 		private const string Config_ReadScreenForQRCodeExplanationShown = "KeePassOTP.ReadScreenForQRCodeExplanationShown";
 		private const string Config_OTPRenewal = "KeePassOTP.OTPRenewal";
-		private const string Config_OTPDisplay = "KeePassOTP.OTPDisplay"; 
+		private const string Config_OTPDisplay = "KeePassOTP.OTPDisplay";
 		private static int HotkeyID = -1;
 
 		internal static void Init()
@@ -58,22 +58,22 @@ namespace KeePassOTP
 		}
 
 		internal static Tray_ColorCoding TrayColorCodeMode
-        {
+		{
 			get
-            {
+			{
 				Tray_ColorCoding r;
 				try
 				{
 					r = (Tray_ColorCoding)Enum.Parse(typeof(Tray_ColorCoding), Program.Config.CustomConfig.GetString("KeePassOTP.TrayColorCodeMode", Tray_ColorCoding.On.ToString()));
 				}
-				catch 
+				catch
 				{
 					r = Tray_ColorCoding.On;
-					Program.Config.CustomConfig.SetString ("KeePassOTP.TrayColorCodeMode", string.Empty);
+					Program.Config.CustomConfig.SetString("KeePassOTP.TrayColorCodeMode", string.Empty);
 				}
 				return r;
-            }
-        }
+			}
+		}
 
 		internal static bool KPOTPAutoSubmit
 		{
@@ -96,9 +96,9 @@ namespace KeePassOTP
 			get { return Program.Config.CustomConfig.GetBool(Config_ReadScreenForQRCodeExplanationShown, false); }
 			set { Program.Config.CustomConfig.SetBool(Config_ReadScreenForQRCodeExplanationShown, value); }
 		}
-		
+
 		internal static bool CheckTFA_InfoShown
-        {
+		{
 			get { return Program.Config.CustomConfig.GetBool(Config_CheckTFA + "_InfoShown", false); }
 			set { Program.Config.CustomConfig.SetBool(Config_CheckTFA + "_InfoShown", value); }
 		}
@@ -111,10 +111,10 @@ namespace KeePassOTP
 
 
 		internal static bool OTPDisplay
-        {
-            get { return Program.Config.CustomConfig.GetBool(Config_OTPDisplay, true); }
+		{
+			get { return Program.Config.CustomConfig.GetBool(Config_OTPDisplay, true); }
 			set { Program.Config.CustomConfig.SetBool(Config_OTPDisplay, value); }
-        }
+		}
 
 		internal static OTPRenewal_Enum OTPRenewal
 		{
@@ -170,7 +170,7 @@ namespace KeePassOTP
 		}
 
 		internal static bool HotkeyIsLocal
-        {
+		{
 			get { return Program.Config.CustomConfig.GetBool(Config_HotkeyIsLocal, false); }
 			set { Program.Config.CustomConfig.SetBool(Config_HotkeyIsLocal, value); }
 		}
@@ -198,8 +198,8 @@ namespace KeePassOTP
 			catch { }
 			return result;
 		}
-		#endregion 
-		
+		#endregion
+
 		internal static bool PreloadOTPDB(this PwDatabase db)
 		{
 			if (db == null) return true;
@@ -253,11 +253,118 @@ namespace KeePassOTP
 		}
 	}
 
+	internal static class GoogleAuth
+    {
+		internal static byte[] SerializeGoogleAuthMigrationData(GoogleAuthenticatorImport gi)
+		{
+			using (var ms = new System.IO.MemoryStream())
+			{
+				ProtoBuf.Serializer.Serialize<GoogleAuthenticatorImport>(ms, gi);
+				return ms.ToArray();
+			}
+		}
+		
+		internal static ProtectedString ParseGoogleAuthExport(string s, out int iOTPCount)
+		{
+			iOTPCount = 0;
+			ProtectedString psResult = ProtectedString.Empty;
+			try
+			{
+				var u = new Uri(s);
+				var param = System.Web.HttpUtility.ParseQueryString(u.Query);
+				var b = Convert.FromBase64String(param["data"]);
+				GoogleAuthenticatorImport gi = DeserializeGoogleAuthMigrationData(b);
+
+				GoogleAuthenticatorImport.OtpParameters gAuthData = null;
+				iOTPCount = gi.otp_parameters.Count;
+				if (iOTPCount != 1)
+				{
+					using (GoogleAuthenticatorImportSelection selForm = new GoogleAuthenticatorImportSelection())
+					{
+						Tools.GlobalWindowManager(selForm);
+						selForm.InitEx(gi.otp_parameters);
+						if (selForm.ShowDialog(KeePass.UI.GlobalWindowManager.TopWindow) == DialogResult.OK)
+						{
+							gAuthData = selForm.SelectedEntry;
+							if (gAuthData != null) iOTPCount = 1;
+						}
+						else iOTPCount = -1;
+					}
+					if (iOTPCount != 1) throw new ArgumentException("Expected exactly one OTP object, found: " + iOTPCount.ToString());
+				}
+				else gAuthData = gi.otp_parameters[0];
+				KPOTP otp = new KPOTP();
+				switch (gAuthData.Algorithm)
+				{
+					case GoogleAuthenticatorImport.Algorithm.AlgorithmSha256:
+						otp.Hash = KPOTPHash.SHA256;
+						break;
+					case GoogleAuthenticatorImport.Algorithm.AlgorithmSha512:
+						otp.Hash = KPOTPHash.SHA512;
+						break;
+					default:
+						otp.Hash = KPOTPHash.SHA1;
+						break;
+				}
+
+				switch (gAuthData.Type)
+				{
+					case GoogleAuthenticatorImport.OtpType.OtpTypeHotp:
+						otp.Type = KPOTPType.HOTP;
+						otp.HOTPCounter = (int)gAuthData.Counter;
+						break;
+					default:
+						otp.Type = KPOTPType.TOTP;
+						break;
+				}
+
+				switch (gAuthData.Digits)
+				{
+					case GoogleAuthenticatorImport.DigitCount.DigitCountEight:
+						otp.Length = 8;
+						break;
+					default:
+						otp.Length = 6;
+						break;
+				}
+
+				otp.Issuer = gAuthData.Issuer;
+				otp.Label = string.IsNullOrEmpty(gAuthData.Issuer) ? gAuthData.Name : gAuthData.Name.Remove(0, gAuthData.Issuer.Length + 1);
+				otp.Encoding = KPOTPEncoding.BASE32;
+
+				byte[] bSeed = PSConvert.ConvertBase64ToBase32(gAuthData.Secret);
+				otp.OTPSeed = new ProtectedString(true, bSeed);
+				psResult = otp.OTPAuthString;
+			}
+			catch { }
+			return psResult;
+		}
+
+		internal static GoogleAuthenticatorImport DeserializeGoogleAuthMigrationData(byte[] b)
+		{
+			GoogleAuthenticatorImport gi = new GoogleAuthenticatorImport();
+			using (var ms = new System.IO.MemoryStream())
+			{
+				ms.Write(b, 0, b.Length);
+				ms.Position = 0;
+				gi = ProtoBuf.Serializer.Deserialize<GoogleAuthenticatorImport>(ms);
+			}
+			return gi;
+		}
+	}
+
 	/// <summary>
 	/// Conversion routines for ProtectedString objects
 	/// </summary>
 	internal static class PSConvert
 	{
+		internal static byte[] ToBASE32(ProtectedString s, bool bDoPadding)
+        {
+			if (s.IsEmpty) return null;
+			if (!bDoPadding) return ToBASE32(s);
+			while (s.Length % 8 != 0) s = s + new ProtectedString(true, new byte[] { (byte)'=' });
+			return ToBASE32(s);
+        }
 		internal static byte[] ToBASE32(ProtectedString s)
 		{
 			if (s.IsEmpty || ((s.Length % 8) != 0))
@@ -352,94 +459,6 @@ namespace KeePassOTP
 			return pb;
 		}
 
-		internal static ProtectedString ParseGoogleAuthExport(string s, out int iOTPCount)
-		{
-			iOTPCount = 0;
-			ProtectedString psResult = ProtectedString.Empty;
-			try
-			{
-				var u = new Uri(s);
-				var param = System.Web.HttpUtility.ParseQueryString(u.Query);
-				var b = Convert.FromBase64String(param["data"]);
-				GoogleAuthenticatorImport gi = DeserializeGoogleAuthMigrationData(b);
-
-				GoogleAuthenticatorImport.OtpParameters gAuthData = null;
-				iOTPCount = gi.otp_parameters.Count;
-				if (iOTPCount != 1)
-				{
-					using (GoogleAuthenticatorImportSelection selForm = new GoogleAuthenticatorImportSelection())
-					{
-						Tools.GlobalWindowManager(selForm);
-						selForm.InitEx(gi.otp_parameters);
-						if (selForm.ShowDialog(KeePass.UI.GlobalWindowManager.TopWindow) == DialogResult.OK)
-						{
-							gAuthData = selForm.SelectedEntry;
-							if (gAuthData != null) iOTPCount = 1;
-						}
-						else iOTPCount = -1;
-					}
-					if (iOTPCount != 1) throw new ArgumentException("Expected exactly one OTP object, found: " + iOTPCount.ToString());
-				}
-				else gAuthData = gi.otp_parameters[0];
-				KPOTP otp = new KPOTP();
-				switch (gAuthData.Algorithm)
-				{
-					case GoogleAuthenticatorImport.Algorithm.AlgorithmSha256:
-						otp.Hash = KPOTPHash.SHA256;
-						break;
-					case GoogleAuthenticatorImport.Algorithm.AlgorithmSha512:
-						otp.Hash = KPOTPHash.SHA512;
-						break;
-					default:
-						otp.Hash = KPOTPHash.SHA1;
-						break;
-				}
-
-				switch (gAuthData.Type)
-				{
-					case GoogleAuthenticatorImport.OtpType.OtpTypeHotp:
-						otp.Type = KPOTPType.HOTP;
-						otp.HOTPCounter = (int)gAuthData.Counter;
-						break;
-					default:
-						otp.Type = KPOTPType.TOTP;
-						break;
-				}
-
-				switch (gAuthData.Digits)
-				{
-					case GoogleAuthenticatorImport.DigitCount.DigitCountEight:
-						otp.Length = 8;
-						break;
-					default:
-						otp.Length = 6;
-						break;
-				}
-
-				otp.Issuer = gAuthData.Issuer;
-				otp.Label = string.IsNullOrEmpty(gAuthData.Issuer) ? gAuthData.Name : gAuthData.Name.Remove(0, gAuthData.Issuer.Length + 1);
-				otp.Encoding = KPOTPEncoding.BASE32;
-
-				byte[] bSeed = ConvertBase64ToBase32(gAuthData.Secret);
-				otp.OTPSeed = new ProtectedString(true, bSeed);
-				psResult = otp.OTPAuthString;
-			}
-			catch { }
-			return psResult;
-		}
-
-		private static GoogleAuthenticatorImport DeserializeGoogleAuthMigrationData(byte[] b)
-		{
-			GoogleAuthenticatorImport gi = new GoogleAuthenticatorImport();
-			using (var ms = new System.IO.MemoryStream())
-			{
-				ms.Write(b, 0, b.Length);
-				ms.Position = 0;
-				gi = ProtoBuf.Serializer.Deserialize<GoogleAuthenticatorImport>(ms);
-			}
-			return gi;
-		}
-
 		private const string Base32Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 		private const int InByteSize = 8;
 		private const int OutByteSize = 5;
@@ -485,7 +504,7 @@ namespace KeePassOTP
 				{
 					// Drop the overflow bits
 					outputBase32Byte &= 0x1F;  // 0x1F = 00011111 in binary
-					// Add current Base32 byte and convert it to character
+											   // Add current Base32 byte and convert it to character
 					lBytes.Add((byte)Base32Alphabet[outputBase32Byte]);
 					// Move to the next byte
 					iCurrentOutputPosition = 0;
@@ -775,49 +794,49 @@ namespace KeePassOTP
 	}
 
 	internal class Tray_Database
-    {
+	{
 		private PwDatabase _db;
 		private string _DB_DisplayName;
 		internal Color DBColor
-        {
-            get
-            {
+		{
+			get
+			{
 				if (_db == null || !_db.IsOpen) return Color.Empty;
 				return _db.Color;
-            }
-        }
-        internal string DBName { get { return _DB_DisplayName; } }
+			}
+		}
+		internal string DBName { get { return _DB_DisplayName; } }
 		internal List<PwEntry> Entries;
 		internal Tray_Database(PwDatabase db)
-        {
+		{
 			_db = db;
 			_DB_DisplayName = UrlUtil.GetFileName(db.IOConnectionInfo.Path);
 			if (!string.IsNullOrEmpty(_db.Name))
 				_DB_DisplayName = _db.Name + " (" + _DB_DisplayName + ")";
 			Entries = new List<PwEntry>();
-        }
+		}
 
-        internal Image GetCustomIcon(PwUuid customIconUuid, int width, int height)
-        {
+		internal Image GetCustomIcon(PwUuid customIconUuid, int width, int height)
+		{
 			return _db.GetCustomIcon(customIconUuid, width, height);
 		}
-    }
+	}
 
 	internal class Tray_Renderer : ToolStripProfessionalRenderer
-    {
+	{
 		ToolStripProfessionalRenderer _prev;
 		private Type _prevType;
 		private static Dictionary<Type, List<MethodInfo>> _dMethods = new Dictionary<Type, List<MethodInfo>>();
 		internal ToolStripProfessionalRenderer PreviousRenderer { get { return _prev; } }
 		internal Tray_Renderer(ToolStripProfessionalRenderer rPrev) : base()
-        {
+		{
 			_prev = rPrev;
 			_prevType = rPrev.GetType();
 			if (!_dMethods.ContainsKey(_prevType))
 			{
 				_dMethods[_prevType] = _prevType.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).ToList();
-				PluginDebug.AddInfo("Adjusting tray renderer", 0, 
-				"Renderer: " + _prevType.FullName, 
+				PluginDebug.AddInfo("Adjusting tray renderer", 0,
+				"Renderer: " + _prevType.FullName,
 				"Methods: " + _dMethods[_prevType].Count.ToString());
 			}
 		}
@@ -832,8 +851,8 @@ namespace KeePassOTP
 				return true;
 			}
 			catch (Exception ex)
-			{ 
-				return false; 
+			{
+				return false;
 			}
 		}
 		protected override void OnRenderButtonBackground(ToolStripItemRenderEventArgs e)
@@ -848,19 +867,19 @@ namespace KeePassOTP
 			base.OnRenderItemCheck(e);
 		}
 
-        protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
-        {
+		protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+		{
 			if (CallRealMethod("OnRenderMenuItemBackground", e)) return;
-            base.OnRenderMenuItemBackground(e);
-        }
-        protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+			base.OnRenderMenuItemBackground(e);
+		}
+		protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 		{
 			bool bCallPrev = true;
 			if (e != null && e.Item != null && e.Item.Tag is PwEntry)
-            {
+			{
 				PwEntry pe = e.Item.Tag as PwEntry;
 				bCallPrev = e.Item.Name != "KeePassOTP_Tray_" + pe.Uuid.ToHexString();
-            }
+			}
 			if (bCallPrev && CallRealMethod("OnRenderItemText", e)) return;
 			base.OnRenderItemText(e);
 		}

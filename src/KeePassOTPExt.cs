@@ -41,6 +41,7 @@ namespace KeePassOTP
 		private ToolStripMenuItem m_MainMenuQRCode;
 		private ToolStripMenuItem m_TrayMenu;
 		private ToolStripMenuItem m_Options;
+		private ToolStripMenuItem m_GoogleAuthenticatorExport;
 		private static Image Icon_Setup = GfxUtil.ScaleImage(Resources.KeePassOTP_setup, 16, 16);
 
 		private MethodInfo m_miAutoType = null;
@@ -259,71 +260,25 @@ namespace KeePassOTP
 			CopyOTP(m_host.MainWindow.GetSelectedEntry(true));
 		}
 
+		private void ShowQRCode(string sIssuer, string sLabel, params ProtectedString[] aQR)
+		{
+			if (aQR == null || aQR.Length == 0) return;
+			using (var fQR = new QRForm())
+            {
+				fQR.InitEx(aQR.Length == 1, sIssuer, sLabel, aQR);
+				fQR.ShowDialog(GlobalWindowManager.TopWindow == null ? m_host.MainWindow : GlobalWindowManager.TopWindow);
+			}
+		}
+
 		private void OnOTPQRCode(object sender, EventArgs e)
 		{
 			if (m_host.MainWindow.GetSelectedEntriesCount() != 1) return;
 			KPOTP otp = OTPDAO.GetOTP(m_host.MainWindow.GetSelectedEntry(true));
 			if (!otp.Valid) return;
-			try
-			{
-				ZXing.BarcodeWriter zBW = new ZXing.BarcodeWriter();
-				zBW.Options.Height = DpiUtil.ScaleIntY(320);
-				zBW.Options.Width = DpiUtil.ScaleIntX(320);
-				zBW.Format = ZXing.BarcodeFormat.QR_CODE;
-				Bitmap bmp = zBW.Write(otp.OTPAuthString.ReadString());
-				QRForm f = new QRForm();
-				f.FormBorderStyle = FormBorderStyle.FixedDialog;
-				f.StartPosition = FormStartPosition.CenterParent;
-				f.Text = PluginTranslate.PluginName;
-				f.MinimizeBox = false;
-				f.MaximizeBox = false;
-				PictureBox pb = new PictureBox();
-				pb.Location = new Point(0, 0);
-				pb.Image = new Bitmap(bmp, bmp.Size); //Assigning bmp directly did not work in my Ubuntu VM...
-				pb.ClientSize = pb.Image.Size;
-				f.ClientSize = pb.Size;
-				f.Controls.Add(pb);
-				if (!string.IsNullOrEmpty(otp.Issuer) && (otp.Issuer != PluginTranslate.PluginName))
-				{
-					Label lIssuer = new Label();
-					lIssuer.Width = f.ClientSize.Width;
-					lIssuer.AutoSize = true;
-					lIssuer.Text = otp.Issuer;
-					lIssuer.Location = new Point(0, f.ClientSize.Height + lIssuer.Height / 2);
-					f.Controls.Add(lIssuer);
-					f.Height += lIssuer.Height * 3 / 2;
-				}
-				if (!string.IsNullOrEmpty(otp.Label))
-				{
-					Label lLabel = new Label();
-					lLabel.Width = f.ClientSize.Width;
-					lLabel.AutoSize = true;
-					lLabel.Text = otp.Label;
-					lLabel.Location = new Point(0, f.ClientSize.Height + lLabel.Height / 2);
-					f.Controls.Add(lLabel);
-					f.Height += lLabel.Height * 3 / 2;
-				}
-				f.Height += 5;
-				Timer tClose = new Timer();
-				tClose.Interval = 30000;
-				tClose.Tick += (o, e1) =>
-				{
-					tClose.Stop();
-					tClose.Dispose();
-					if (f != null) f.Close();
-				};
-				f.Shown += (o, e2) =>
-				{
-					KeePass.UI.GlobalWindowManager.AddWindow(f, f);
-					tClose.Start();
-				};
-				f.FormClosed += (o, e1) => { if (f != null) KeePass.UI.GlobalWindowManager.RemoveWindow(f); };
-				f.ShowDialog(KeePass.UI.GlobalWindowManager.TopWindow);
-				pb.Image.Dispose();
-				f.Dispose();
-				bmp.Dispose();
-			}
-			catch { };
+			string sIssuer = null;
+			if (!string.IsNullOrEmpty(otp.Issuer) && (otp.Issuer != PluginTranslate.PluginName)) sIssuer = otp.Issuer;
+			string sLabel = string.IsNullOrEmpty(otp.Label) ? null : otp.Label;
+			ShowQRCode(sIssuer, sLabel, otp.OTPAuthString);
 		}
 
 		private void OnOTPAutotype(object sender, EventArgs e)
@@ -408,6 +363,12 @@ namespace KeePassOTP
 			m_Options.Image = SmallIcon;
 			m_Options.Click += (o, e) => Tools.ShowOptions();
 			m_host.MainWindow.ToolsMenu.DropDownItems.Add(m_Options);
+
+			m_GoogleAuthenticatorExport = new ToolStripMenuItem(PluginTranslate.PluginName + " -> Google Authenticator ...");
+			m_GoogleAuthenticatorExport.Image = SmallIcon;
+			m_GoogleAuthenticatorExport.Click += OnGoogleAuthenticatorExport;
+			m_host.MainWindow.ToolsMenu.DropDownItems.Add(m_GoogleAuthenticatorExport);
+			m_host.MainWindow.ToolsMenu.DropDownOpening += OnToolsMenuOpening;
 
 			Config.OTPCopyItem = m_MainMenuCopy;
 
@@ -498,9 +459,16 @@ namespace KeePassOTP
 			m_tMigratePlaceholder.Start();
 		}
 
+		private void OnToolsMenuOpening(object sender, EventArgs e)
+		{
+			m_GoogleAuthenticatorExport.Enabled = m_host.Database != null && m_host.Database.IsOpen;
+		}
+
 		private void RemoveMenu()
 		{
 			m_host.MainWindow.ToolsMenu.DropDownItems.Remove(m_Options);
+			m_host.MainWindow.ToolsMenu.DropDownItems.Remove(m_GoogleAuthenticatorExport);
+			m_host.MainWindow.ToolsMenu.DropDownOpening -= OnToolsMenuOpening;
 			m_host.MainWindow.EntryContextMenu.Opening -= OnEntryContextMenuOpening;
 			m_host.MainWindow.EntryContextMenu.Closing -= OnEntryContextMenuClosing;
 			m_host.MainWindow.EntryContextMenu.Items.Remove(m_ContextMenu);
@@ -874,6 +842,153 @@ namespace KeePassOTP
 			}
 		}
 
+		private void OnGoogleAuthenticatorExport(object sender, EventArgs e)
+		{
+			List<string> lMsg = new List<string>();
+			bool bError = false;
+			try
+			{
+				if (!m_host.Database.IsOpen)
+				{
+					lMsg.Add("Active database not available / not unlocked");
+					bError = true;
+					return;
+				}
+
+				Dictionary<PwEntry, GoogleAuthenticatorImport.OtpParameters> dEntries = new Dictionary<PwEntry, GoogleAuthenticatorImport.OtpParameters>();
+				List<GoogleAuthenticatorImport> lGI = new List<GoogleAuthenticatorImport>();
+				List<GoogleAuthenticatorImport.OtpParameters> lGoogleAuth = new List<GoogleAuthenticatorImport.OtpParameters>();
+				KeePassLib.Delegates.EntryHandler eh = delegate (PwEntry pe)
+				{
+					if (OTPDAO.OTPDefined(pe) == OTPDAO.OTPDefinition.None) return true;
+					if (!OTPDAO.EnsureOTPUsagePossible(pe))
+					{
+						lMsg.Add("OTP data not accessible");
+						bError = true;
+						return false;
+					}
+					var kpotp = OTPDAO.GetOTP(pe);
+					var otp = new GoogleAuthenticatorImport.OtpParameters();
+					bool bNoAdd = false;
+					switch (kpotp.Hash)
+					{
+						case KPOTPHash.SHA1: otp.Algorithm = GoogleAuthenticatorImport.Algorithm.AlgorithmSha1; break;
+						case KPOTPHash.SHA256: otp.Algorithm = GoogleAuthenticatorImport.Algorithm.AlgorithmSha256; break;
+						case KPOTPHash.SHA512: otp.Algorithm = GoogleAuthenticatorImport.Algorithm.AlgorithmSha512; break;
+						default:
+							lMsg.Add("Entry " + pe.Uuid.ToHexString() + " - Unsupported hash algorithm:" + kpotp.Hash.ToString());
+							bNoAdd = true;
+							break;
+					}
+
+					switch (kpotp.Encoding)
+					{
+						case KPOTPEncoding.BASE32: break;
+						default:
+							lMsg.Add("Entry " + pe.Uuid.ToHexString() + " - Unsupported encoding:" + kpotp.Encoding.ToString());
+							bNoAdd = true;
+							break;
+					}
+
+					if (kpotp.Type == KPOTPType.HOTP)
+					{
+						otp.Type = GoogleAuthenticatorImport.OtpType.OtpTypeHotp;
+						otp.Counter = kpotp.HOTPCounter;
+					}
+					else if (kpotp.Type == KPOTPType.TOTP)
+					{
+						otp.Type = GoogleAuthenticatorImport.OtpType.OtpTypeTotp;
+					}
+					else
+					{
+						lMsg.Add("Entry " + pe.Uuid.ToHexString() + " - Unsupported OTP type:" + kpotp.Type.ToString());
+						bNoAdd = true;
+					}
+
+					if (kpotp.Length == 6) otp.Digits = GoogleAuthenticatorImport.DigitCount.DigitCountSix;
+					//else if (kpotp.Length == 8) otp.Digits = GoogleAuthenticatorImport.DigitCount.DigitCountEight; Not yet supported...
+					else
+					{
+						lMsg.Add("Entry " + pe.Uuid.ToHexString() + " - Unsupported OTP length:" + kpotp.Length.ToString());
+						bNoAdd = true;
+					}
+
+					if (bNoAdd)
+					{
+						dEntries[pe] = null;
+						return true;
+					}
+					otp.Issuer = kpotp.Issuer;
+					if (string.IsNullOrEmpty(kpotp.Issuer) && string.IsNullOrEmpty(kpotp.Label)) otp.Name = string.Empty;
+					else if (string.IsNullOrEmpty(kpotp.Issuer)) otp.Name = kpotp.Label;
+					else if (string.IsNullOrEmpty(kpotp.Label)) otp.Name = kpotp.Issuer + ":" + kpotp.Issuer;
+					else otp.Name = kpotp.Issuer + ":" + kpotp.Label;
+					otp.Secret = PSConvert.ToBASE32(kpotp.OTPSeed, true);
+
+					dEntries[pe] = otp;
+
+					return true;
+				};
+				m_host.Database.RootGroup.TraverseTree(TraversalMethod.PreOrder, null, eh);
+
+				lMsg.Add("Exportable entries: " + dEntries.Where(x => x.Value != null).Count().ToString());
+
+				using (var selForm = new GoogleAuthenticatorExportSelection())
+				{
+					selForm.InitEx(dEntries);
+					if (selForm.ShowDialog() != DialogResult.OK)
+					{
+						lMsg.Add("Entry selection aborted");
+						return;
+					}
+					dEntries = selForm.SelectedEntries;
+				}
+
+				if (dEntries.Count == 0)
+				{
+					lMsg.Add("No entries to export");
+					return;
+				}
+				else lMsg.Add("Entries to export: " + dEntries.Count);
+
+				//Max 10 entries / QR code
+				int iEntriesPerQR = 3;
+				lMsg.Add("Calculated QR code groups: " + ((int)Math.Ceiling((double)dEntries.Count / iEntriesPerQR)).ToString());
+				int iCount = 0;
+				foreach (var kvp in dEntries)
+				{
+					if (kvp.Value == null) continue;
+					int idx = iCount++ / iEntriesPerQR;
+					if (idx >= lGI.Count)
+					{
+						lGI.Add(new GoogleAuthenticatorImport());
+						lGI[idx].BatchId = 1;
+						lGI[idx].BatchIndex = idx;
+						lGI[idx].Version = 1;
+					}
+					lGI[idx].otp_parameters.Add(kvp.Value);
+				}
+
+				List<ProtectedString> lOTP = new List<ProtectedString>();
+				foreach (var gi in lGI)
+				{
+					gi.BatchSize = lGI.Count;
+					var b = GoogleAuth.SerializeGoogleAuthMigrationData(gi);
+					ProtectedString psOTP = new ProtectedString(true, StrUtil.Utf8.GetBytes("otpauth-migration://offline?data="));
+					string s = Convert.ToBase64String(b);
+					s = System.Web.HttpUtility.UrlEncode(s);
+					psOTP += new ProtectedString(true, StrUtil.Utf8.GetBytes(s));
+					lOTP.Add(psOTP);
+				}
+				ShowQRCode("KeePassOTP", "Google Authenticator " + KeePass.Resources.KPRes.Export, lOTP.ToArray());
+			}
+			finally 
+			{
+				if (bError) PluginDebug.AddError("GoogleAuthenticatorExport", 0, lMsg.ToArray());
+				else PluginDebug.AddInfo("GoogleAuthenticatorExport", 0, lMsg.ToArray());
+			}
+		}
+
 		public override void Terminate()
 		{
 			if (m_host == null) return;
@@ -909,9 +1024,5 @@ namespace KeePassOTP
 		{
 			get { return Icon_Setup; }
 		}
-	}
-	public class QRForm : Form, KeePass.UI.IGwmWindow
-	{
-		public bool CanCloseWithoutDataLoss { get { return true; } }
 	}
 }
