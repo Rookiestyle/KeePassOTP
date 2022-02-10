@@ -318,7 +318,7 @@ Dit bericht zal maar één keer getoond worden.</value>
   </item>
   <item>
     <key>OTPDisplayMode_label</key>
-    <value>Tekst KTOTP-kolom:</value>
+    <value>Tekst KPOTP-kolom:</value>
   </item>
   <item>
     <key>RecoveryCodes</key>
