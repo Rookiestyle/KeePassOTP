@@ -340,4 +340,16 @@ Dit bericht zal maar één keer getoond worden.</value>
     <key>LocalHotkeyTooltip</key>
     <value>Deze sneltoets werkt alleen binnen KeePass en zal in plaats van auto-typen de OTP waarde kopiëren naar het klembord.</value>
   </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Volgende:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>N.v.t.</value>
+  </item>
 </Translation>

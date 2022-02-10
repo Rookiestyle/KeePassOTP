@@ -242,7 +242,7 @@ namespace KeePassOTP
 			totpTimeCorrectionValue.Text = OTP.OTPTimeCorrection.ToString();
 
 			string otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(false, true)) : PluginTranslate.Error;
-			otpPreview.Text = "OTP: " + (string.IsNullOrEmpty(otpValue) ? "N/A" : otpValue);
+			otpPreview.Text = PluginTranslate.CurrentOTP.ToString() + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable.ToString() : otpValue);
 			if ((OTP.Type != KPOTPType.HOTP) && OTP.RemainingSeconds <= Config.TOTPSoonExpiring)
 			{
 				otpPreview.ForeColor = System.Drawing.Color.Red;
@@ -257,7 +257,7 @@ namespace KeePassOTP
 			OTP.RecoveryCodes = GetRecoveryCodes();
 
 			otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
-			otpPreviewNext.Text = "Next: " + (string.IsNullOrEmpty(otpValue) ? "N/A" : otpValue);
+			otpPreviewNext.Text = PluginTranslate.NextOTP.ToString() + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable.ToString() : otpValue);
 		}
 
         private void GetOTPSettingsInt(out int iFormat, out int iLength, out string sTimestep, out int iHash, out int iType)

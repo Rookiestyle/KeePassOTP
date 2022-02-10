@@ -343,4 +343,16 @@ This message will not be shown again.</value>
     <key>LocalHotkeyTooltip</key>
     <value>The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard</value>
   </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Next:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>N/A</value>
+  </item>
 </Translation>

@@ -413,6 +413,18 @@ This message will not be shown again.";
 		/// The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard
 		/// </summary>
 		public static readonly string LocalHotkeyTooltip = @"The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard";
+		/// <summary>
+		/// Next
+		/// </summary>
+		public static readonly string CurrentOTP = @"OTP:";
+		/// <summary>
+		/// Next
+		/// </summary>
+		public static readonly string NextOTP = @"Next:";
+		/// <summary>
+		/// N/A
+		/// </summary>
+		public static readonly string NotAvailable = @"N/A";
 		#endregion
 
 		#region NO changes in this area
