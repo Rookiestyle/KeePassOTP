@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <!--
+    Increment the TranslationVersion every time the translation file is updated
+	Also update the version.info file
+  -->
+  <TranslationVersion>1</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KPOTP - Geen items beschikbaar</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>KPOTP auto-typen ([Ctrl] om te kopiëren)</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>N.v.t. Uuid: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>groep: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>OTP instellen...</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>OTP kopiëren</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>FOUT</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>Titel: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>Gebruiker: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>Geheime sleutel</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Geheim: </value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>Geavanceerd</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>Codering: </value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>OTP instellingen</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>Type:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>Lengte:</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>Hash:</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>Tijdstappen:</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>Teller:</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Tijdcorrectie (uitsluitend TOTP & Steam)</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Verschil: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>Geen tijdcorrectie</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>Gebruik URL van het item</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>Gebruik aangepaste URL</value>
+  </item>
+  <item>
+    <key>SetupTFA</key>
+    <value>2FA instellen</value>
+  </item>
+  <item>
+    <key>TFADefined</key>
+    <value>2FA ingesteld</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>Open OTP database - {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>Alle geheimen zullen worden bewaard in een afzonderlijke database binnen de hoofddatabase waarin de items staan.
+
+Vul alsjeblieft in het volgende venster het hoofdwachtwoord in voor je OTP geheimen.</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>Klik '{0}' om door te gaan of '{1}' om OTP geheimen bij de respectieve items te bewaren.</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>Aangeven of 2FA ingesteld kan worden</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>OTP database</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>Bewaar OTP geheimen in een afzonderlijke database.</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>OTP database automatisch openen wanneer de hoofddatabase wordt geopend.</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>Items naar DB</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>Verplaats OTP geheimen naar afzonderlijke database.</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>DB naar Items</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>Verplaats OTP geheimen naar de respectieve items.</value>
+  </item>
+  <item>
+    <key>MoveError</key>
+    <value>Verplaatsen van OTP geheimen mislukt. Is de OTP database open?</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} OTP geheim(en) verplaatst</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP download een lijst met sites die twee-factor-authenticatie ondersteunen van {0}. URLs in de database worden vergeleken met deze lijst; de URLs worden niet verzonden.
+
+De KPOTP-kolom zal aangeven wanneer 2FA mogelijk is maar nog niet ingesteld.
+Dubbelklik op deze hint om de 2FA pagina van de betreffende site te openen.</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Hiermee worden nieuwe OTP geheimen opgeslagen in een afzonderlijke database, welke met een ander hoofdwachtwoord kan worden versleuteld. Deze database wordt opgeslagen in hoofddatabase waarin de items staan.
+Dit verbeterd de beveiliging omdat er een tweede hoofdwachtwoord nodig is voor je OTP geheimen. Maar hierdoor kan een OTP mogelijk niet getoont worden in andere implementaties zoals KeePass2Android.
+
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Schakel deze optie uit om de OTP database alleen te openen wanneer nodig: wanneer een OTP gegenereerd moet worden.
+De OTP database wordt ook geopend wanneer de hoofddatabase wordt gesynchroniseerd, anders zouden wijzigingen aan de OTP database niet worden gesynchroniseerd en gaan lokale wijzigingen verloren.
+
+&gt;&gt; OTP migratie &lt;&lt;
+Afhankelijk van de bovenstaande instellingen zullen de OTP geheimen worden opgeslagen bij de respectieve items of in de afzonderlijke database.
+
+'{Options_Migrate2DB}' en '{Options_Migrate2Entries}' kunnen worden gebruikt om OTP geheimen te verplaatsen tussen deze twee locaties.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>Van / naar andere plugins migreren</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>{0} instellingen verwijderen van de gemigreerde entries?</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{0} van de {1} entries gemigreerd</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>KeePassOTP sneltoets:</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>De database is gesynchroniseerd.
+Ontgrendel de OTP database om de synchronisatie van OTP gegevens af te ronden.
+
+Als de OTP database niet wordt ontgrendeld kunnen de OTP gegevens niet worden gesynchroniseerd, met mogelijk gegevensverlies als gevolg.</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>OTP database wordt geopend...</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>OTP database aan het synchroniseren...</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>OTP database aan het opslaan...</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>QR-code tonen...</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>De KeePassOTP placeholder is veranderd waardoor de vorige placeholder niet meer werkt.
+
+Oud: {0}
+Nieuw: {1}
+
+Om te zorgen dat Auto-typen blijft werken moet op alle plaatsen waar {0} staat deze vervangen worden door {1}. Nu vervangen in alle momenteel geopende databases?</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDBDelete</key>
+    <value>Hiermee wordt de KeePassOTP database uitgeschakeld.
+Het zal de KeePassOTP database NIET verwijderen.
+
+Klik '{0}' om de KeePassOTP database uit te schakelen en te verwijderen.
+Klik '{1}' om de KeePassOTP database uit te schakelen maar wel te behouden.</value>
+  </item>
+  <item>
+    <key>OTPBackupDone</key>
+    <value>Het ontgrendelen van de bestaande OTP database is mislukt en de inhoud is overschreven.
+Een backup is opgeslagen als bijlage bij het volgende item:
+{0}
+
+Open deze om de oude inhoud te bekijken.
+Het herstellen van de gegevens moet handmatig gebeuren.</value>
+  </item>
+  <item>
+    <key>Placeholder</key>
+    <value>Placeholder:</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>Fout bij het lezen van de gegevens</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>Fout bij het lezen van de gegevens
+
+Verwacht aantal OTP items: 1
+Gevonden aantal OTP items: {0}</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+    <value>Kies alsjeblieft één item om te gebruiken</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+    <value>Uitgever</value>
+  </item>
+  <item>
+    <key>CheckingTFA</key>
+    <value>2FA aan het controleren</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCode</key>
+    <value>OTP QR-code van het scherm scannen</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCodeExplain</key>
+    <value>KeePassOTP zal nu proberen een QR-code te vinden en scannen op je scherm.
+KeePass zal {0} seconden naar de achtergrond verdwijnen om het scannen van de OTP QR-code makkelijker te maken.
+
+Dit bericht zal maar één keer getoond worden.</value>
+  </item>
+  <item>
+    <key>OTP_Setup_DragDrop</key>
+    <value>Drag &amp; drop een geldige OTP QR-code</value>
+  </item>
+  <item>
+    <key>OTPRenewal</key>
+    <value>Gekopiëerde OTP verversen</value>
+  </item>
+  <item>
+    <key>OTPRenewal_Inactive</key>
+    <value>Nooit</value>
+  </item>
+  <item>
+    <key>OTPRenewal_RespectClipboardTimeout</key>
+    <value>Verversen tot het klembord wordt geleegd</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Ververs als de code snel zou verlopen</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>Tekst KTOTP-kolom:</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Herstelcodes</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>Instellen</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>Herstellen</value>
+  </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>Lokale sneltoets</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>Deze sneltoets werkt alleen binnen KeePass en zal in plaats van auto-typen de OTP waarde kopiëren naar het klembord.</value>
+  </item>
+</Translation>
