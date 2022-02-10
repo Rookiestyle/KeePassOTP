@@ -83,7 +83,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Time correction - not applicable for HOTP</value>
+    <value>Time correction - TOTP &amp;&amp; Steam only</value>
   </item>
   <item>
     <key>URL</key>
