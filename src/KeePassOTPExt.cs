@@ -267,8 +267,8 @@ namespace KeePassOTP
 			try
 			{
 				ZXing.BarcodeWriter zBW = new ZXing.BarcodeWriter();
-				zBW.Options.Height = 320;
-				zBW.Options.Width = 320;
+				zBW.Options.Height = DpiUtil.ScaleIntY(320);
+				zBW.Options.Width = DpiUtil.ScaleIntX(320);
 				zBW.Format = ZXing.BarcodeFormat.QR_CODE;
 				Bitmap bmp = zBW.Write(otp.OTPAuthString.ReadString());
 				QRForm f = new QRForm();
@@ -287,19 +287,21 @@ namespace KeePassOTP
 				{
 					Label lIssuer = new Label();
 					lIssuer.Width = f.ClientSize.Width;
+					lIssuer.AutoSize = true;
 					lIssuer.Text = otp.Issuer;
-					lIssuer.Location = new Point(0, f.ClientSize.Height + 10);
+					lIssuer.Location = new Point(0, f.ClientSize.Height + lIssuer.Height / 2);
 					f.Controls.Add(lIssuer);
-					f.Height += lIssuer.Height + 10;
+					f.Height += lIssuer.Height * 3 / 2;
 				}
 				if (!string.IsNullOrEmpty(otp.Label))
 				{
 					Label lLabel = new Label();
 					lLabel.Width = f.ClientSize.Width;
+					lLabel.AutoSize = true;
 					lLabel.Text = otp.Label;
-					lLabel.Location = new Point(0, f.ClientSize.Height + 10);
+					lLabel.Location = new Point(0, f.ClientSize.Height + lLabel.Height / 2);
 					f.Controls.Add(lLabel);
-					f.Height += lLabel.Height + 10;
+					f.Height += lLabel.Height * 3 / 2;
 				}
 				f.Height += 5;
 				Timer tClose = new Timer();
