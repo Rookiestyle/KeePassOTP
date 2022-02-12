@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>13</TranslationVersion>
+  <TranslationVersion>14</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -19,7 +19,7 @@
   </item>
   <item>
     <key>Group</key>
-    <value>Grupo: {0}</value>
+    <value>grupo: {0}</value>
   </item>
   <item>
     <key>OTPSetup</key>
@@ -47,7 +47,7 @@
   </item>
   <item>
     <key>Seed</key>
-    <value>Semente:</value>
+    <value>Semente: </value>
   </item>
   <item>
     <key>AdvancedOptions</key>
@@ -55,7 +55,7 @@
   </item>
   <item>
     <key>Format</key>
-    <value>Formato:</value>
+    <value>Formato: </value>
   </item>
   <item>
     <key>OTPSettings</key>
@@ -83,7 +83,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Correção de tempo - Não aplicável para HOTP</value>
+    <value>Correção do tempo - TOTP &amp;&amp; Só Steam</value>
   </item>
   <item>
     <key>URL</key>
@@ -99,7 +99,7 @@
   </item>
   <item>
     <key>TimeCorrectionEntry</key>
-    <value>Usa URL da entrada</value>
+    <value>Usar URL da entrada</value>
   </item>
   <item>
     <key>TimeCorrectionFixed</key>
@@ -342,5 +342,17 @@ Esta mensagem não será mostrada novamente.</value>
   <item>
     <key>LocalHotkeyTooltip</key>
     <value>O atalho irá funcionar somente no interior do KeePass e em vez de auto-digitar, ele copiará o valor OTP para a área de transferência</value>                                                                                                                               
+  </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Seguinte:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>N/D</value>
   </item>
 </Translation>
