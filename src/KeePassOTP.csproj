@@ -67,6 +67,12 @@
     <Compile Include="DAO\OTPDAO_Entry.cs" />
     <Compile Include="DAO\OTPDAO.cs" />
     <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorImport.cs" />
+    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorExportSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorExportSelection.Designer.cs">
+      <DependentUpon>GoogleAuthenticatorExportSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorImportSelection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,12 @@
       <DependentUpon>KPOTP_Details.cs</DependentUpon>
     </Compile>
     <Compile Include="Migration.cs" />
+    <Compile Include="QRForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QRForm.Designer.cs">
+      <DependentUpon>QRForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

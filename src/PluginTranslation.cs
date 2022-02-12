@@ -346,7 +346,11 @@ Found amount of OTP entries: {0}";
 		/// <summary>
 		/// Please check the single entry to use
 		/// </summary>
-		public static readonly string SelectSingleEntry = @"Please check the single entry to use";
+		public static readonly string SelectSingleEntry = @"Please select the single entry to use";
+		/// <summary>
+		/// Please select the entries to export
+		/// </summary>
+		public static readonly string SelectEntriesForExport = @"Please select the entries to export";
 		/// <summary>
 		/// Issuer
 		/// </summary>

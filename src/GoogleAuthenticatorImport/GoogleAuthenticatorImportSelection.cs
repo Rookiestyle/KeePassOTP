@@ -28,7 +28,7 @@ namespace KeePassOTP
 		{
 			InitializeComponent();
 
-			Text = PluginTranslate.PluginName;
+			Text = "Google Authenticator -> " + PluginTranslate.PluginName;
 			bOK.Text = KPRes.Ok;
 			bCancel.Text = KPRes.Cancel;
 			lDesc.Text = PluginTranslate.SelectSingleEntry;
@@ -67,6 +67,8 @@ namespace KeePassOTP
 		{
 			chIssuer.Width = chLabel.Width = lvEntries.ClientSize.Width / 2;
 			lvEntries.Items[0].Checked = true;
+			lvEntries.Height = ClientSize.Height - pDesc.Height - pButtons.Height - Padding.Top - Padding.Bottom;
+			lvEntries.Width = ClientSize.Width - Padding.Left - Padding.Right;
 		}
 	}
 }
