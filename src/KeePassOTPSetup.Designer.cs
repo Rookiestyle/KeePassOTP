@@ -52,9 +52,9 @@ namespace KeePassOTP
             this.tpSetup = new System.Windows.Forms.TabPage();
             this.gQRHelp = new System.Windows.Forms.GroupBox();
             this.pbQR = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lQRCodeScanScreenLabel = new System.Windows.Forms.Label();
             this.pbSearchScreen = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lQRCodeDragDropLabel = new System.Windows.Forms.Label();
             this.tpRecovery = new System.Windows.Forms.TabPage();
             this.tbRecovery = new System.Windows.Forms.TextBox();
             this.tpAdvanced = new System.Windows.Forms.TabPage();
@@ -81,6 +81,11 @@ namespace KeePassOTP
             this.lLength = new System.Windows.Forms.Label();
             this.lType = new System.Windows.Forms.Label();
             this.cbAdvanced = new System.Windows.Forms.CheckBox();
+            this.gIssuerLabel = new System.Windows.Forms.GroupBox();
+            this.tbLabel = new System.Windows.Forms.TextBox();
+            this.tbIssuer = new System.Windows.Forms.TextBox();
+            this.lLabel = new System.Windows.Forms.Label();
+            this.lIssuer = new System.Windows.Forms.Label();
             this.gSeed.SuspendLayout();
             this.tcSetup.SuspendLayout();
             this.tpSetup.SuspendLayout();
@@ -91,6 +96,7 @@ namespace KeePassOTP
             this.tpAdvanced.SuspendLayout();
             this.gTime.SuspendLayout();
             this.gOTP.SuspendLayout();
+            this.gIssuerLabel.SuspendLayout();
             this.SuspendLayout();
             // 
             // gSeed
@@ -166,7 +172,7 @@ namespace KeePassOTP
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(562, 629);
+            this.buttonOK.Location = new System.Drawing.Point(562, 781);
             this.buttonOK.Margin = new System.Windows.Forms.Padding(5);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(178, 46);
@@ -178,7 +184,7 @@ namespace KeePassOTP
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(770, 629);
+            this.buttonCancel.Location = new System.Drawing.Point(770, 781);
             this.buttonCancel.Margin = new System.Windows.Forms.Padding(5);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(178, 46);
@@ -195,17 +201,18 @@ namespace KeePassOTP
             this.tcSetup.Location = new System.Drawing.Point(9, 8);
             this.tcSetup.Name = "tcSetup";
             this.tcSetup.SelectedIndex = 0;
-            this.tcSetup.Size = new System.Drawing.Size(938, 596);
+            this.tcSetup.Size = new System.Drawing.Size(938, 743);
             this.tcSetup.TabIndex = 1;
             // 
             // tpSetup
             // 
+            this.tpSetup.Controls.Add(this.gIssuerLabel);
             this.tpSetup.Controls.Add(this.gQRHelp);
             this.tpSetup.Controls.Add(this.gSeed);
             this.tpSetup.Location = new System.Drawing.Point(10, 48);
             this.tpSetup.Name = "tpSetup";
             this.tpSetup.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSetup.Size = new System.Drawing.Size(918, 538);
+            this.tpSetup.Size = new System.Drawing.Size(918, 685);
             this.tpSetup.TabIndex = 0;
             this.tpSetup.Text = "tabPage1";
             this.tpSetup.UseVisualStyleBackColor = true;
@@ -213,9 +220,9 @@ namespace KeePassOTP
             // gQRHelp
             // 
             this.gQRHelp.Controls.Add(this.pbQR);
-            this.gQRHelp.Controls.Add(this.label2);
+            this.gQRHelp.Controls.Add(this.lQRCodeScanScreenLabel);
             this.gQRHelp.Controls.Add(this.pbSearchScreen);
-            this.gQRHelp.Controls.Add(this.label1);
+            this.gQRHelp.Controls.Add(this.lQRCodeDragDropLabel);
             this.gQRHelp.Dock = System.Windows.Forms.DockStyle.Top;
             this.gQRHelp.Location = new System.Drawing.Point(3, 199);
             this.gQRHelp.Name = "gQRHelp";
@@ -239,17 +246,17 @@ namespace KeePassOTP
             this.pbQR.DragEnter += new System.Windows.Forms.DragEventHandler(this.pbQR_DragEnter);
             this.pbQR.MouseHover += new System.EventHandler(this.pbQR_MouseHover);
             // 
-            // label2
+            // lQRCodeScanScreenLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(192, 241);
-            this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 31);
-            this.label2.TabIndex = 416;
-            this.label2.Text = "N/A";
-            this.label2.Click += new System.EventHandler(this.bSearchScreen_Click);
+            this.lQRCodeScanScreenLabel.AutoSize = true;
+            this.lQRCodeScanScreenLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lQRCodeScanScreenLabel.Location = new System.Drawing.Point(192, 241);
+            this.lQRCodeScanScreenLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lQRCodeScanScreenLabel.Name = "lQRCodeScanScreenLabel";
+            this.lQRCodeScanScreenLabel.Size = new System.Drawing.Size(60, 31);
+            this.lQRCodeScanScreenLabel.TabIndex = 416;
+            this.lQRCodeScanScreenLabel.Text = "N/A";
+            this.lQRCodeScanScreenLabel.Click += new System.EventHandler(this.bSearchScreen_Click);
             // 
             // pbSearchScreen
             // 
@@ -265,18 +272,18 @@ namespace KeePassOTP
             this.pbSearchScreen.Click += new System.EventHandler(this.bSearchScreen_Click);
             this.pbSearchScreen.MouseHover += new System.EventHandler(this.bSearchScreen_MouseHover);
             // 
-            // label1
+            // lQRCodeDragDropLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(192, 102);
-            this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 31);
-            this.label1.TabIndex = 414;
-            this.label1.Text = "N/A";
-            this.label1.UseMnemonic = false;
-            this.label1.MouseHover += new System.EventHandler(this.pbQR_MouseHover);
+            this.lQRCodeDragDropLabel.AutoSize = true;
+            this.lQRCodeDragDropLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lQRCodeDragDropLabel.Location = new System.Drawing.Point(192, 102);
+            this.lQRCodeDragDropLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lQRCodeDragDropLabel.Name = "lQRCodeDragDropLabel";
+            this.lQRCodeDragDropLabel.Size = new System.Drawing.Size(60, 31);
+            this.lQRCodeDragDropLabel.TabIndex = 414;
+            this.lQRCodeDragDropLabel.Text = "N/A";
+            this.lQRCodeDragDropLabel.UseMnemonic = false;
+            this.lQRCodeDragDropLabel.MouseHover += new System.EventHandler(this.pbQR_MouseHover);
             // 
             // tpRecovery
             // 
@@ -284,7 +291,7 @@ namespace KeePassOTP
             this.tpRecovery.Location = new System.Drawing.Point(10, 48);
             this.tpRecovery.Name = "tpRecovery";
             this.tpRecovery.Padding = new System.Windows.Forms.Padding(3);
-            this.tpRecovery.Size = new System.Drawing.Size(918, 538);
+            this.tpRecovery.Size = new System.Drawing.Size(918, 685);
             this.tpRecovery.TabIndex = 1;
             this.tpRecovery.Text = "Recovery";
             this.tpRecovery.UseVisualStyleBackColor = true;
@@ -307,7 +314,7 @@ namespace KeePassOTP
             this.tpAdvanced.Location = new System.Drawing.Point(10, 48);
             this.tpAdvanced.Name = "tpAdvanced";
             this.tpAdvanced.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAdvanced.Size = new System.Drawing.Size(918, 538);
+            this.tpAdvanced.Size = new System.Drawing.Size(918, 685);
             this.tpAdvanced.TabIndex = 2;
             this.tpAdvanced.Text = "tpAdvanced";
             this.tpAdvanced.UseVisualStyleBackColor = true;
@@ -573,13 +580,61 @@ namespace KeePassOTP
             this.cbAdvanced.UseVisualStyleBackColor = true;
             this.cbAdvanced.CheckedChanged += new System.EventHandler(this.cbAdvanced_CheckedChanged);
             // 
+            // gIssuerLabel
+            // 
+            this.gIssuerLabel.Controls.Add(this.tbLabel);
+            this.gIssuerLabel.Controls.Add(this.tbIssuer);
+            this.gIssuerLabel.Controls.Add(this.lLabel);
+            this.gIssuerLabel.Controls.Add(this.lIssuer);
+            this.gIssuerLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gIssuerLabel.Location = new System.Drawing.Point(3, 532);
+            this.gIssuerLabel.Name = "gIssuerLabel";
+            this.gIssuerLabel.Size = new System.Drawing.Size(912, 154);
+            this.gIssuerLabel.TabIndex = 905;
+            this.gIssuerLabel.TabStop = false;
+            this.gIssuerLabel.Text = "groupBox1";
+            // 
+            // tbLabel
+            // 
+            this.tbLabel.Location = new System.Drawing.Point(180, 97);
+            this.tbLabel.Name = "tbLabel";
+            this.tbLabel.Size = new System.Drawing.Size(706, 38);
+            this.tbLabel.TabIndex = 3;
+            this.tbLabel.TextChanged += new System.EventHandler(this.UpdateIssuerLabel);
+            // 
+            // tbIssuer
+            // 
+            this.tbIssuer.Location = new System.Drawing.Point(180, 45);
+            this.tbIssuer.Name = "tbIssuer";
+            this.tbIssuer.Size = new System.Drawing.Size(706, 38);
+            this.tbIssuer.TabIndex = 2;
+            this.tbIssuer.TextChanged += new System.EventHandler(this.UpdateIssuerLabel);
+            // 
+            // label2
+            // 
+            this.lLabel.AutoSize = true;
+            this.lLabel.Location = new System.Drawing.Point(14, 103);
+            this.lLabel.Name = "label2";
+            this.lLabel.Size = new System.Drawing.Size(93, 32);
+            this.lLabel.TabIndex = 1;
+            this.lLabel.Text = "label2";
+            // 
+            // label1
+            // 
+            this.lIssuer.AutoSize = true;
+            this.lIssuer.Location = new System.Drawing.Point(16, 52);
+            this.lIssuer.Name = "label1";
+            this.lIssuer.Size = new System.Drawing.Size(93, 32);
+            this.lIssuer.TabIndex = 0;
+            this.lIssuer.Text = "label1";
+            // 
             // KeePassOTPSetup
             // 
             this.AcceptButton = this.buttonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(956, 688);
+            this.ClientSize = new System.Drawing.Size(956, 840);
             this.Controls.Add(this.tcSetup);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
@@ -609,6 +664,8 @@ namespace KeePassOTP
             this.gTime.PerformLayout();
             this.gOTP.ResumeLayout(false);
             this.gOTP.PerformLayout();
+            this.gIssuerLabel.ResumeLayout(false);
+            this.gIssuerLabel.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -647,8 +704,13 @@ namespace KeePassOTP
         private System.Windows.Forms.CheckBox cbAdvanced;
         private System.Windows.Forms.GroupBox gQRHelp;
         private System.Windows.Forms.PictureBox pbQR;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lQRCodeScanScreenLabel;
         private System.Windows.Forms.PictureBox pbSearchScreen;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lQRCodeDragDropLabel;
+        private System.Windows.Forms.GroupBox gIssuerLabel;
+        private System.Windows.Forms.TextBox tbLabel;
+        private System.Windows.Forms.TextBox tbIssuer;
+        private System.Windows.Forms.Label lLabel;
+        private System.Windows.Forms.Label lIssuer;
     }
 }

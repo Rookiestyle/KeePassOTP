@@ -98,7 +98,7 @@ namespace KeePassOTP
 			return true;
 		}
 
-		private void CleanupColumns()
+        private void CleanupColumns()
 		{
 			//Column KPOTP_Reduced has been removed (use KeePassOTP options instead)
 			//If column is currently displayed do the following:
@@ -243,14 +243,18 @@ namespace KeePassOTP
 			var otpSetup = new KeePassOTPSetup();
 			Tools.GlobalWindowManager(otpSetup);
 			otpSetup.OTP = OTPDAO.GetOTP(pe);
+
 			otpSetup.EntryUrl = pe.Strings.GetSafe(PwDefs.UrlField).ReadString();
-			otpSetup.InitEx();
+			otpSetup.InitEx(pe);
 
 			KPOTP_Details d = new KPOTP_Details();
 			d.InitEx(otpSetup, TFASites.GetTFAData(pe.Strings.ReadSafe(PwDefs.UrlField)));
 
 			if (otpSetup.ShowDialog(m_host.MainWindow) == DialogResult.OK)
+			{
+				if (otpSetup.NeverSyncIssuerAndLabel) pe.CustomData.Set("KeePassOTP.NoSyncIssuerAndLabel", "true");
 				OTPDAO.SaveOTP(otpSetup.OTP, pe);
+			}
 			otpSetup.Dispose();
 		}
 

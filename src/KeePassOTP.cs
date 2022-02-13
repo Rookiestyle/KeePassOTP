@@ -702,15 +702,19 @@ namespace KeePassOTP
 			}
 			if (!otp1.RecoveryCodes.Equals(otp2.RecoveryCodes, false)) return false;
 
+			if (otp1.Issuer != otp2.Issuer) return false;
+			if (otp1.Label != otp2.Label) return false;
+
 			if (otp1.Type == KPOTPType.HOTP && (otp1.HOTPCounter != otp2.HOTPCounter))
 			{
 				OnlyCounterChanged = true;
 				return false;
 			}
+
 			return true;
 		}
 
-        public KPOTP Clone()
+		public KPOTP Clone()
 		{
 			KPOTP result = new KPOTP();
 

@@ -83,7 +83,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Time correction - TOTP &amp;&amp; Steam only</value>
+    <value>Time correction - not applicable for HOTP</value>
   </item>
   <item>
     <key>URL</key>
@@ -278,7 +278,11 @@ Found amount of OTP entries: {0}</value>
   </item>
   <item>
     <key>SelectSingleEntry</key>
-    <value>Please check the single entry to use</value>
+    <value>Please select the single entry to use</value>
+  </item>
+  <item>
+    <key>SelectEntriesForExport</key>
+    <value>Please select the entries to export</value>
   </item>
   <item>
     <key>Issuer</key>
@@ -354,5 +358,17 @@ This message will not be shown again.</value>
   <item>
     <key>NotAvailable</key>
     <value>N/A</value>
+  </item>
+  <item>
+    <key>AskForIssuerLabelSync</key>
+    <value>The entry's title and/or user name differ from the OTP data.
+Update OTP data as follows?
+
+Issuer: {0}
+{1}: {2}
+
+{3} = Update OTP data
+{4} = Do NOT update OTP data
+{5} = Do NOT update OTP data and do not ask again</value>
   </item>
 </Translation>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using KeePass;
+using KeePass.Resources;
 using KeePassLib;
 using KeePassLib.Security;
 using PluginTools;
@@ -90,7 +92,7 @@ namespace KeePassOTP
 				pe.Touch(true, false);
 			}
 
-            private EntryOTP EnsureEntry(PwEntry pe)
+			private EntryOTP EnsureEntry(PwEntry pe)
 			{
 				EntryOTP otp;
 				if (m_dEntryOTPData.TryGetValue(pe, out otp) && !IgnoreBuffer) 
@@ -118,7 +120,7 @@ namespace KeePassOTP
 				return otp;
 			}
 
-            public override OTPDefinition OTPDefined(PwEntry pe)
+			public override OTPDefinition OTPDefined(PwEntry pe)
 			{
 				return pe.Strings.Exists(Config.OTPFIELD) ? OTPDefinition.Complete : OTPDefinition.None;
 			}

@@ -344,7 +344,7 @@ Restoring the data needs to be done manually.";
 Expected amount of OTP entries: 1
 Found amount of OTP entries: {0}";
 		/// <summary>
-		/// Please check the single entry to use
+		/// Please select the single entry to use
 		/// </summary>
 		public static readonly string SelectSingleEntry = @"Please select the single entry to use";
 		/// <summary>
@@ -418,17 +418,37 @@ This message will not be shown again.";
 		/// </summary>
 		public static readonly string LocalHotkeyTooltip = @"The hotkey will work only within KeePass and instead of Auto-Type it will copy the OTP value into the clipboard";
 		/// <summary>
-		/// Next
+		/// OTP:
 		/// </summary>
 		public static readonly string CurrentOTP = @"OTP:";
 		/// <summary>
-		/// Next
+		/// Next:
 		/// </summary>
 		public static readonly string NextOTP = @"Next:";
 		/// <summary>
 		/// N/A
 		/// </summary>
 		public static readonly string NotAvailable = @"N/A";
+		/// <summary>
+		/// The entry's title and/or user name differ from the OTP data.
+		/// Update OTP data as follows?
+		/// 
+		/// Issuer: {0}
+		/// {1}: {2}
+		/// 
+		/// {3} = Update OTP data
+		/// {4} = Do NOT update OTP data
+		/// {5} = Do NOT update OTP data and do not ask again
+		/// </summary>
+		public static readonly string AskForIssuerLabelSync = @"The entry's title and/or user name differ from the OTP data.
+Update OTP data as follows?
+
+Issuer: {0}
+{1}: {2}
+
+{3} = Update OTP data
+{4} = Do NOT update OTP data
+{5} = Do NOT update OTP data and do not ask again";
 		#endregion
 
 		#region NO changes in this area
