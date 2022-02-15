@@ -429,6 +429,10 @@ This message will not be shown again.";
 		/// N/A
 		/// </summary>
 		public static readonly string NotAvailable = @"N/A";
+		/// <summary>
+		/// Deselect All
+		/// </summary>
+		public static readonly string DeselectAll = @"Deselect All";
 		#endregion
 
 		#region NO changes in this area

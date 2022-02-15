@@ -41,6 +41,8 @@ namespace KeePassOTP
 			lDesc.Text = PluginTranslate.SelectEntriesForExport;
 			chGroup.Text = KPRes.Group;
 			chEntry.Text = KPRes.Entry;
+			bSelectAll.Text = KPRes.SelectAll;
+			bDeselectAll.Text = PluginTranslate.DeselectAll;
 		}
 
 		public void InitEx(Dictionary<PwEntry, GoogleAuthenticatorImport.OtpParameters> dEntries)
@@ -48,15 +50,49 @@ namespace KeePassOTP
 			m_dEntries = dEntries;
 			lvEntries.Items.Clear();
 			var fStrikeOut = KeePass.UI.FontUtil.CreateFont(lvEntries.Font, FontStyle.Strikeout);
+			PwGroup pgRecycleBin = null;
+			if (KeePass.Program.MainForm.ActiveDatabase.RecycleBinEnabled)
+			{
+				pgRecycleBin = KeePass.Program.MainForm.ActiveDatabase.RootGroup.FindGroup(KeePass.Program.MainForm.ActiveDatabase.RecycleBinUuid, true);
+			}
+
+			ListViewGroup lvgRegular = new ListViewGroup(string.Empty);
+			ListViewGroup lvgDeleted = new ListViewGroup("Deleted");
+			ListViewGroup lvgExpired = new ListViewGroup(KPRes.ExpiredEntries);
+
+			if (!lvEntries.Groups.Contains(lvgRegular)) lvEntries.Groups.Add(lvgRegular);
+			if (!lvEntries.Groups.Contains(lvgExpired)) lvEntries.Groups.Add(lvgExpired);
+			if (!lvEntries.Groups.Contains(lvgDeleted)) lvEntries.Groups.Add(lvgDeleted);
+
 			foreach (var otp in m_dEntries)
 			{
+				bool bExpired = false;
+				bool bDeleted = false;
+
 				ListViewItem lvi = new ListViewItem();
 				lvi.Tag = otp;
 				lvi.Text = otp.Key.ParentGroup.Name;
 				lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, otp.Key.Strings.ReadSafe(PwDefs.TitleField)));
+				if (otp.Key.IsContainedIn(pgRecycleBin))
+				{
+					bDeleted = true;
+					lvi.SubItems[0].Tag = "deleted";
+					lvi.Group = lvgDeleted;
+				}
+				else if (otp.Key.Expires && otp.Key.ExpiryTime <= DateTime.UtcNow)
+				{
+					bExpired = true;
+					lvi.SubItems[0].Tag = "expired";
+					lvi.Group = lvgExpired;
+				}
+				else
+				{
+					lvi.Group = lvgRegular;
+				}
 				lvEntries.Items.Add(lvi);
 				if (otp.Value == null) lvi.Font = fStrikeOut;
-				else lvi.Checked = true;
+
+				else lvi.Checked = !bDeleted && !bExpired;
 			}
 		}
 
@@ -81,16 +117,19 @@ namespace KeePassOTP
 			chGroup.Width = chEntry.Width = lvEntries.ClientSize.Width / 2;
 			lvEntries.Height = ClientSize.Height - pDesc.Height - pButtons.Height - Padding.Top - Padding.Bottom;
 			lvEntries.Width = ClientSize.Width - Padding.Left - Padding.Right;
+
+			if (bSelectAll.Width > bDeselectAll.Width) bDeselectAll.Width = bSelectAll.Width;
+			if (bDeselectAll.Width > bSelectAll.Width) bSelectAll.Width = bDeselectAll.Width;
 		}
 
-        private void OnSelectDeselectAll(object sender, EventArgs e)
-        {
+		private void OnSelectDeselectAll(object sender, EventArgs e)
+		{
 			bool bChecked = sender == bSelectAll;
 			foreach (ListViewItem lvi in lvEntries.Items)
-            {
+			{
 				if (lvi.Checked == bChecked) continue;
 				lvi.Checked = bChecked;
-            }
-        }
-    }
+			}
+		}
+	}
 }

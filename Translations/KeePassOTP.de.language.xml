@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>22</TranslationVersion>
+  <TranslationVersion>23</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -284,6 +284,10 @@ Tatsächliche Anzahl Datensätze: {0}</value>
     <value>Bitte markiere den zu verwendenden Eintrag</value>
   </item>
   <item>
+    <key>SelectEntriesForExport</key>
+    <value>Bitte markiere die zu exportierenden Einträge</value>
+  </item>
+  <item>
     <key>Issuer</key>
     <value>Aussteller</value>
   </item>
@@ -345,5 +349,21 @@ Dieses Hinweis wird nicht erneut angezeigt.</value>
   <item>
     <key>LocalHotkeyTooltip</key>
     <value>Der Hotkey ist nur innerhalb von KeePass aktiv und wird das OTP in die Zwischenablage kopieren.</value>
+  </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Nächstes OTP:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>N/V</value>
+  </item>
+  <item>
+    <key>DeselectAll</key>
+    <value>Alles abwählen</value>
   </item>
 </Translation>

@@ -34,10 +34,10 @@
             this.chGroup = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chEntry = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pButtons = new System.Windows.Forms.Panel();
+            this.bDeselectAll = new System.Windows.Forms.Button();
+            this.bSelectAll = new System.Windows.Forms.Button();
             this.bOK = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.bSelectAll = new System.Windows.Forms.Button();
-            this.bDeselectAll = new System.Windows.Forms.Button();
             this.pDesc.SuspendLayout();
             this.pButtons.SuspendLayout();
             this.SuspendLayout();
@@ -87,11 +87,35 @@
             this.pButtons.Controls.Add(this.bOK);
             this.pButtons.Controls.Add(this.bCancel);
             this.pButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtons.Location = new System.Drawing.Point(0, 581);
+            this.pButtons.Location = new System.Drawing.Point(0, 592);
             this.pButtons.Margin = new System.Windows.Forms.Padding(5);
             this.pButtons.Name = "pButtons";
             this.pButtons.Size = new System.Drawing.Size(1422, 171);
             this.pButtons.TabIndex = 2;
+            // 
+            // bDeselectAll
+            // 
+            this.bDeselectAll.AutoSize = true;
+            this.bDeselectAll.Location = new System.Drawing.Point(40, 88);
+            this.bDeselectAll.Margin = new System.Windows.Forms.Padding(5);
+            this.bDeselectAll.Name = "bDeselectAll";
+            this.bDeselectAll.Size = new System.Drawing.Size(178, 54);
+            this.bDeselectAll.TabIndex = 30;
+            this.bDeselectAll.Text = "Deselect All";
+            this.bDeselectAll.UseVisualStyleBackColor = true;
+            this.bDeselectAll.Click += new System.EventHandler(this.OnSelectDeselectAll);
+            // 
+            // bSelectAll
+            // 
+            this.bSelectAll.AutoSize = true;
+            this.bSelectAll.Location = new System.Drawing.Point(40, 24);
+            this.bSelectAll.Margin = new System.Windows.Forms.Padding(5);
+            this.bSelectAll.Name = "bSelectAll";
+            this.bSelectAll.Size = new System.Drawing.Size(178, 54);
+            this.bSelectAll.TabIndex = 20;
+            this.bSelectAll.Text = "Select All";
+            this.bSelectAll.UseVisualStyleBackColor = true;
+            this.bSelectAll.Click += new System.EventHandler(this.OnSelectDeselectAll);
             // 
             // bOK
             // 
@@ -115,35 +139,13 @@
             this.bCancel.Text = "Cancel";
             this.bCancel.UseVisualStyleBackColor = true;
             // 
-            // bSelectAll
-            // 
-            this.bSelectAll.Location = new System.Drawing.Point(40, 24);
-            this.bSelectAll.Margin = new System.Windows.Forms.Padding(5);
-            this.bSelectAll.Name = "bSelectAll";
-            this.bSelectAll.Size = new System.Drawing.Size(178, 54);
-            this.bSelectAll.TabIndex = 20;
-            this.bSelectAll.Text = "Select All";
-            this.bSelectAll.UseVisualStyleBackColor = true;
-            this.bSelectAll.Click += new System.EventHandler(this.OnSelectDeselectAll);
-            // 
-            // bDeselectAll
-            // 
-            this.bDeselectAll.Location = new System.Drawing.Point(40, 88);
-            this.bDeselectAll.Margin = new System.Windows.Forms.Padding(5);
-            this.bDeselectAll.Name = "bDeselectAll";
-            this.bDeselectAll.Size = new System.Drawing.Size(178, 54);
-            this.bDeselectAll.TabIndex = 30;
-            this.bDeselectAll.Text = "Deselect All";
-            this.bDeselectAll.UseVisualStyleBackColor = true;
-            this.bDeselectAll.Click += new System.EventHandler(this.OnSelectDeselectAll);
-            // 
             // GoogleAuthenticatorExportSelection
             // 
             this.AcceptButton = this.bOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.bCancel;
-            this.ClientSize = new System.Drawing.Size(1422, 752);
+            this.ClientSize = new System.Drawing.Size(1422, 763);
             this.Controls.Add(this.pButtons);
             this.Controls.Add(this.lvEntries);
             this.Controls.Add(this.pDesc);
@@ -158,6 +160,7 @@
             this.pDesc.ResumeLayout(false);
             this.pDesc.PerformLayout();
             this.pButtons.ResumeLayout(false);
+            this.pButtons.PerformLayout();
             this.ResumeLayout(false);
 
 		}
