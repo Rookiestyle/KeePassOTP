@@ -57,7 +57,7 @@ namespace KeePassOTP
 			}
 
 			ListViewGroup lvgRegular = new ListViewGroup(string.Empty);
-			ListViewGroup lvgDeleted = new ListViewGroup("Deleted");
+			ListViewGroup lvgDeleted = new ListViewGroup(KPRes.RecycleBin);
 			ListViewGroup lvgExpired = new ListViewGroup(KPRes.ExpiredEntries);
 
 			if (!lvEntries.Groups.Contains(lvgRegular)) lvEntries.Groups.Add(lvgRegular);

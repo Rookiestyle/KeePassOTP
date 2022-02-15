@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using KeePass;
+using KeePass.Resources;
+using KeePassLib;
 using KeePassLib.Security;
 using KeePassLib.Utility;
 using PluginTools;
@@ -19,6 +21,7 @@ namespace KeePassOTP
 		public bool CanCloseWithoutDataLoss { get { return !SettingsChanged(); } }
 
 		public KPOTP OTP = null;
+		public bool NeverSyncIssuerAndLabel { get; private set; }
 		private KPOTP m_OTPInitial = null;
 		public string EntryUrl;
 
@@ -27,6 +30,8 @@ namespace KeePassOTP
 		private string m_BackupURL;
 
 		private bool m_bFormClosing = false;
+
+		private PwEntry m_peEntry = null;
 
 		public KeePassOTPSetup()
 		{
@@ -40,7 +45,7 @@ namespace KeePassOTP
 			//
 		}
 
-		public void InitEx()
+		public void InitEx(PwEntry pe)
 		{
 			Text = PluginTranslate.PluginName;
 
@@ -65,11 +70,15 @@ namespace KeePassOTP
 			pbSearchScreen.Image = Resources.qr_code_screencapture;
 			pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
 
-			label1.Text = PluginTranslate.OTP_Setup_DragDrop;
-			label2.Text = PluginTranslate.ReadScreenForQRCode;
+			lQRCodeDragDropLabel.Text = PluginTranslate.OTP_Setup_DragDrop;
+			lQRCodeScanScreenLabel.Text = PluginTranslate.ReadScreenForQRCode;
 			var c = Tools.FindToolStripMenuItem(Program.MainForm.MainMenu.Items,"m_menuHelp", false);
 			if (c != null) gQRHelp.Text = c.Text;
 			else gQRHelp.Text = "QR";
+
+			gIssuerLabel.Text = PluginTranslate.Issuer + " && " + PluginTranslate.UserName;
+			lIssuer.Text = PluginTranslate.Issuer;
+			lLabel.Text = PluginTranslate.UserName;
 
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionOff);
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionEntry);
@@ -82,11 +91,13 @@ namespace KeePassOTP
 
 			CheckAdvancedMode();
 
+			m_peEntry = pe;
+
 			m_OTPInitial = OTP;
 
 			OTP = new KPOTP();
-			OTP.Issuer = m_OTPInitial.Issuer;
-			OTP.Label = m_OTPInitial.Label;
+			tbIssuer.Text = OTP.Issuer = m_OTPInitial.Issuer;
+			tbLabel.Text = OTP.Label = m_OTPInitial.Label;
 			m_timer = new Timer();
 			m_timer.Interval = 1000;
 			m_timer.Tick += OnValueChanged;
@@ -105,6 +116,8 @@ namespace KeePassOTP
 			tbTOTPTimestep.Text = OTP.TOTPTimestep.ToString();
 			tbHOTPCounter.Text = OTP.HOTPCounter.ToString();
 			tbYandexPin.Text = OTP.YandexPin;
+			tbIssuer.Text = OTP.Issuer;
+			tbLabel.Text = OTP.Label;
 
 			SetRecoveryCodes(OTP.RecoveryCodes);
 
@@ -548,8 +561,24 @@ namespace KeePassOTP
 		{
 			pbQR.Image = Resources.qr_code;
 			((Control)pbQR).AllowDrop = true;
-			label1.Top = pbQR.Top + pbQR.Height / 2 - label1.Height / 2;
-			label2.Top = pbSearchScreen.Top + pbSearchScreen.Height / 2 - label2.Height / 2;
+			lQRCodeDragDropLabel.Top = pbQR.Top + pbQR.Height / 2 - lQRCodeDragDropLabel.Height / 2;
+			lQRCodeScanScreenLabel.Top = pbSearchScreen.Top + pbSearchScreen.Height / 2 - lQRCodeScanScreenLabel.Height / 2;
+			CheckSyncIssuerLabel();
+		}
+
+		private void CheckSyncIssuerLabel()
+		{
+			if (m_peEntry.CustomData.Exists("KeePassOTP.NoSyncIssuerAndLabel")) return;
+
+			var sIssuer = m_peEntry.Strings.ReadSafe(PwDefs.TitleField);
+			var sLabel = m_peEntry.Strings.ReadSafe(PwDefs.UserNameField);
+			if (sIssuer == OTP.Issuer && sLabel == OTP.Label) return;
+			var sQuestion = string.Format(PluginTranslate.AskForIssuerLabelSync, sIssuer, KPRes.UserName, sLabel, KPRes.Yes, KPRes.No, KPRes.Cancel);
+			var drResult = MessageBox.Show(sQuestion, PluginTranslate.PluginName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+			NeverSyncIssuerAndLabel = drResult == DialogResult.Cancel;
+			if (drResult != DialogResult.Yes) return;
+			tbIssuer.Text = sIssuer;
+			tbLabel.Text = sLabel;
 		}
 
 		private void bSearchScreen_Click(object sender, EventArgs e)
@@ -663,5 +692,12 @@ namespace KeePassOTP
 		{
 			toolTip1.Show(PluginTranslate.ReadScreenForQRCode, pbSearchScreen);
 		}
-    }
+
+		private void UpdateIssuerLabel(object sender, EventArgs e)
+		{
+			if (m_NoUpdate) return;
+			OTP.Issuer = tbIssuer.Text;
+			OTP.Label = tbLabel.Text;
+		}
+	}
 }

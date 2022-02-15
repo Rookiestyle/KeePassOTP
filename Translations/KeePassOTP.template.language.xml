@@ -360,7 +360,23 @@ This message will not be shown again.</value>
     <value>N/A</value>
   </item>
   <item>
+    <key>AskForIssuerLabelSync</key>
+    <value>The entry's title and/or user name differ from the OTP data.
+Update OTP data as follows?
+
+Issuer: {0}
+{1}: {2}
+
+{3} = Update OTP data
+{4} = Do NOT update OTP data
+{5} = Do NOT update OTP data and do not ask again</value>
+  </item>
+  <item>
     <key>DeselectAll</key>
     <value>Deselect All</value>
+  </item>
+  <item>
+    <key>UserName</key>
+    <value>User:</value>
   </item>
 </Translation>
