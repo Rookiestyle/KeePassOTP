@@ -184,7 +184,6 @@ namespace KeePassOTP
 				}
 				finally { m_NoUpdate = false; }
 			}
-
 			else OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
 
 			int iFormat; int iLength; int iHash; int iType;

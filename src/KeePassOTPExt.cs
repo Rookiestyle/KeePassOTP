@@ -225,12 +225,40 @@ namespace KeePassOTP
 			{
 				KPOTP myOTP = OTPDAO.GetOTP(m_host.MainWindow.GetSelectedEntry(true));
 				m_ContextMenu.Enabled = m_MainMenu.Enabled = true;
-				m_ContextMenuCopy.Enabled = m_ContextMenuAutotype.Enabled = m_ContextMenuQRCode.Enabled = myOTP.Valid;
-				m_MainMenuCopy.Enabled = m_MainMenuAutotype.Enabled = m_MainMenuQRCode.Enabled = myOTP.Valid;
+				var d = OTPDAO.OTPDefined(m_host.MainWindow.GetSelectedEntry(true));
+				SetFont(m_ContextMenuSetup.Font, 
+					m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
+					m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+				if (d == OTPDAO.OTPDefinition.None)
+				{
+					SetEnabled(false,
+						m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
+						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+				}
+				else
+				{
+					SetEnabled(true,
+						m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
+						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+					if (d == OTPDAO.OTPDefinition.Partial)
+						SetFont(FontUtil.CreateFont(m_ContextMenuSetup.Font, FontStyle.Italic),
+							m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
+							m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+				}
 			}
 		}
 
-		private void OnEntryContextMenuClosing(object sender, EventArgs e)
+		private void SetEnabled(bool e, params ToolStripMenuItem[] m)
+		{
+			for (int i = 0; i < m.Length; i++) m[i].Enabled = e;
+		}
+		
+		private void SetFont(Font f, params ToolStripMenuItem[] m)
+        {
+			for (int i = 0; i < m.Length; i++) m[i].Font = f;
+        }
+
+        private void OnEntryContextMenuClosing(object sender, EventArgs e)
 		{
 			UIUtil.AssignShortcut(m_ContextMenuCopy, Keys.None);
 		}
@@ -277,7 +305,9 @@ namespace KeePassOTP
 		private void OnOTPQRCode(object sender, EventArgs e)
 		{
 			if (m_host.MainWindow.GetSelectedEntriesCount() != 1) return;
-			KPOTP otp = OTPDAO.GetOTP(m_host.MainWindow.GetSelectedEntry(true));
+			var pe = m_host.MainWindow.GetSelectedEntry(true);
+			if (!OTPDAO.EnsureOTPUsagePossible(pe)) return;
+			KPOTP otp = OTPDAO.GetOTP(pe);
 			if (!otp.Valid) return;
 			string sIssuer = null;
 			if (!string.IsNullOrEmpty(otp.Issuer) && (otp.Issuer != PluginTranslate.PluginName)) sIssuer = otp.Issuer;
@@ -555,6 +585,7 @@ namespace KeePassOTP
 				tdb.Entries.Sort(SortEntries);
 				lDB_Entries.Add(tdb);
 			}
+
 			foreach (var tdb in lDB_Entries)
 			{
 				ToolStripMenuItem parent = null;
