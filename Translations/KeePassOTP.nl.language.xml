@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>2</TranslationVersion>
+  <TranslationVersion>3</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Geen items beschikbaar</value>
@@ -278,6 +278,10 @@ Gevonden aantal OTP items: {0}</value>
     <value>Kies alsjeblieft één item om te gebruiken</value>
   </item>
   <item>
+    <key>SelectEntriesForExport</key>
+    <value>Selecteer de items om te exporteren</value>
+  </item>
+  <item>
     <key>Issuer</key>
     <value>Uitgever</value>
   </item>
@@ -351,5 +355,13 @@ Dit bericht zal maar één keer getoond worden.</value>
   <item>
     <key>NotAvailable</key>
     <value>N.v.t.</value>
+  </item>
+  <item>
+    <key>DeselectAll</key>
+    <value>Alles deselecteren</value>
+  </item>
+  <item>
+    <key>UserName</key>
+    <value>Gebruiker:</value>
   </item>
 </Translation>
