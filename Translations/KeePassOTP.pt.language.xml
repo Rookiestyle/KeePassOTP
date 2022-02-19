@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>14</TranslationVersion>
+  <TranslationVersion>15</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -281,6 +281,10 @@ Quantidade encontrada de entradas OTP: {0}</value>
     <value>Verifique a única entrada a ser usada</value>
   </item>
   <item>
+    <key>SelectEntriesForExport</key>
+    <value>Por favor, selecione as entradas para exportação</value>	
+  </item>
+  <item>
     <key>Issuer</key>
     <value>Emitente</value>
   </item>
@@ -354,5 +358,13 @@ Esta mensagem não será mostrada novamente.</value>
   <item>
     <key>NotAvailable</key>
     <value>N/D</value>
+  </item>
+  <item>
+    <key>DeselectAll</key>
+    <value>Deselecionar Todos</value>
+  </item>
+  <item>
+    <key>UserName</key>
+    <value>Usuário:</value>
   </item>
 </Translation>
