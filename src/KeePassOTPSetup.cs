@@ -21,7 +21,6 @@ namespace KeePassOTP
 		public bool CanCloseWithoutDataLoss { get { return !SettingsChanged(); } }
 
 		public KPOTP OTP = null;
-		public bool NeverSyncIssuerAndLabel { get; private set; }
 		private KPOTP m_OTPInitial = null;
 		public string EntryUrl;
 
@@ -79,6 +78,8 @@ namespace KeePassOTP
 			gIssuerLabel.Text = PluginTranslate.Issuer + " && " + PluginTranslate.UserName;
 			lIssuer.Text = PluginTranslate.Issuer;
 			lLabel.Text = PluginTranslate.UserName;
+			bIssuerFromEntry.Text = "<- " + KPRes.Entry;
+			bLabelFromEntry.Text = "<- " + KPRes.Entry;
 
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionOff);
 			totpTimeCorrectionType.Items.Add(PluginTranslate.TimeCorrectionEntry);
@@ -87,11 +88,10 @@ namespace KeePassOTP
 			m_NoUpdate = true;
 			InitSettings(false);
 			m_NoUpdate = false;
+			m_peEntry = pe;
 			UpdatePreview();
 
 			CheckAdvancedMode();
-
-			m_peEntry = pe;
 
 			m_OTPInitial = OTP;
 
@@ -189,6 +189,7 @@ namespace KeePassOTP
 			int iFormat; int iLength; int iHash; int iType;
 			string sTimestep;
 			GetOTPSettingsInt(out iFormat, out iLength, out sTimestep, out iHash, out iType);
+			CheckSyncIssuerLabel();
 
 			if (iFormat == 0) OTP.Encoding = KPOTPEncoding.BASE32;
 			if (iFormat == 1) OTP.Encoding = KPOTPEncoding.BASE64;
@@ -562,22 +563,33 @@ namespace KeePassOTP
 			((Control)pbQR).AllowDrop = true;
 			lQRCodeDragDropLabel.Top = pbQR.Top + pbQR.Height / 2 - lQRCodeDragDropLabel.Height / 2;
 			lQRCodeScanScreenLabel.Top = pbSearchScreen.Top + pbSearchScreen.Height / 2 - lQRCodeScanScreenLabel.Height / 2;
-			CheckSyncIssuerLabel();
 		}
 
 		private void CheckSyncIssuerLabel()
 		{
-			if (m_peEntry.CustomData.Exists("KeePassOTP.NoSyncIssuerAndLabel")) return;
+			if (m_NoUpdate) return;
+			bIssuerFromEntry.Enabled = m_peEntry.Strings.ReadSafe(PwDefs.TitleField) != OTP.Issuer;
+			bLabelFromEntry.Enabled = m_peEntry.Strings.ReadSafe(PwDefs.UserNameField) != OTP.Label;
+		}
 
-			var sIssuer = m_peEntry.Strings.ReadSafe(PwDefs.TitleField);
-			var sLabel = m_peEntry.Strings.ReadSafe(PwDefs.UserNameField);
-			if (sIssuer == OTP.Issuer && sLabel == OTP.Label) return;
-			var sQuestion = string.Format(PluginTranslate.AskForIssuerLabelSync, sIssuer, KPRes.UserName, sLabel, KPRes.Yes, KPRes.No, KPRes.Cancel);
-			var drResult = MessageBox.Show(sQuestion, PluginTranslate.PluginName, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-			NeverSyncIssuerAndLabel = drResult == DialogResult.Cancel;
-			if (drResult != DialogResult.Yes) return;
-			tbIssuer.Text = sIssuer;
-			tbLabel.Text = sLabel;
+		private void UpdateIssuerLabel(object sender, EventArgs e)
+		{
+			if (m_NoUpdate) return;
+			if (sender == tbIssuer) OTP.Issuer = tbIssuer.Text;
+			else if (sender == tbLabel) OTP.Label = tbLabel.Text;
+			CheckSyncIssuerLabel();
+		}
+
+		private void bIssuerFromEntry_Click(object sender, EventArgs e)
+		{
+			tbIssuer.Text = m_peEntry.Strings.ReadSafe(PwDefs.TitleField);
+			bIssuerFromEntry.Enabled = false;
+		}
+
+		private void bLabelFromEntry_Click(object sender, EventArgs e)
+		{
+			tbLabel.Text = m_peEntry.Strings.ReadSafe(PwDefs.UserNameField);
+			bLabelFromEntry.Enabled = false;
 		}
 
 		private void bSearchScreen_Click(object sender, EventArgs e)
@@ -690,13 +702,6 @@ namespace KeePassOTP
 		private void bSearchScreen_MouseHover(object sender, EventArgs e)
 		{
 			toolTip1.Show(PluginTranslate.ReadScreenForQRCode, pbSearchScreen);
-		}
-
-		private void UpdateIssuerLabel(object sender, EventArgs e)
-		{
-			if (m_NoUpdate) return;
-			OTP.Issuer = tbIssuer.Text;
-			OTP.Label = tbLabel.Text;
 		}
 	}
 }

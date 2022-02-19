@@ -430,26 +430,6 @@ This message will not be shown again.";
 		/// </summary>
 		public static readonly string NotAvailable = @"N/A";
 		/// <summary>
-		/// The entry's title and/or user name differ from the OTP data.
-		/// Update OTP data as follows?
-		/// 
-		/// Issuer: {0}
-		/// {1}: {2}
-		/// 
-		/// {3} = Update OTP data
-		/// {4} = Do NOT update OTP data
-		/// {5} = Do NOT update OTP data and do not ask again
-		/// </summary>
-		public static readonly string AskForIssuerLabelSync = @"The entry's title and/or user name differ from the OTP data.
-Update OTP data as follows?
-
-Issuer: {0}
-{1}: {2}
-
-{3} = Update OTP data
-{4} = Do NOT update OTP data
-{5} = Do NOT update OTP data and do not ask again";
-		/// <summary>
 		/// Deselect All
 		/// </summary>
 		public static readonly string DeselectAll = @"Deselect All";

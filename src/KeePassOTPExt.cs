@@ -280,7 +280,6 @@ namespace KeePassOTP
 
 			if (otpSetup.ShowDialog(m_host.MainWindow) == DialogResult.OK)
 			{
-				if (otpSetup.NeverSyncIssuerAndLabel) pe.CustomData.Set("KeePassOTP.NoSyncIssuerAndLabel", "true");
 				OTPDAO.SaveOTP(otpSetup.OTP, pe);
 			}
 			otpSetup.Dispose();

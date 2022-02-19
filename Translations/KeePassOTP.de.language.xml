@@ -363,18 +363,6 @@ Dieses Hinweis wird nicht erneut angezeigt.</value>
     <value>N/V</value>
   </item>
   <item>
-    <key>AskForIssuerLabelSync</key>
-    <value>Title und/oder Benutzername des Eintrags weichen von den OTP-Daten ab.
-OTP-Daten mit denen des Eintrags abgleichen?
-
-Aussteller: {0}
-{1}: {2}
-
-{3} = Ja
-{4} = Nein
-{5} = Nein und für diesen Eintrag nicht mehr fragen</value>
-  </item>
-  <item>
     <key>DeselectAll</key>
     <value>Alles abwählen</value>
   </item>
