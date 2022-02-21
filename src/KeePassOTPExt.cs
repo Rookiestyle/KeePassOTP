@@ -966,6 +966,7 @@ namespace KeePassOTP
 				m_host.Database.RootGroup.TraverseTree(TraversalMethod.PreOrder, null, eh);
 
 				lMsg.Add("Exportable entries: " + dEntries.Where(x => x.Value != null).Count().ToString());
+				if (dEntries.Count == 0) return;
 
 				using (var selForm = new GoogleAuthenticatorExportSelection())
 				{

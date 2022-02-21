@@ -68,13 +68,14 @@
             this.lvEntries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chGroup,
             this.chEntry});
+            this.lvEntries.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvEntries.FullRowSelect = true;
             this.lvEntries.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvEntries.HideSelection = false;
             this.lvEntries.Location = new System.Drawing.Point(0, 65);
             this.lvEntries.Margin = new System.Windows.Forms.Padding(5);
             this.lvEntries.Name = "lvEntries";
-            this.lvEntries.Size = new System.Drawing.Size(1422, 257);
+            this.lvEntries.Size = new System.Drawing.Size(1422, 698);
             this.lvEntries.TabIndex = 10;
             this.lvEntries.UseCompatibleStateImageBehavior = false;
             this.lvEntries.View = System.Windows.Forms.View.Details;
@@ -119,6 +120,7 @@
             // 
             // bOK
             // 
+            this.bOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.bOK.Location = new System.Drawing.Point(997, 88);
             this.bOK.Margin = new System.Windows.Forms.Padding(5);
@@ -130,6 +132,7 @@
             // 
             // bCancel
             // 
+            this.bCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.bCancel.Location = new System.Drawing.Point(1185, 88);
             this.bCancel.Margin = new System.Windows.Forms.Padding(5);

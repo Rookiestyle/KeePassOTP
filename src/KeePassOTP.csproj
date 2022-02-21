@@ -66,17 +66,17 @@
     <Compile Include="DAO\OTPDAO_DB.cs" />
     <Compile Include="DAO\OTPDAO_Entry.cs" />
     <Compile Include="DAO\OTPDAO.cs" />
-    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorImport.cs" />
-    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorExportSelection.cs">
+    <Compile Include="GoogleAuthenticator\GoogleAuthenticatorImport.cs" />
+    <Compile Include="GoogleAuthenticator\GoogleAuthenticatorExportSelection.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorExportSelection.Designer.cs">
+    <Compile Include="GoogleAuthenticator\GoogleAuthenticatorExportSelection.Designer.cs">
       <DependentUpon>GoogleAuthenticatorExportSelection.cs</DependentUpon>
     </Compile>
-    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorImportSelection.cs">
+    <Compile Include="GoogleAuthenticator\GoogleAuthenticatorImportSelection.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GoogleAuthenticatorImport\GoogleAuthenticatorImportSelection.Designer.cs">
+    <Compile Include="GoogleAuthenticator\GoogleAuthenticatorImportSelection.Designer.cs">
       <DependentUpon>GoogleAuthenticatorImportSelection.cs</DependentUpon>
     </Compile>
     <Compile Include="HotkeyManager.cs" />

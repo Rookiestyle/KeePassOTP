@@ -114,9 +114,7 @@ namespace KeePassOTP
 
 		private void GoogleAuthenticatorImportSelection_Shown(object sender, EventArgs e)
 		{
-			chGroup.Width = chEntry.Width = lvEntries.ClientSize.Width / 2;
-			lvEntries.Height = ClientSize.Height - pDesc.Height - pButtons.Height - Padding.Top - Padding.Bottom;
-			lvEntries.Width = ClientSize.Width - Padding.Left - Padding.Right;
+			lvEntries.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 
 			if (bSelectAll.Width > bDeselectAll.Width) bDeselectAll.Width = bSelectAll.Width;
 			if (bDeselectAll.Width > bSelectAll.Width) bSelectAll.Width = bDeselectAll.Width;
