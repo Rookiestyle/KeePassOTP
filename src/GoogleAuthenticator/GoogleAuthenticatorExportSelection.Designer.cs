@@ -32,12 +32,13 @@
             this.lDesc = new System.Windows.Forms.Label();
             this.lvEntries = new System.Windows.Forms.ListView();
             this.chGroup = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chEntry = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chEntryTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pButtons = new System.Windows.Forms.Panel();
             this.bDeselectAll = new System.Windows.Forms.Button();
             this.bSelectAll = new System.Windows.Forms.Button();
             this.bOK = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
+            this.chEntryUsername = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pDesc.SuspendLayout();
             this.pButtons.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +68,8 @@
             this.lvEntries.CheckBoxes = true;
             this.lvEntries.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chGroup,
-            this.chEntry});
+            this.chEntryTitle,
+            this.chEntryUsername});
             this.lvEntries.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvEntries.FullRowSelect = true;
             this.lvEntries.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -174,11 +176,12 @@
 		private System.Windows.Forms.Label lDesc;
 		private System.Windows.Forms.ListView lvEntries;
 		private System.Windows.Forms.ColumnHeader chGroup;
-		private System.Windows.Forms.ColumnHeader chEntry;
+		private System.Windows.Forms.ColumnHeader chEntryTitle;
 		private System.Windows.Forms.Panel pButtons;
 		private System.Windows.Forms.Button bOK;
 		private System.Windows.Forms.Button bCancel;
         private System.Windows.Forms.Button bDeselectAll;
         private System.Windows.Forms.Button bSelectAll;
+        private System.Windows.Forms.ColumnHeader chEntryUsername;
     }
 }

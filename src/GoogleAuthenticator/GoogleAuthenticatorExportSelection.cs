@@ -40,7 +40,8 @@ namespace KeePassOTP
 			bCancel.Text = KPRes.Cancel;
 			lDesc.Text = PluginTranslate.SelectEntriesForExport;
 			chGroup.Text = KPRes.Group;
-			chEntry.Text = KPRes.Entry;
+			chEntryTitle.Text = KPRes.Entry;
+			chEntryUsername.Text = KPRes.UserName;
 			bSelectAll.Text = KPRes.SelectAll;
 			bDeselectAll.Text = PluginTranslate.DeselectAll;
 		}
@@ -73,6 +74,7 @@ namespace KeePassOTP
 				lvi.Tag = otp;
 				lvi.Text = otp.Key.ParentGroup.Name;
 				lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, otp.Key.Strings.ReadSafe(PwDefs.TitleField)));
+				lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, otp.Key.Strings.ReadSafe(PwDefs.UserNameField))); 
 				if (otp.Key.IsContainedIn(pgRecycleBin))
 				{
 					bDeleted = true;
