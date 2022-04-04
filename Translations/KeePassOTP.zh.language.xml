@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>4</TranslationVersion>
+  <TranslationVersion>5</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的条目</value>
@@ -15,7 +15,7 @@
   </item>
   <item>
     <key>Empty</key>
-    <value>N/A Uuid: {0}</value>
+    <value>N/A UUID: {0}</value>
   </item>
   <item>
     <key>Group</key>
@@ -23,11 +23,11 @@
   </item>
   <item>
     <key>OTPSetup</key>
-    <value>OTP 设置...</value>
+    <value>一次性密码设置...</value>
   </item>
   <item>
     <key>OTPCopy</key>
-    <value>复制 OTP</value>
+    <value>复制一次性密码</value>
   </item>
   <item>
     <key>Error</key>
@@ -39,19 +39,19 @@
   </item>
   <item>
     <key>User</key>
-    <value>User: {0}</value>
+    <value>用户：{0}</value>
   </item>
   <item>
     <key>SeedSettings</key>
-    <value>Seed settings</value>
+    <value>密钥设置</value>
   </item>
   <item>
     <key>Seed</key>
-    <value>Seed: </value>
+    <value>密钥: </value>
   </item>
   <item>
     <key>AdvancedOptions</key>
-    <value>使用高级选项</value>
+    <value>高级选项</value>
   </item>
   <item>
     <key>Format</key>
@@ -59,7 +59,7 @@
   </item>
   <item>
     <key>OTPSettings</key>
-    <value>OTP 设置</value>
+    <value>一次性密码设置</value>
   </item>
   <item>
     <key>OTPType</key>
@@ -91,7 +91,7 @@
   </item>
   <item>
     <key>TimeDiff</key>
-    <value>Diff: </value>
+    <value>时差: </value>
   </item>
   <item>
     <key>TimeCorrectionOff</key>
@@ -107,37 +107,41 @@
   </item>
   <item>
     <key>SetupTFA</key>
-    <value>设置 2FA</value>
+    <value>设置二次验证</value>
   </item>
   <item>
 	<key>TFADefined</key>
-	<value>2FA 已设置</value>
+	<value>二次验证已设置</value>
   </item>
   <item>
     <key>OTP_OpenDB</key>
-    <value>打开 OTP 数据库 - {0}</value>
+    <value>打开一次性密码数据库 - {0}</value>
   </item>
   <item>
     <key>OTP_CreateDB_PWHint</key>
-    <value>所有OTP 密钥将存储在一个单独的数据库中，该数据库将包含在主数据库中。
+    <value>所有一次性密码密钥将存储在一个单独的数据库中，该数据库将包含在主数据库中。
 
 请在下一个窗口中填写您的主数据库密码。</value>
   </item>
   <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>点击 '{0}' 以继续，或者点击 '{1}' 将一次性密码密钥储存于对应的条目中。</value>
+  </item>
+  <item>
     <key>Options_CheckTFA</key>
-    <value>表明是否使用 2FA</value>
+    <value>表明是否使用二次验证</value>
   </item>
   <item>
     <key>Options_OTPSettings</key>
-    <value>OTP 设置（关于数据库）</value>
+    <value>一次性密码设置（关于数据库）</value>
   </item>
   <item>
     <key>Options_UseOTPDB</key>
-    <value>保存 OTP 密钥到一个单独的数据库</value>
+    <value>保存一次性密码密钥到一个单独的数据库</value>
   </item>
   <item>
     <key>Options_PreloadOTPDB</key>
-    <value>打开主数据库时自动打开 OTP 数据库</value>
+    <value>打开主数据库时自动打开一次性密码数据库</value>
   </item>
   <item>
     <key>Options_Migrate2DB</key>
@@ -145,7 +149,7 @@
   </item>
   <item>
     <key>Options_Migrate2DBHint</key>
-    <value>将 OTP 密钥移动到单独的数据库</value>
+    <value>将一次性密码密钥移动到单独的数据库</value>
   </item>
   <item>
     <key>Options_Migrate2Entries</key>
@@ -153,39 +157,39 @@
   </item>
   <item>
     <key>Options_Migrate2EntriesHint</key>
-    <value>将 OTP 密钥移至各个条目</value>
+    <value>将一次性密码密钥移至各个条目</value>
   </item>
   <item>
     <key>MoveError</key>
-    <value>尝试移动 OTP 密钥时出错。 OTP 密钥数据库是否打开？</value>
+    <value>尝试移动一次性密码密钥时出错。一次性密码密钥数据库是否打开？</value>
   </item>
   <item>
     <key>EntriesMoved</key>
-    <value>{0} OTP 密钥成功移动</value>
+    <value>{0}一次性密码密钥成功移动</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
     <value>KeePassOTP 将从{0}下载支持两因素身份验证的站点列表。
 然后将此列表与数据库中定义的所有URL进行比较，您的URL不会被发送。
 
-OTP列将显示是否支持 2FA，但尚未配置。
-双击该提示将打开 2FA 设置页面。</value>
+一次性密码列将显示是否支持二次验证，但尚未配置。
+双击该提示将打开二次验证设置页面。</value>
   </item>
   <item>
     <key>Options_Help</key>
     <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
-将新的 OTP 密钥存储在单独的数据库中，该数据库可以使用其他主密钥进行加密。
+将新的一次性密码密钥存储在单独的数据库中，该数据库可以使用其他主密钥进行加密。
 该数据库将存储在包含此类条目的主数据库中。
-尽管通过为您的 OTP 密钥添加第二个主密钥来提高安全性，但它可能会阻止其他端口（例如 KeePass2Android）直接显示 OTP。
+尽管通过为您的一次性密码密钥添加第二个主密钥来提高安全性，但它可能会阻止其他端口（例如 KeePass2Android）直接显示一次性密码。
 
 &gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
-打开主数据库时，请打开 OTP 数据库。
-停用此选项以仅按需打开 OTP 数据库 =&gt; 实际要求 OTP 时
-每次同步主数据库时都会打开OTP数据库 - 否则 OTP 数据库的更改将不会同步，并且本地更改将丢失。
+打开主数据库时，请打开一次性密码数据库。
+停用此选项以仅按需打开一次性密码数据库 =&gt; 实际要求一次性密码时
+每次同步主数据库时都会打开一次性密码数据库 - 否则一次性密码数据库的更改将不会同步，并且本地更改将丢失。
 
-&gt;&gt; OTP 迁移 &lt;&lt;
-根据以上选项，OTP 密钥将存储在相应的条目中或单独的数据库中。
-'{Options_Migrate2DB}' 和 '{Options_Migrate2Entries}' 可用于在这两个位置之间移动 OTP 密钥。</value>
+&gt;&gt;一次性密码迁移 &lt;&lt;
+根据以上选项，一次性密码密钥将存储在相应的条目中或单独的数据库中。
+'{Options_Migrate2DB}' 和 '{Options_Migrate2Entries}' 可用于在这两个位置之间移动一次性密码密钥。</value>
   </item>
   <item>
     <key>MigrateOtherPlugins</key>
@@ -206,21 +210,21 @@ OTP列将显示是否支持 2FA，但尚未配置。
   <item>
     <key>HintSyncRequiresUnlock</key>
     <value>数据库已同步。
-请解锁 OTP 数据库，以确保 OTP 数据正确同步。
+请解锁一次性密码数据库，以确保一次性密码数据正确同步。
 
-如果未解锁 OTP 数据库，则 OTP 数据将无法同步，并可能导致数据丢失。</value>
+如果未解锁一次性密码数据库，则一次性密码数据将无法同步，并可能导致数据丢失。</value>
   </item>
   <item>
     <key>OTPDB_Opening</key>
-    <value>正在打开 OTP 数据库...</value>
+    <value>正在打开一次性密码数据库...</value>
   </item>
   <item>
     <key>OTPDB_Sync</key>
-    <value>正在同步 OTP 数据库...</value>
+    <value>正在同步一次性密码数据库...</value>
   </item>
   <item>
     <key>OTPDB_Save</key>
-    <value>正在保存 OTP 数据库...</value>
+    <value>正在保存一次性密码数据库...</value>
   </item>
   <item>
     <key>OTPQRCode</key>
@@ -233,20 +237,20 @@ OTP列将显示是否支持 2FA，但尚未配置。
 旧值：{0}
 新值：{1}
 
-所有出现的{0}必须用{1}替换，自动类型才能起作用。
+所有出现的 {0} 必须用 {1} 替换，自动类型才能起作用。
 立即替换当前已加载的数据库中的数据？</value>
   </item>
   <item>
     <key>ConfirmOTPDBDelete</key>
-    <value>这将停用KeePassOTP数据库。
-不会删除KeePassOTP数据库。
+    <value>这将停用 KeePassOTP 数据库。
+不会删除 KeePassOTP 数据库。
 
-单击 '{0}' 以停用并删除KeePassOTP数据库。
-单击 '{1}' 以停用但不删除KeePassOTP数据库。</value>
+单击 '{0}' 以停用并删除 KeePassOTP 数据库。
+单击 '{1}' 以停用但不删除 KeePassOTP 数据库。</value>
   </item>
   <item>
     <key>OTPBackupDone</key>
-    <value>解锁现有OTP数据库失败，并且其内容已被覆盖。
+    <value>解锁现有一次性密码数据库失败，并且其内容已被覆盖。
 在以下条目中，备份已另存为附件：
 {0}
 
@@ -269,15 +273,98 @@ OTP列将显示是否支持 2FA，但尚未配置。
     <key>ErrorGoogleAuthImportCount</key>
     <value>解析数据时出错
 
-预期的OTP条目数：1
-找到的OTP条目数量：{0}</value>
+预期的一次性密码条目数：1
+找到的一次性密码条目数量：{0}</value>
   </item>
   <item>
     <key>SelectSingleEntry</key>
     <value>请检查单个条目以使用</value>
   </item>
   <item>
+    <key>SelectEntriesForExport</key>
+    <value>请选择要导出的条目</value>
+  </item>
+  <item>
     <key>Issuer</key>
-    <value>Issuer</value>
+    <value>签发者</value>
+    </item>
+  <item>
+    <key>CheckingTFA</key>
+    <value>检查二次验证</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCode</key>
+    <value>从屏幕读取一次性密码二维码</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCodeExplain</key>
+    <value>KeePassOTP 会尝试从屏幕上查找并读取一次性密码二维码。
+KeePass 将会最小化至后台（不超过 {0} 秒），以方便读取一次性密码二维码。
+
+该消息将不会再次显示。</value>
+  </item>
+  <item>
+    <key>OTP_Setup_DragDrop</key>
+    <value>将有效的一次性密码二维码拖放至此</value>
+  </item>
+  <item>
+    <key>OTPRenewal</key>
+    <value>更新已复制的一次性密码 </value>
+  </item>
+  <item>
+    <key>OTPRenewal_Inactive</key>
+    <value>从不</value>
+  </item>
+  <item>
+    <key>OTPRenewal_RespectClipboardTimeout</key>
+    <value>当剪贴板清空时更新</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>当一次性密码将要过期时更新</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>一次性密码显示模式：</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>备用验证码</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>设置二次验证的URL</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>恢复二次验证的URL</value>
+  </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>仅本地热键</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>热键将仅在 KeePass 中有效，并且按下热键仅将一次性密码复制到剪贴板，而非自动输入至文本框。</value>
+  </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>一次性密码：</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>下个一次性密码：</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>不可用</value>
+  </item>
+  <item>
+    <key>DeselectAll</key>
+    <value>取消全选</value>
+  </item>
+  <item>
+    <key>UserName</key>
+    <value>用户：</value>
   </item>
 </Translation>
