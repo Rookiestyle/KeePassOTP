@@ -2,7 +2,6 @@
 using KeePass.Resources;
 using KeePassLib.Serialization;
 using KeePassLib.Utility;
-using Newtonsoft.Json.Linq;
 using PluginTools;
 using PluginTranslation;
 using System;
@@ -176,21 +175,31 @@ namespace KeePassOTP
 			m_RetryReadOTPSites.Enabled = false;
 		}
 
-		private static string GetJSonString(JToken t, string sName)
+		private static string GetJSonString(string sSearch, string v)
 		{
-			string sResult = t.Value<string>(sName);
-			return string.IsNullOrEmpty(sResult) ? string.Empty : sResult;
+			//Case 1: Simple string
+			Regex r = new Regex(@"""" + v + @""":""(.*?)""");
+			var aMatches = r.Matches(sSearch);
+			if (aMatches != null && aMatches.Count > 0)
+			{
+				return aMatches[0].Groups[1].Value;
+			}
+
+			//Case 2: Multiple values
+			r = new Regex(@""""+ v + @""":\[(.*?)\]");
+			aMatches = r.Matches(sSearch);
+			if (aMatches == null) return string.Empty;
+			if (aMatches.Count < 1) return string.Empty;
+			return aMatches[0].Groups[1].Value;
 		}
 
-		private static List<string> GetJSonList(JToken jt, string sName)
+		private static List<string> GetJSonList(string sSearch, string v)
 		{
-			List<string> lResult = new List<string>();
-			var jArrayName = jt.Value<JArray>(sName);
-			if (jArrayName == null) return lResult;
-			foreach (var at in jArrayName.Children().ToList()) lResult.Add(at.ToString());
-			return lResult;
-		}
+			string s = GetJSonString(sSearch, v);
+			if (string.IsNullOrEmpty(s)) return new List<string>();
 
+			return s.Split(new string[] { "\",\"", "\"" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+		}
 		private static void ReadOTPSites(object s)
 		{
 			lock (m_TFAReadLock)
@@ -201,7 +210,7 @@ namespace KeePassOTP
 				m_LoadState = TFALoadProcess.Loading;
 			}
 			m_dTFA.Clear();
-			JArray ja = null;
+			List<string> lTFAEntries = new List<string>();
 			bool bException = false;
 			IOConnectionInfo ioc = IOConnectionInfo.FromPath(TFA_JSON_FILE);
 			bool bExists = false;
@@ -214,8 +223,7 @@ namespace KeePassOTP
 				if (b != null)
 				{
 					string content = StrUtil.Utf8.GetString(b);
-					ja = Newtonsoft.Json.JsonConvert.DeserializeObject(content) as JArray;
-
+					lTFAEntries = ParseJSON(content);
 				}
 			}
 			catch (System.Net.WebException exWeb)
@@ -231,7 +239,7 @@ namespace KeePassOTP
 				PluginDebug.AddError("Error reading OTP sites", 0, "Error: " + ex.Message);
 				bException = true;
 			}
-			if (ja == null)
+			if (lTFAEntries == null || lTFAEntries.Count < 1)
 			{
 				if (!bExists || bNoInternet)
 				{
@@ -243,30 +251,27 @@ namespace KeePassOTP
 				return;
 			}
 			DateTime dtStart = DateTime.Now;
-
-			foreach (JToken jtEntryContainer in ja)
-            {
-				var lEntry = jtEntryContainer.Children().ToList();
-				if (lEntry.Count != 2) continue;
-				JToken jtEntry = lEntry[1];
+			Dictionary<string, TFAData> dTFAEntries = new Dictionary<string, TFAData>();
+			foreach (string tfaentry in lTFAEntries)
+			{
 				TFAData tfa = new TFAData();
-				tfa.domain = GetJSonString(jtEntry, "domain");
+				tfa.domain = GetJSonString(tfaentry, "domain");
 				string sDomain = tfa.domain.ToLowerInvariant();
 				if (!sDomain.StartsWith("http://") && !sDomain.StartsWith("https://")) tfa.domain = "https://" + tfa.domain;
 
-				tfa.img = GetJSonString(jtEntry, "img");
-				tfa.url = GetJSonString(jtEntry, "url");
+				tfa.img = GetJSonString(tfaentry, "img");
+				tfa.url = GetJSonString(tfaentry, "url");
 				if (string.IsNullOrEmpty(tfa.url)) tfa.url = tfa.domain;
-				tfa.tfa = GetJSonList(jtEntry, "tfa");
-				tfa.documentation = GetJSonString(jtEntry, "documentation");
-				tfa.recovery = GetJSonString(jtEntry, "recovery");
-				tfa.notes = GetJSonString(jtEntry, "notes");
-				tfa.contact = GetJSonString(jtEntry, "contact");
-				tfa.regions = GetJSonList(jtEntry, "regions");
-				tfa.additional_domains = GetJSonList(jtEntry, "additional_domains");
-				tfa.custom_software = GetJSonList(jtEntry, "custom_software");
-				tfa.custom_hardware = GetJSonList(jtEntry, "custom_hardware");
-				tfa.keywords = GetJSonList(jtEntry, "keywords");
+				tfa.tfa = GetJSonList(tfaentry, "tfa");
+				tfa.documentation = GetJSonString(tfaentry, "documentation");
+				tfa.recovery = GetJSonString(tfaentry, "recovery");
+				tfa.notes = GetJSonString(tfaentry, "notes");
+				tfa.contact = GetJSonString(tfaentry, "contact");
+				tfa.regions = GetJSonList(tfaentry, "regions");
+				tfa.additional_domains = GetJSonList(tfaentry, "additional_domains");
+				tfa.custom_software = GetJSonList(tfaentry, "custom_software");
+				tfa.custom_hardware = GetJSonList(tfaentry, "custom_hardware");
+				tfa.keywords = GetJSonList(tfaentry, "keywords");
 				string sRegexPattern = CreatePattern(tfa.domain);
 				tfa.RegexUrl = new Regex(sRegexPattern);
 				m_dTFA[sRegexPattern] = tfa;
@@ -277,6 +282,25 @@ namespace KeePassOTP
 				m_LoadState = TFALoadProcess.Loaded;
 				PluginDebug.AddInfo("OTP sites read", 0, "Required time: " + (dtEnd - dtStart).ToString(), "Number of sites: " + m_dTFA.Count.ToString());
 			}
+		}
+
+		private static List<string> ParseJSON(string content)
+		{
+			bool bRepeat = true;
+			MatchCollection aMatches = null;
+			while (bRepeat)
+		{
+				try
+				{
+					Regex r = new Regex(@"\[(.*?)\](?=(,\[|\]))", RegexOptions.Singleline);
+					aMatches = r.Matches(content);
+					bRepeat = false;
+				}
+				catch (Exception ex) { }
+			}
+			List<string> lResult = new List<string>();
+			foreach (Match m in aMatches) lResult.Add(m.Value);
+			return lResult;
 		}
 
 		private static string CreatePattern(string url)
