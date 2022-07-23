@@ -62,7 +62,7 @@ namespace KeePassOTP
 				if (!SettingsChanged(pe, prev, myOTP, out OnlyCounterChanged)) return;
 
 				PluginDebug.AddInfo("Update OTP data",
-					"Entry uuid: " + pe.Uuid.ToString(), 
+					"Entry uuid: " + pe.Uuid.ToHexString(), 
 					"Only change of HOTP counter: " + OnlyCounterChanged.ToString());
 				if (!OnlyCounterChanged)
 				{
@@ -114,7 +114,7 @@ namespace KeePassOTP
 				}
 				UpdateOTPBuffer(pe, otp);
 				PluginDebug.AddInfo("Fill OTP buffer", 0,
-					"Entry uuid: " + pe.Uuid.ToString(),
+					"Entry uuid: " + pe.Uuid.ToHexString(),
 					"OTP defined: " + otp.OTPDefined.ToString(),
 					"OTP setup valid: " + otp.kpotp.Valid.ToString());
 				return otp;

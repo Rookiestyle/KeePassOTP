@@ -609,7 +609,7 @@ namespace KeePassOTP
 						entry.Text = StrUtil.EncodeMenuText(text[0]);
 					else
 						entry.Text = StrUtil.EncodeMenuText(text[0] + " (" + text[1] + ")");
-					entry.Name = "KPOTP_" + pe.Uuid.ToString();
+					entry.Name = "KPOTP_" + pe.Uuid.ToHexString();
 					entry.Click += OnOTPTray;
 					entry.Tag = pe;
 					if (PwUuid.Zero != pe.CustomIconUuid)
@@ -734,7 +734,7 @@ namespace KeePassOTP
 				return false;
 			}
 			CopyToClipboardAndStartClipboardCountdown(pe, myOTP);
-			PluginDebug.AddInfo("Copy OTP success", 0, "Uuid: " + pe.Uuid.ToString());
+			PluginDebug.AddInfo("Copy OTP success", 0, "Uuid: " + pe.Uuid.ToHexString());
 			if (myOTP.Type == KPOTPType.HOTP)
 			{
 				myOTP.HOTPCounter++;
