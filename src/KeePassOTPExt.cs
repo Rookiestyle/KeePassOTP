@@ -216,15 +216,45 @@ namespace KeePassOTP
 		{
 			m_ContextMenuCopy.ShowShortcutKeys = true;
 			m_ContextMenuCopy.ShortcutKeyDisplayString = UIUtil.GetKeysName(m_MainMenuCopy.ShortcutKeys);
+			var iSelectedEntries = m_host.MainWindow.GetSelectedEntriesCount();
 			if (m_host.MainWindow.GetSelectedEntriesCount() != 1)
 			{
-				m_ContextMenu.Enabled = m_ContextMenuAutotype.Enabled = false;
-				m_MainMenu.Enabled = m_MainMenuAutotype.Enabled = false;
+				SetEnabled(false, m_ContextMenuAutotype, m_MainMenuAutotype, m_ContextMenuCopy, m_ContextMenuSetup, m_MainMenuCopy, m_MainMenuSetup);
+				bool bEnableQR = false;
+				bool bDoItalic = false;
+				foreach (var pe in m_host.MainWindow.GetSelectedEntries())
+                {
+					var d = OTPDAO.OTPDefined(pe);
+					if (d == OTPDAO.OTPDefinition.Complete)
+					{
+						bDoItalic = false;
+						bEnableQR = true;
+						break;
+					}
+					else if (d == OTPDAO.OTPDefinition.Partial)
+					{
+						bDoItalic = true;
+						bEnableQR = true;
+					}
+				}
+				SetEnabled(bEnableQR, m_ContextMenu, m_MainMenu, m_ContextMenuQRCode, m_MainMenuQRCode);
+
+				SetFont(m_ContextMenuSetup.Font,
+					m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
+					m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode); 
+				if (bDoItalic) 
+					SetFont(FontUtil.CreateFont(m_ContextMenuSetup.Font, FontStyle.Italic),
+						m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
+						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+
+				m_ContextMenuAutotype.Enabled = false;
+				m_MainMenuAutotype.Enabled = false;
+				m_ContextMenu.Enabled = m_MainMenu.Enabled = iSelectedEntries > 1;
 			}
 			else
 			{
 				KPOTP myOTP = OTPDAO.GetOTP(m_host.MainWindow.GetSelectedEntry(true));
-				m_ContextMenu.Enabled = m_MainMenu.Enabled = true;
+				SetEnabled(true, m_ContextMenu, m_MainMenu, m_ContextMenuSetup, m_MainMenuSetup);
 				var d = OTPDAO.OTPDefined(m_host.MainWindow.GetSelectedEntry(true));
 				SetFont(m_ContextMenuSetup.Font, 
 					m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
@@ -301,8 +331,28 @@ namespace KeePassOTP
 			}
 		}
 
+		private void ShowQRCode(List<KPOTP_QRCodeData> lQR)
+		{
+			if (lQR == null || lQR.Count == 0) return;
+			using (var fQR = new QRForm())
+			{
+				fQR.InitEx(lQR.Count == 1, lQR);
+				fQR.ShowDialog(GlobalWindowManager.TopWindow == null ? m_host.MainWindow : GlobalWindowManager.TopWindow);
+			}
+		}
+
 		private void OnOTPQRCode(object sender, EventArgs e)
 		{
+			var lEntries = new List<KPOTP_QRCodeData>();
+			foreach (var pe in m_host.MainWindow.GetSelectedEntries())
+			{
+				if (!OTPDAO.EnsureOTPUsagePossible(pe)) return;
+				KPOTP otp = OTPDAO.GetOTP(pe);
+				if (!otp.Valid) continue;
+				lEntries.Add(new KPOTP_QRCodeData() { Issuer = otp.Issuer, Label = otp.Label, Authstring = otp.OTPAuthString } );
+			}
+			ShowQRCode(lEntries);
+			/*
 			if (m_host.MainWindow.GetSelectedEntriesCount() != 1) return;
 			var pe = m_host.MainWindow.GetSelectedEntry(true);
 			if (!OTPDAO.EnsureOTPUsagePossible(pe)) return;
@@ -312,6 +362,7 @@ namespace KeePassOTP
 			if (!string.IsNullOrEmpty(otp.Issuer) && (otp.Issuer != PluginTranslate.PluginName)) sIssuer = otp.Issuer;
 			string sLabel = string.IsNullOrEmpty(otp.Label) ? null : otp.Label;
 			ShowQRCode(sIssuer, sLabel, otp.OTPAuthString);
+			*/
 		}
 
 		private void OnOTPAutotype(object sender, EventArgs e)

@@ -35,6 +35,9 @@ namespace KeePassOTP
             this.bNext = new System.Windows.Forms.Button();
             this.bBack = new System.Windows.Forms.Button();
             this.pIssuerLabel = new System.Windows.Forms.Panel();
+            this.cbToggleAuthstring = new System.Windows.Forms.CheckBox();
+            this.tbAuthstring = new KeePass.UI.SecureTextBoxEx();
+            this.lAuthstring = new System.Windows.Forms.Label();
             this.lLabel = new System.Windows.Forms.Label();
             this.lIssuer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbQR)).BeginInit();
@@ -56,7 +59,7 @@ namespace KeePassOTP
             this.pButtons.Controls.Add(this.bNext);
             this.pButtons.Controls.Add(this.bBack);
             this.pButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtons.Location = new System.Drawing.Point(0, 645);
+            this.pButtons.Location = new System.Drawing.Point(0, 715);
             this.pButtons.Name = "pButtons";
             this.pButtons.Size = new System.Drawing.Size(818, 124);
             this.pButtons.TabIndex = 1;
@@ -93,13 +96,46 @@ namespace KeePassOTP
             // 
             // pIssuerLabel
             // 
+            this.pIssuerLabel.Controls.Add(this.cbToggleAuthstring);
+            this.pIssuerLabel.Controls.Add(this.tbAuthstring);
+            this.pIssuerLabel.Controls.Add(this.lAuthstring);
             this.pIssuerLabel.Controls.Add(this.lLabel);
             this.pIssuerLabel.Controls.Add(this.lIssuer);
             this.pIssuerLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pIssuerLabel.Location = new System.Drawing.Point(0, 521);
             this.pIssuerLabel.Name = "pIssuerLabel";
-            this.pIssuerLabel.Size = new System.Drawing.Size(818, 124);
+            this.pIssuerLabel.Size = new System.Drawing.Size(818, 194);
             this.pIssuerLabel.TabIndex = 2;
+            // 
+            // cbToggleAuthstring
+            // 
+            this.cbToggleAuthstring.Appearance = System.Windows.Forms.Appearance.Button;
+            this.cbToggleAuthstring.Location = new System.Drawing.Point(719, 102);
+            this.cbToggleAuthstring.Margin = new System.Windows.Forms.Padding(5);
+            this.cbToggleAuthstring.Name = "cbToggleAuthstring";
+            this.cbToggleAuthstring.Size = new System.Drawing.Size(71, 54);
+            this.cbToggleAuthstring.TabIndex = 208;
+            this.cbToggleAuthstring.Text = "***";
+            this.cbToggleAuthstring.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbToggleAuthstring.UseVisualStyleBackColor = true;
+            this.cbToggleAuthstring.CheckedChanged += new System.EventHandler(this.cbToggleNewPassword_CheckedChanged);
+            // 
+            // tbAuthstring
+            // 
+            this.tbAuthstring.Location = new System.Drawing.Point(117, 111);
+            this.tbAuthstring.Margin = new System.Windows.Forms.Padding(5);
+            this.tbAuthstring.Name = "tbAuthstring";
+            this.tbAuthstring.Size = new System.Drawing.Size(592, 38);
+            this.tbAuthstring.TabIndex = 206;
+            // 
+            // lAuthstring
+            // 
+            this.lAuthstring.AutoSize = true;
+            this.lAuthstring.Location = new System.Drawing.Point(19, 117);
+            this.lAuthstring.Name = "lAuthstring";
+            this.lAuthstring.Size = new System.Drawing.Size(51, 32);
+            this.lAuthstring.TabIndex = 2;
+            this.lAuthstring.Text = "Uri";
             // 
             // lLabel
             // 
@@ -123,7 +159,7 @@ namespace KeePassOTP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(818, 769);
+            this.ClientSize = new System.Drawing.Size(818, 839);
             this.Controls.Add(this.pIssuerLabel);
             this.Controls.Add(this.pButtons);
             this.Controls.Add(this.pbQR);
@@ -154,5 +190,8 @@ namespace KeePassOTP
         private System.Windows.Forms.Label lLabel;
         private System.Windows.Forms.Label lIssuer;
         private System.Windows.Forms.Label lIndex;
+        private System.Windows.Forms.CheckBox cbToggleAuthstring;
+        private KeePass.UI.SecureTextBoxEx tbAuthstring;
+        private System.Windows.Forms.Label lAuthstring;
     }
 }
