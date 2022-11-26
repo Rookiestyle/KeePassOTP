@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/rookiestyle/keepassotp)](https://www.gnu.org/licenses/gpl-3.0)
 
 KeePassOTP allows you to generate one time passwords (OTP).
-It supports both standard TOTP and standard HOTP as well as Steam OTP and Yandex (Yandex.Key).
+It supports both standard TOTP and standard HOTP as well as Steam OTP and Yandex (Yandex.Key < 3).
 
 Once set up, you can copy or auto-type the OTP.
 You may also create a QR code and scan it with an OTP app of your liking, e.g. andOTP, Google Authenticator etc.
@@ -18,10 +18,13 @@ Functionality provided
 - Configurable hotkey to invoke Auto-Type OTP
 - Column to display OTP or to indicate possible 2FA usage
 - Compatibility with Google Authenticator, andOTP etc.
-- Support TOTP and HOTP as well as Steam OTP and Yandex (Yandex.Key)
+- Support TOTP and HOTP as well as Steam OTP and Yandex (Yandex.Key < 3)
 - Secure storage of OTP secrets
 - Auto-Type or Copy OTP using the KeePass tray icon
 - Indicate possible usage of OTP / two factor authentication (requires [internet access](#two-factor-authentication--internet-access))
+
+Proprietary formats like Steam and Yandex.Key are supported as well.  
+Unfortunately Yandex changed their closed source algorithm starting with version 3. Due to lack of information, it's no longer possible to generate Yandex codes after installing / migrating to Yandex.Key version 3 or higher.
 
 ## Table of Contents
 
