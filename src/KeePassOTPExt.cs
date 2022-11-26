@@ -34,11 +34,13 @@ namespace KeePassOTP
 		private ToolStripMenuItem m_ContextMenuSetup;
 		private ToolStripMenuItem m_ContextMenuAutotype;
 		private ToolStripMenuItem m_ContextMenuQRCode;
+		private ToolStripMenuItem m_ContextMenuDelete; 
 		private ToolStripMenuItem m_MainMenu;
 		private ToolStripMenuItem m_MainMenuCopy;
 		private ToolStripMenuItem m_MainMenuSetup;
 		private ToolStripMenuItem m_MainMenuAutotype;
 		private ToolStripMenuItem m_MainMenuQRCode;
+		private ToolStripMenuItem m_MainMenuDelete; 
 		private ToolStripMenuItem m_TrayMenu;
 		private ToolStripMenuItem m_Options;
 		private ToolStripMenuItem m_GoogleAuthenticatorExport;
@@ -237,15 +239,17 @@ namespace KeePassOTP
 						bEnableQR = true;
 					}
 				}
-				SetEnabled(bEnableQR, m_ContextMenu, m_MainMenu, m_ContextMenuQRCode, m_MainMenuQRCode);
+				SetEnabled(bEnableQR, m_ContextMenu, m_MainMenu, m_ContextMenuQRCode, m_MainMenuQRCode, m_ContextMenuDelete, m_MainMenuDelete);
 
 				SetFont(m_ContextMenuSetup.Font,
 					m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
-					m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode); 
+					m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode,
+					m_ContextMenuDelete, m_MainMenuDelete); 
 				if (bDoItalic) 
 					SetFont(FontUtil.CreateFont(m_ContextMenuSetup.Font, FontStyle.Italic),
 						m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
-						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode,
+						m_ContextMenuDelete, m_MainMenuDelete);
 
 				m_ContextMenuAutotype.Enabled = false;
 				m_MainMenuAutotype.Enabled = false;
@@ -263,13 +267,15 @@ namespace KeePassOTP
 				{
 					SetEnabled(false,
 						m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
-						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode,
+						m_ContextMenuDelete, m_MainMenuDelete);
 				}
 				else
 				{
 					SetEnabled(true,
 						m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
-						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
+						m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode,
+						m_ContextMenuDelete, m_MainMenuDelete);
 					if (d == OTPDAO.OTPDefinition.Partial)
 						SetFont(FontUtil.CreateFont(m_ContextMenuSetup.Font, FontStyle.Italic),
 							m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
@@ -349,7 +355,7 @@ namespace KeePassOTP
 				if (!OTPDAO.EnsureOTPUsagePossible(pe)) return;
 				KPOTP otp = OTPDAO.GetOTP(pe);
 				if (!otp.Valid) continue;
-				lEntries.Add(new KPOTP_QRCodeData() { Issuer = otp.Issuer, Label = otp.Label, Authstring = otp.OTPAuthString } );
+				lEntries.Add(new KPOTP_QRCodeData() { Issuer = otp.Issuer, Label = otp.Label, Authstring = otp.OTPAuthString });
 			}
 			ShowQRCode(lEntries);
 			/*
@@ -363,6 +369,19 @@ namespace KeePassOTP
 			string sLabel = string.IsNullOrEmpty(otp.Label) ? null : otp.Label;
 			ShowQRCode(sIssuer, sLabel, otp.OTPAuthString);
 			*/
+		}
+
+		private void OnOTPDelete(object sender, EventArgs e)
+		{
+			foreach (var pe in m_host.MainWindow.GetSelectedEntries())
+			{
+				if (!OTPDAO.EnsureOTPUsagePossible(pe)) return;
+				KPOTP otp = OTPDAO.GetOTP(pe);
+				KPOTP otpDelete = new KPOTP();
+				otpDelete.OTPAuthString = otp.OTPAuthString;
+				otpDelete.OTPSeed = ProtectedString.EmptyEx;
+				OTPDAO.SaveOTP(otpDelete, pe);
+			}
 		}
 
 		private void OnOTPAutotype(object sender, EventArgs e)
@@ -387,12 +406,16 @@ namespace KeePassOTP
 			m_ContextMenuQRCode = new ToolStripMenuItem(PluginTranslate.OTPQRCode);
 			m_ContextMenuQRCode.Click += OnOTPQRCode;
 			m_ContextMenuQRCode.Image = Icon_Setup;
+			m_ContextMenuDelete = new ToolStripMenuItem(KeePass.Resources.KPRes.Delete);
+			m_ContextMenuDelete.Click += OnOTPDelete;
+			m_ContextMenuDelete.Image = Icon_Setup; 
 			m_ContextMenuSetup = new ToolStripMenuItem(PluginTranslate.OTPSetup);
 			m_ContextMenuSetup.Click += OnOTPSetup;
 			m_ContextMenuSetup.Image = Icon_Setup;
 			m_ContextMenu.DropDownItems.Add(m_ContextMenuCopy);
 			m_ContextMenu.DropDownItems.Add(m_ContextMenuQRCode);
 			m_ContextMenu.DropDownItems.Add(m_ContextMenuSetup);
+			m_ContextMenu.DropDownItems.Add(m_ContextMenuDelete);
 			m_host.MainWindow.EntryContextMenu.Items.Insert(m_host.MainWindow.EntryContextMenu.Items.Count, m_ContextMenu);
 			m_ContextMenuAutotype = new ToolStripMenuItem();
 
@@ -404,12 +427,16 @@ namespace KeePassOTP
 			m_MainMenuQRCode = new ToolStripMenuItem(PluginTranslate.OTPQRCode);
 			m_MainMenuQRCode.Click += OnOTPQRCode;
 			m_MainMenuQRCode.Image = Icon_Setup;
+			m_MainMenuDelete = new ToolStripMenuItem(KeePass.Resources.KPRes.Delete);
+			m_MainMenuDelete.Click += OnOTPDelete;
+			m_MainMenuDelete.Image = Icon_Setup;
 			m_MainMenuSetup = new ToolStripMenuItem(PluginTranslate.OTPSetup);
 			m_MainMenuSetup.Click += OnOTPSetup;
 			m_MainMenuSetup.Image = Icon_Setup;
 			m_MainMenu.DropDownItems.Add(m_MainMenuCopy);
 			m_MainMenu.DropDownItems.Add(m_MainMenuQRCode);
 			m_MainMenu.DropDownItems.Add(m_MainMenuSetup);
+			m_MainMenu.DropDownItems.Add(m_MainMenuDelete); 
 			m_MainMenuAutotype = new ToolStripMenuItem();
 
 			try
@@ -571,6 +598,8 @@ namespace KeePassOTP
 			if (m_MainMenuQRCode.Owner != null) m_MainMenuQRCode.Owner.Items.Remove(m_MainMenuQRCode);
 			if (m_ContextMenuAutotype.Owner != null) m_ContextMenuAutotype.Owner.Items.Remove(m_ContextMenuAutotype);
 			if (m_MainMenuAutotype.Owner != null) m_MainMenuAutotype.Owner.Items.Remove(m_MainMenuAutotype);
+			if (m_ContextMenuDelete.Owner != null) m_ContextMenuDelete.Owner.Items.Remove(m_ContextMenuDelete);
+			if (m_MainMenuDelete.Owner != null) m_MainMenuDelete.Owner.Items.Remove(m_MainMenuDelete);
 
 			Tools.OptionsFormShown -= OptionsFormShown;
 			Tools.OptionsFormClosed -= OptionsFormClosed;
