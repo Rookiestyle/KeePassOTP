@@ -219,7 +219,9 @@ namespace KeePassOTP
 			m_ContextMenuCopy.ShowShortcutKeys = true;
 			m_ContextMenuCopy.ShortcutKeyDisplayString = UIUtil.GetKeysName(m_MainMenuCopy.ShortcutKeys);
 			var iSelectedEntries = m_host.MainWindow.GetSelectedEntriesCount();
-			if (m_host.MainWindow.GetSelectedEntriesCount() != 1)
+			SetEnabled(iSelectedEntries != 0, m_ContextMenu, m_MainMenu);
+			if (iSelectedEntries == 0) return;
+			else if (iSelectedEntries > 1)
 			{
 				SetEnabled(false, m_ContextMenuAutotype, m_MainMenuAutotype, m_ContextMenuCopy, m_ContextMenuSetup, m_MainMenuCopy, m_MainMenuSetup);
 				bool bEnableQR = false;
