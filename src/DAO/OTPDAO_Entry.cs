@@ -104,12 +104,12 @@ namespace KeePassOTP
 				{
 					otp.ReadableOTP = otp.OTPDefined == OTPDefinition.Partial ? "???" : string.Empty;
 					otp.ValidTo = DateTime.MaxValue;
-					otp.kpotp = new KPOTP();
+					otp.kpotp = GetSettings(pe, true);
 					InitIssuerLabel(otp.kpotp, pe);
 				}
 				else
 				{
-					otp.kpotp = GetSettings(pe);
+					otp.kpotp = GetSettings(pe, false);
 					otp.ValidTo = KPOTP.UnixStartUTC;
 				}
 				UpdateOTPBuffer(pe, otp);
@@ -125,7 +125,7 @@ namespace KeePassOTP
 				return pe.Strings.Exists(Config.OTPFIELD) ? OTPDefinition.Complete : OTPDefinition.None;
 			}
 
-			private static KPOTP GetSettings(PwEntry pe)
+			private static KPOTP GetSettings(PwEntry pe, bool bRecoveryCodesOnly)
 			{
 				KPOTP myOTP = new KPOTP();
 				/*
@@ -136,22 +136,25 @@ namespace KeePassOTP
 				myOTP.Settings = settings;
 				myOTP.OTPSeed = pe.Strings.GetSafe(Config.SEED);
 				*/
-				myOTP.OTPAuthString = pe.Strings.Get(Config.OTPFIELD);
+				if (!bRecoveryCodesOnly)
+				{
+					myOTP.OTPAuthString = pe.Strings.Get(Config.OTPFIELD);
+					string timeCorrection = pe.CustomData.Get(Config.TIMECORRECTION);
+					timeCorrection = string.IsNullOrEmpty(timeCorrection) ? string.Empty : timeCorrection;
+					if (timeCorrection == "OWNURL")
+					{
+						myOTP.TimeCorrectionUrlOwn = true;
+						string url = pe.Strings.GetSafe(PwDefs.UrlField).ReadString();
+						if (!string.IsNullOrEmpty(url))
+							myOTP.TimeCorrectionUrl = url;
+					}
+					else
+					{
+						myOTP.TimeCorrectionUrlOwn = false;
+						myOTP.TimeCorrectionUrl = timeCorrection;
+					}
+				}
 				myOTP.RecoveryCodes = pe.Strings.GetSafe(Config.RECOVERY);
-				string timeCorrection = pe.CustomData.Get(Config.TIMECORRECTION);
-				timeCorrection = string.IsNullOrEmpty(timeCorrection) ? string.Empty : timeCorrection;
-				if (timeCorrection == "OWNURL")
-				{
-					myOTP.TimeCorrectionUrlOwn = true;
-					string url = pe.Strings.GetSafe(PwDefs.UrlField).ReadString();
-					if (!string.IsNullOrEmpty(url))
-						myOTP.TimeCorrectionUrl = url;
-				}
-				else
-				{
-					myOTP.TimeCorrectionUrlOwn = false;
-					myOTP.TimeCorrectionUrl = timeCorrection;
-				}
 				return myOTP;
 			}
 		}
