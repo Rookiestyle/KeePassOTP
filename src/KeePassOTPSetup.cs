@@ -703,5 +703,17 @@ namespace KeePassOTP
 		{
 			toolTip1.Show(PluginTranslate.ReadScreenForQRCode, pbSearchScreen);
 		}
-	}
+
+        private void tpAdvanced_Leave(object sender, EventArgs e)
+        {
+			tcSetup.Height -= gIssuerLabel.Height;
+			this.Height -= gIssuerLabel.Height;
+        }
+
+        private void tpAdvanced_Enter(object sender, EventArgs e)
+        {
+			tcSetup.Height += gIssuerLabel.Height;
+			this.Height += gIssuerLabel.Height;
+		}
+    }
 }
