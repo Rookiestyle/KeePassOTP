@@ -235,7 +235,8 @@ namespace KeePassOTP
 				if ((h != null) && h.OTPDB_Exists)
 				{
 					DialogResult dr = DialogResult.None;
-					if (!h.HasEntries())
+					//Delete DB if it is opened but does not contain any entries
+					if (!h.OTPDB_Exists || (h.OTPDB_Opened && !h.HasEntries()))
 					{
 						dr = DialogResult.Yes;
 					}
