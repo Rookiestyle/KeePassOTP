@@ -657,10 +657,20 @@ namespace KeePassOTP
 			KeePassLib.Delegates.GAction<object> act = new KeePassLib.Delegates.GAction<object>((object o) => 
 			{
 				DateTime dtStart = DateTime.Now;
-				IEnumerable<string> lURL = db.RootGroup.GetEntries(true).
-					Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None). //We're not interested in sites without OTP being set up
-					Select(e => e.Strings.ReadSafe(KeePassLib.PwDefs.UrlField)).Distinct(); //We're not interested in duplicate URLs
-				foreach (string url in lURL)
+				var lEntries = db.RootGroup.GetEntries(true).Where(e => OTPDAO.OTPDefined(e) != OTPDAO.OTPDefinition.None).ToList(); //We're not interested in sites without OTP being set up
+				var lUrl = new List<string>();
+				foreach (var pe in lEntries)
+				{
+					//Only calculate if time correction is not disabled, cf. https://github.com/Rookiestyle/KeePassOTP/issues/134
+					var kpotp = OTPDAO.GetOTP(pe);
+					if (kpotp == null) continue;
+					if (string.IsNullOrEmpty(kpotp.TimeCorrectionUrl) && !kpotp.TimeCorrectionUrlOwn) continue;
+					var sUrl = kpotp.TimeCorrectionUrlOwn ? pe.Strings.ReadSafe(KeePassLib.PwDefs.UrlField) : kpotp.TimeCorrectionUrl;
+					if (string.IsNullOrEmpty(sUrl) || lUrl.Contains(sUrl)) continue;
+					
+					lUrl.Add(sUrl);
+				}
+				foreach (string url in lUrl)
 				{
 					if (m_timeCorrectionUrls.ContainsKey(url)) continue;
 					GetTimeCorrection(url);
