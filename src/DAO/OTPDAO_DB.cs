@@ -156,6 +156,15 @@ namespace KeePassOTP
 				OTPDB = null;
 				Valid = OTPDB_Opened = OTPDB_Exists = false;
 				DB.CustomData.Remove(DBNAME);
+				DB.CustomData.Remove(Config.DBKeySources);
+				var lEntries = DB.RootGroup.GetEntries(true).Where(x => x.CustomData.Exists(DBNAME)).ToArray();
+				for (var i = 0; i < lEntries.Length; i ++)
+				{
+					lEntries[i].CreateBackup(DB);
+					lEntries[i].CustomData.Remove(DBNAME);
+					lEntries[i].Touch(true, false);
+				}
+				FlagChanged(false);
 			}
 
 			private PwDatabase OTPDB_Load()
@@ -189,6 +198,7 @@ namespace KeePassOTP
 							if (!KeySources_Equal(aka_old, aka_new)) KeySources_Save(aka_new);
 							KeySources_Clear();
 							OTPDAO.InitEntries(DB);
+							KPOTP.GetTimingsAsync(OTPDB); //For time correction
 							UpdateDBHeader();
 							if (OTPDB_Opened && CheckAndMigrate(DB))
 								FlagChanged(false);
