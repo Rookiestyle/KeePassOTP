@@ -592,6 +592,7 @@ namespace KeePassOTP
 			bLabelFromEntry.Enabled = false;
 		}
 
+		private bool m_bSearchScreenCancel = false;
 		private void bSearchScreen_Click(object sender, EventArgs e)
 		{
 			int iSeconds = 30;
@@ -601,9 +602,11 @@ namespace KeePassOTP
 			{
 				pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
 				pbSearchScreen.Image = Resources.qr_code_screencapture;
+				m_bSearchScreenCancel = true;
 				return;
 			}
-
+			m_bSearchScreenCancel = false;
+			
 			pbSearchScreen.Text = KeePass.Resources.KPRes.Cancel;
 			pbSearchScreen.Image = KeePass.UI.UIUtil.CreateGrayImage(Resources.qr_code_screencapture);
 			
@@ -633,7 +636,7 @@ namespace KeePassOTP
 			if (m_bFoundLoseFocus.HasValue && m_bFoundLoseFocus.Value)
 			{
 				Program.MainForm.TopMost = false;
-				m_miLoseFocus.Invoke(null, new object[] { this, true });
+				m_miLoseFocus.Invoke(null, new object[] { KeePass.Program.MainForm, true });
 				return;
 			}
 
@@ -658,7 +661,7 @@ namespace KeePassOTP
 			try
 			{
 				DateTime dtEnd = DateTime.Now.AddSeconds(iSeconds);
-				while (dtEnd > DateTime.Now)
+				while (dtEnd > DateTime.Now && !m_bSearchScreenCancel)
 				{
 					System.Threading.Thread.Sleep(iSleep);
 					Application.DoEvents();
@@ -714,6 +717,11 @@ namespace KeePassOTP
         {
 			tcSetup.Height += gIssuerLabel.Height;
 			this.Height += gIssuerLabel.Height;
+		}
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+			m_bSearchScreenCancel = true;
 		}
     }
 }
