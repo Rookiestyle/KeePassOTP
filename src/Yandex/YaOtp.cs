@@ -44,7 +44,7 @@ namespace KeePassOTP
       if (secret == null) throw new ArgumentNullException("secret");
       if (pin == null) throw new ArgumentNullException("pin");
       if (pin.Length != secret.PinLength) throw new ArgumentException("Pin length mismatch");
-      if (utcNow==null) throw new ArgumentNullException("utcNow");
+      if (utcNow == null) throw new ArgumentNullException("utcNow");
       _utcNow = utcNow;
 
       var p = pin.Data;
