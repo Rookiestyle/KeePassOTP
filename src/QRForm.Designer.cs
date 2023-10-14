@@ -1,4 +1,4 @@
-﻿
+
 namespace KeePassOTP
 {
     partial class QRForm

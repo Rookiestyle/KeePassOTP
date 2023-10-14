@@ -1,4 +1,4 @@
-﻿namespace KeePassOTP
+namespace KeePassOTP
 {
 	partial class GoogleAuthenticatorExportSelection
 	{
