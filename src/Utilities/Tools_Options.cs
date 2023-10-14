@@ -17,6 +17,7 @@ namespace PluginTools
       {
         var PluginManager = GetField("m_pluginManager", KeePass.Program.MainForm);
         var PluginList = GetField("m_vPlugins", PluginManager);
+        if (PluginList == null) PluginList = GetField("m_lPlugins", PluginManager);
         MethodInfo IteratorMethod = PluginList.GetType().GetMethod("System.Collections.Generic.IEnumerable<T>.GetEnumerator", bf);
         IEnumerator<object> PluginIterator = (IEnumerator<object>)(IteratorMethod.Invoke(PluginList, null));
         while (PluginIterator.MoveNext())
@@ -38,6 +39,7 @@ namespace PluginTools
       {
         var PluginManager = GetField("m_pluginManager", KeePass.Program.MainForm);
         var PluginList = GetField("m_vPlugins", PluginManager);
+        if (PluginList == null) PluginList = GetField("m_lPlugins", PluginManager);
         MethodInfo IteratorMethod = PluginList.GetType().GetMethod("System.Collections.Generic.IEnumerable<T>.GetEnumerator", bf);
         IEnumerator<object> PluginIterator = (IEnumerator<object>)(IteratorMethod.Invoke(PluginList, null));
         while (PluginIterator.MoveNext())
