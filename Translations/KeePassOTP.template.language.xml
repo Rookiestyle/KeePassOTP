@@ -249,6 +249,10 @@ Click '{0}' to deactivate AND delete KeePassOTP database.
 Click '{1}' to deactivate but not delete KeePassOTP database.</value>
   </item>
   <item>
+    <key>ConfirmOTPDelete</key>
+    <value>Please confirm deletion of OTP settings.</value>
+  </item>
+  <item>
     <key>OTPBackupDone</key>
     <value>Unlocking the existing OTP database failed and its content has been overwritten.
 A backup was saved as attachment in the following entry:

@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>23</TranslationVersion>
+  <TranslationVersion>24</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -250,6 +250,10 @@ Die OTP-Datenbank wird dadurch NICHT gelöscht.
 
 Klicke '{0}' um die OTP-Datenbank zu deaktivieren und zu löschen.
 Klicke '{1}' um die OTP-Datenbank zu deaktivieren und nicht zu löschen.</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDelete</key>
+    <value>Bitte bestätige das Löschen der OTP-Einstellungen.</value>
   </item>
   <item>
     <key>OTPBackupDone</key>

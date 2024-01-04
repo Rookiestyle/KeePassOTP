@@ -8,6 +8,7 @@ using KeePass;
 using KeePass.DataExchange;
 using KeePass.Forms;
 using KeePass.Plugins;
+using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;
 using KeePass.Util.Spr;
@@ -307,6 +308,7 @@ namespace KeePassOTP
       var otpSetup = new KeePassOTPSetup();
       Tools.GlobalWindowManager(otpSetup);
       otpSetup.OTP = OTPDAO.GetOTP(pe);
+      var psOldSeed = otpSetup.OTP.OTPSeed;
 
       otpSetup.EntryUrl = pe.Strings.GetSafe(PwDefs.UrlField).ReadString();
       otpSetup.InitEx(pe);
@@ -316,7 +318,17 @@ namespace KeePassOTP
 
       if (otpSetup.ShowDialog(m_host.MainWindow) == DialogResult.OK)
       {
-        OTPDAO.SaveOTP(otpSetup.OTP, pe);
+        bool bDoSave = true;
+        if (!psOldSeed.IsEmpty && otpSetup.OTP.OTPSeed.IsEmpty)
+        {
+          var dr = MessageBox.Show(PluginTranslate.ConfirmOTPDelete,
+                       PluginTranslate.PluginName,
+                       MessageBoxButtons.OKCancel,
+                       MessageBoxIcon.Question,
+                       MessageBoxDefaultButton.Button2);
+          bDoSave = dr == DialogResult.OK;
+        }
+        if (bDoSave) OTPDAO.SaveOTP(otpSetup.OTP, pe);
       }
       otpSetup.Dispose();
     }
@@ -373,6 +385,12 @@ namespace KeePassOTP
 
     private void OnOTPDelete(object sender, EventArgs e)
     {
+      var dr = MessageBox.Show(PluginTranslate.ConfirmOTPDelete,
+             PluginTranslate.PluginName,
+             MessageBoxButtons.OKCancel,
+             MessageBoxIcon.Question,
+             MessageBoxDefaultButton.Button2);
+      if (dr != DialogResult.OK) return;
       foreach (var pe in m_host.MainWindow.GetSelectedEntries())
       {
         if (!OTPDAO.EnsureOTPUsagePossible(pe)) return;

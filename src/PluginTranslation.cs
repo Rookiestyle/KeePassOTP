@@ -306,6 +306,10 @@ It will NOT delete the KeePassOTP database.
 Click '{0}' to deactivate AND delete KeePassOTP database.
 Click '{1}' to deactivate but not delete KeePassOTP database.";
     /// <summary>
+    /// Please confirm deletion of OTP settings.
+    /// </summary>
+    public static readonly string ConfirmOTPDelete = @"Please confirm deletion of OTP settings.";
+    /// <summary>
     /// Unlocking the existing OTP database failed and its content has been overwritten.
     /// A backup was saved as attachment in the following entry:
     /// {0}
