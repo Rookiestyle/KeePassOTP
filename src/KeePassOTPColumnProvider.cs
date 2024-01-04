@@ -30,10 +30,11 @@ namespace KeePassOTP
         otp = OTPDAO.GetOTP(pe).GetOTP();
       else
         otp = OTPDAO.GetReadableOTP(pe);
+      bool bValid = otp != PluginTranslation.PluginTranslate.Error;
       if (!string.IsNullOrEmpty(otp))
       {
         if (bForUsage || Config.OTPDisplay) return otp;
-        return PluginTranslation.PluginTranslate.TFADefined;
+        return bValid ? PluginTranslation.PluginTranslate.TFADefined : otp;
       }
 
       if (!Config.CheckTFA) return string.Empty;
