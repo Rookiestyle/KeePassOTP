@@ -249,6 +249,10 @@ Clique em '{0}' para desativar E excluir o banco de dados KeePassOTP.
 Clique em '{1}' para desativar, mas não excluir o banco de dados KeePassOTP.</value>
   </item>
   <item>
+    <key>ConfirmOTPDelete</key>
+    <value>Confirme a exclusão das configurações de OTP.</value>
+  </item>
+  <item>
     <key>OTPBackupDone</key>
     <value>O desbloqueio do banco de dados OTP existente falhou e seu conteúdo foi sobrescrito.
 Um backup foi salvo como anexo na seguinte entrada:
