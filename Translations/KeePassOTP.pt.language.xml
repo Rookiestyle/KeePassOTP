@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>15</TranslationVersion>
+  <TranslationVersion>16</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -247,6 +247,10 @@ Isso NÃO excluirá o banco de dados KeePassOTP.
 
 Clique em '{0}' para desativar E excluir o banco de dados KeePassOTP.
 Clique em '{1}' para desativar, mas não excluir o banco de dados KeePassOTP.</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDelete</key>
+    <value>Confirme a exclusão das configurações de OTP.</value>
   </item>
   <item>
     <key>OTPBackupDone</key>
