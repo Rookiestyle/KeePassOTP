@@ -92,7 +92,7 @@ There are multiple convenient ways to use the one time passwords.
 
 KeePassOTP can use the [OTP column](#use-otp-data) to highlight entries where you can set up two-factor authentication.  If you doubleclick this hint, KeePassOTP will open the corresponding website to setup two-factor authentication.  
 
-For that purpose, KeePassOTP will download a list of sites supporting two factor authentication during KeePass start from https://2fa.directory/api/v2/tfa.json.  
+For that purpose, KeePassOTP will download a list of sites supporting two factor authentication during KeePass start from [https://2fa.directory/api/v2/tfa.json](https://api.2fa.directory/v3/tfa.json).  
 This list is then compared it with all URLs defined in the database.  
 Neither your URLs nor any other information from your database will be sent.
 
