@@ -39,9 +39,19 @@ namespace KeePassOTP
 
       if (!Config.CheckTFA) return string.Empty;
       string url = pe.Strings.ReadSafe(PwDefs.UrlField);
-      if (string.IsNullOrEmpty(url)) return string.Empty;
-
       TFASites.TFAPossible TFAPossible = TFASites.IsTFAPossible(url);
+      var bOtherOTPDefined = OTPDAO.IsOtherOTPDefined(pe);
+      if (string.IsNullOrEmpty(url) && !bOtherOTPDefined) return string.Empty;
+
+      if (bOtherOTPDefined && TFAPossible == TFASites.TFAPossible.Yes)
+      {
+        return PluginTranslation.PluginTranslate.TFADefined + " *";
+      }
+      else if (bOtherOTPDefined)
+      {
+        return PluginTranslation.PluginTranslate.TFADefined;
+      }
+
       if (TFAPossible == TFASites.TFAPossible.Yes)
         return PluginTranslation.PluginTranslate.SetupTFA;
       else if (TFAPossible == TFASites.TFAPossible.Error)

@@ -125,6 +125,20 @@ namespace KeePassOTP
         return pe.Strings.Exists(Config.OTPFIELD) ? OTPDefinition.Complete : OTPDefinition.None;
       }
 
+      public override void SetOtherOTPDefined(PwEntry pe, bool bDefined)
+      {
+        if (bDefined == IsOtherOTPDefined(pe)) return;
+
+        if (!bDefined) pe.CustomData.Remove(Config.OTHEROTP);
+        if (bDefined) pe.CustomData.Set(Config.OTHEROTP, KeePassLib.Utility.StrUtil.BoolToString(true));
+        pe.Touch(true, false);
+      }
+
+      public override bool IsOtherOTPDefined(PwEntry pe)
+      {
+        return pe.CustomData.Exists(Config.OTHEROTP);
+      }
+
       private static KPOTP GetSettings(PwEntry pe, bool bRecoveryCodesOnly)
       {
         KPOTP myOTP = new KPOTP();

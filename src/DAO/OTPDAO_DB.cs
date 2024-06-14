@@ -454,6 +454,43 @@ namespace KeePassOTP
         return m_peOTP.Strings.Exists(Config.OTPFIELD) ? OTPDefinition.Complete : OTPDefinition.None;
       }
 
+      public override void SetOtherOTPDefined(PwEntry pe, bool bDefined)
+      {
+        if (!SetEntry(pe, false)) return;
+        bool bDB = StrUtil.StringToBool(m_pe.CustomData.Get(DBNAME));
+        if (!bDB || !OTPDB_Exists);
+        bool bCreated = false;
+        GetOTPEntry(true, out bCreated);
+        if (!OTPDB_Opened || (m_peOTP == null)) return;
+
+        if (bDefined == IsOtherOTPDefined(pe))return;
+
+        if (!bDefined)
+        {
+          m_peOTP.CustomData.Remove(Config.OTHEROTP);
+          if (!m_peOTP.Strings.Exists(Config.OTPFIELD)) m_pe.CustomData.Remove(DBNAME);
+        }
+        else
+        {
+          m_peOTP.CustomData.Set(Config.OTHEROTP, StrUtil.BoolToString(true));
+          m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
+        }
+        Touch(m_peOTP);
+        m_pe.Touch(true, false);
+      }
+
+      public override bool IsOtherOTPDefined(PwEntry pe)
+      {
+        if (!SetEntry(pe, false)) return false;
+        bool bDB = StrUtil.StringToBool(m_pe.CustomData.Get(DBNAME));
+        if (!bDB || !OTPDB_Exists) return false;
+        bool bCreated = false;
+
+        GetOTPEntry(false, out bCreated);
+        if (!OTPDB_Opened || (m_peOTP == null)) return false;
+        return m_peOTP.CustomData.Exists(Config.OTHEROTP);
+      }
+
       public override string GetReadableOTP(PwEntry pe)
       {
         if (!SetEntry(pe, false)) return string.Empty;
@@ -508,7 +545,9 @@ namespace KeePassOTP
           //Create backup if something else than only the HOTP counter was changed
           if (!bCreated) m_peOTP.CreateBackup(OTPDB);
         }
-        m_peOTP.Strings.Set(Config.OTPFIELD, myOTP.OTPAuthString);
+        if (myOTP.OTPSeed.IsEmpty) m_peOTP.Strings.Remove(Config.OTPFIELD);
+        else
+          m_peOTP.Strings.Set(Config.OTPFIELD, myOTP.OTPAuthString);
         if (myOTP.TimeCorrectionUrlOwn)
           m_peOTP.CustomData.Set(Config.TIMECORRECTION, "OWNURL");
         else if (string.IsNullOrEmpty(myOTP.TimeCorrectionUrl) || (myOTP.TimeCorrectionUrl == "OFF"))
@@ -521,7 +560,7 @@ namespace KeePassOTP
           m_peOTP.Strings.Set(Config.RECOVERY, myOTP.RecoveryCodes);
 
         Touch(m_peOTP);
-        if (myOTP.OTPSeed.IsEmpty)
+        if (myOTP.OTPSeed.IsEmpty && !IsOtherOTPDefined(m_pe))
           m_pe.CustomData.Remove(DBNAME);
         else
           m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
@@ -1015,25 +1054,29 @@ namespace KeePassOTP
         //process all entries having OTP settings
         PwEntry peBackup = m_pe;
         PwEntry pe_OTPBackup = m_peOTP;
-        foreach (PwEntry pe in DB.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)))
+        foreach (PwEntry pe in DB.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD) || x.CustomData.Exists(Config.OTHEROTP)))
         {
           m_pe = pe;
           ProtectedString otpfield = m_pe.Strings.GetSafe(Config.OTPFIELD);
           ProtectedString recovery = m_pe.Strings.GetSafe(Config.RECOVERY);
           string timecorrection = m_pe.CustomData.Get(Config.TIMECORRECTION);
-          if (otpfield.IsEmpty) continue;
+          if (otpfield.IsEmpty && !pe.CustomData.Exists(Config.OTHEROTP)) continue;
           bool bCreated = false;
           GetOTPEntry(true, out bCreated);
-          m_peOTP.Strings.Set(Config.OTPFIELD, otpfield);
+          if (!otpfield.IsEmpty) m_peOTP.Strings.Set(Config.OTPFIELD, otpfield);
+          else m_peOTP.Strings.Remove(Config.OTPFIELD);
           if (!recovery.IsEmpty) m_peOTP.Strings.Set(Config.RECOVERY, recovery);
           else m_peOTP.Strings.Remove(Config.RECOVERY);
           if (!string.IsNullOrEmpty(timecorrection)) m_peOTP.CustomData.Set(Config.TIMECORRECTION, timecorrection);
           else m_peOTP.CustomData.Remove(Config.TIMECORRECTION);
+          if (pe.CustomData.Exists(Config.OTHEROTP)) m_peOTP.CustomData.Set(Config.OTHEROTP, StrUtil.BoolToString(true));
+          else m_peOTP.CustomData.Remove(Config.OTHEROTP);
           //Seed has been added to OTP db, increase moved-counter
           moved++;
           m_pe.Strings.Remove(Config.OTPFIELD);
           m_pe.Strings.Remove(Config.RECOVERY);
           m_pe.CustomData.Remove(Config.TIMECORRECTION);
+          m_pe.CustomData.Remove(Config.OTHEROTP);
           m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
           m_pe.Touch(true, false);
           FlagChanged(false);
@@ -1049,17 +1092,20 @@ namespace KeePassOTP
         if (!Valid || !OTPDB_Exists || !OTPDB_Opened) return -1;
 
         int moved = 0;
-        foreach (PwEntry peOTP in OTPDB.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)))
+        foreach (PwEntry peOTP in OTPDB.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD) || x.CustomData.Exists(Config.OTHEROTP)))
         {
           PwUuid uuid = new PwUuid(MemUtil.HexStringToByteArray(peOTP.Strings.ReadSafe(UUID)));
           foreach (PwEntry pe in DB.RootGroup.GetEntries(true).Where(x => uuid.Equals(x.Uuid)))
           {
-            pe.Strings.Set(Config.OTPFIELD, peOTP.Strings.GetSafe(Config.OTPFIELD));
+            var psOTP = peOTP.Strings.GetSafe(Config.OTPFIELD);
+            if (!psOTP.IsEmpty) pe.Strings.Set(Config.OTPFIELD, psOTP);
             if (peOTP.Strings.Exists(Config.RECOVERY)) pe.Strings.Set(Config.RECOVERY, peOTP.Strings.GetSafe(Config.RECOVERY));
             if (peOTP.CustomData.Exists(Config.TIMECORRECTION))
               pe.CustomData.Set(Config.TIMECORRECTION, peOTP.CustomData.Get(Config.TIMECORRECTION));
             else
               pe.CustomData.Remove(Config.TIMECORRECTION);
+            if (peOTP.CustomData.Exists(Config.OTHEROTP)) pe.CustomData.Set(Config.OTHEROTP, StrUtil.BoolToString(true));
+            else pe.CustomData.Remove(Config.OTHEROTP);
             pe.CustomData.Remove(DBNAME);
             pe.Touch(true, false);
             moved++;

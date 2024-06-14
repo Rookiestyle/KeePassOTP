@@ -28,6 +28,7 @@ namespace KeePassOTP
     }
     internal const string DefaultPlaceholder = "{KPOTP}";
     internal const string OTPFIELD = "otp";
+    internal const string OTHEROTP = "KeePassOTP.OtherOTPMethod";
     internal const string TIMECORRECTION = "KeePassOTP.TimeCorrection";
     internal const string RECOVERY = "KeePassOTP.RecoveryCodes";
     internal const string DBKeySources = "KeePassOTP.KeySources";

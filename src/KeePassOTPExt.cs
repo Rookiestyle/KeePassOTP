@@ -34,12 +34,14 @@ namespace KeePassOTP
     private ToolStripMenuItem m_ContextMenuAutotype;
     private ToolStripMenuItem m_ContextMenuQRCode;
     private ToolStripMenuItem m_ContextMenuDelete;
+    private ToolStripMenuItem m_ContextMenuOtherOTPDefined;
     private ToolStripMenuItem m_MainMenu;
     private ToolStripMenuItem m_MainMenuCopy;
     private ToolStripMenuItem m_MainMenuSetup;
     private ToolStripMenuItem m_MainMenuAutotype;
     private ToolStripMenuItem m_MainMenuQRCode;
     private ToolStripMenuItem m_MainMenuDelete;
+    private ToolStripMenuItem m_MainMenuOtherOTPDefined;
     private ToolStripMenuItem m_TrayMenu;
     private ToolStripMenuItem m_Options;
     private ToolStripMenuItem m_GoogleAuthenticatorExport;
@@ -225,6 +227,8 @@ namespace KeePassOTP
         SetEnabled(false, m_ContextMenuAutotype, m_MainMenuAutotype, m_ContextMenuCopy, m_ContextMenuSetup, m_MainMenuCopy, m_MainMenuSetup);
         bool bEnableQR = false;
         bool bDoItalic = false;
+        bool bOtherOTPDefined = false;
+        bool bComplete = false;
         foreach (var pe in m_host.MainWindow.GetSelectedEntries())
         {
           var d = OTPDAO.OTPDefined(pe);
@@ -232,16 +236,23 @@ namespace KeePassOTP
           {
             bDoItalic = false;
             bEnableQR = true;
-            break;
+            bComplete = true;
+            //break;
           }
-          else if (d == OTPDAO.OTPDefinition.Partial)
+          else if (d == OTPDAO.OTPDefinition.Partial && !bComplete)
           {
             bDoItalic = true;
             bEnableQR = true;
           }
+          else if (OTPDAO.IsOtherOTPDefined(pe))
+          {
+            bOtherOTPDefined = true;
+          }
         }
         SetEnabled(bEnableQR, m_ContextMenu, m_MainMenu, m_ContextMenuQRCode, m_MainMenuQRCode, m_ContextMenuDelete, m_MainMenuDelete);
-
+        m_ContextMenuOtherOTPDefined.Checked = bOtherOTPDefined;
+        m_MainMenuOtherOTPDefined.Checked = bOtherOTPDefined;
+        
         SetFont(m_ContextMenuSetup.Font,
           m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
           m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode,
@@ -282,6 +293,8 @@ namespace KeePassOTP
               m_ContextMenuCopy, m_ContextMenuAutotype, m_ContextMenuQRCode,
               m_MainMenuCopy, m_MainMenuAutotype, m_MainMenuQRCode);
         }
+        m_ContextMenuOtherOTPDefined.Checked = OTPDAO.IsOtherOTPDefined(m_host.MainWindow.GetSelectedEntry(true));
+        m_MainMenuOtherOTPDefined.Checked = OTPDAO.IsOtherOTPDefined(m_host.MainWindow.GetSelectedEntry(true));
       }
     }
 
@@ -402,6 +415,15 @@ namespace KeePassOTP
       }
     }
 
+    private void OnToggleOtherOTPDefined(object sender, EventArgs e)
+    {
+      var x = sender as ToolStripMenuItem;
+      foreach (var pe in m_host.MainWindow.GetSelectedEntries())
+      {
+        OTPDAO.SetOtherOTPDefined(pe, x.Checked);
+      }
+    }
+    
     private void OnOTPAutotype(object sender, EventArgs e)
     {
       PwEntry pe = m_host.MainWindow.GetSelectedEntry(false);
@@ -430,10 +452,16 @@ namespace KeePassOTP
       m_ContextMenuSetup = new ToolStripMenuItem(PluginTranslate.OTPSetup);
       m_ContextMenuSetup.Click += OnOTPSetup;
       m_ContextMenuSetup.Image = Icon_Setup;
+      m_ContextMenuOtherOTPDefined = new ToolStripMenuItem("Other 2FA defined");
+      m_ContextMenuOtherOTPDefined.Click += OnToggleOtherOTPDefined;
+      //m_ContextMenuOtherOTPDefined.Image = Icon_Setup;
+      m_ContextMenuOtherOTPDefined.CheckOnClick = true;
       m_ContextMenu.DropDownItems.Add(m_ContextMenuCopy);
       m_ContextMenu.DropDownItems.Add(m_ContextMenuQRCode);
       m_ContextMenu.DropDownItems.Add(m_ContextMenuSetup);
       m_ContextMenu.DropDownItems.Add(m_ContextMenuDelete);
+      m_ContextMenu.DropDownItems.Add(m_ContextMenuOtherOTPDefined);
+
       m_host.MainWindow.EntryContextMenu.Items.Insert(m_host.MainWindow.EntryContextMenu.Items.Count, m_ContextMenu);
       m_ContextMenuAutotype = new ToolStripMenuItem();
 
@@ -451,10 +479,15 @@ namespace KeePassOTP
       m_MainMenuSetup = new ToolStripMenuItem(PluginTranslate.OTPSetup);
       m_MainMenuSetup.Click += OnOTPSetup;
       m_MainMenuSetup.Image = Icon_Setup;
+      m_MainMenuOtherOTPDefined = new ToolStripMenuItem("Other 2FA defined");
+      m_MainMenuOtherOTPDefined.Click += OnToggleOtherOTPDefined;
+      //m_MainMenuOtherOTPDefined.Image = Icon_Setup;
+      m_MainMenuOtherOTPDefined.CheckOnClick = true;
       m_MainMenu.DropDownItems.Add(m_MainMenuCopy);
       m_MainMenu.DropDownItems.Add(m_MainMenuQRCode);
       m_MainMenu.DropDownItems.Add(m_MainMenuSetup);
       m_MainMenu.DropDownItems.Add(m_MainMenuDelete);
+      m_MainMenu.DropDownItems.Add(m_MainMenuOtherOTPDefined);
       m_MainMenuAutotype = new ToolStripMenuItem();
 
       try

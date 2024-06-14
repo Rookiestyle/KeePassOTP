@@ -133,7 +133,7 @@
             this.tb2FAHelp.ReadOnly = true;
             this.tb2FAHelp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tb2FAHelp.Size = new System.Drawing.Size(1325, 198);
-            this.tb2FAHelp.TabIndex = 16;
+            this.tb2FAHelp.TabIndex = 180;
             // 
             // cbCheckTFA
             // 
@@ -142,7 +142,7 @@
             this.cbCheckTFA.Location = new System.Drawing.Point(3, 148);
             this.cbCheckTFA.Name = "cbCheckTFA";
             this.cbCheckTFA.Size = new System.Drawing.Size(1325, 36);
-            this.cbCheckTFA.TabIndex = 17;
+            this.cbCheckTFA.TabIndex = 170;
             this.cbCheckTFA.Text = "Check TFA";
             this.cbCheckTFA.UseVisualStyleBackColor = true;
             // 
@@ -166,7 +166,7 @@
             this.cbOTPDisplay.Location = new System.Drawing.Point(520, 8);
             this.cbOTPDisplay.Name = "cbOTPDisplay";
             this.cbOTPDisplay.Size = new System.Drawing.Size(789, 39);
-            this.cbOTPDisplay.TabIndex = 4;
+            this.cbOTPDisplay.TabIndex = 150;
             // 
             // lOTPDisplay
             // 
@@ -196,7 +196,7 @@
             this.cbOTPRenewal.Location = new System.Drawing.Point(520, 54);
             this.cbOTPRenewal.Name = "cbOTPRenewal";
             this.cbOTPRenewal.Size = new System.Drawing.Size(789, 39);
-            this.cbOTPRenewal.TabIndex = 2;
+            this.cbOTPRenewal.TabIndex = 160;
             // 
             // gbAutotype
             // 
@@ -232,7 +232,7 @@
             this.cbAutoSubmit.Margin = new System.Windows.Forms.Padding(5);
             this.cbAutoSubmit.Name = "cbAutoSubmit";
             this.cbAutoSubmit.Size = new System.Drawing.Size(287, 36);
-            this.cbAutoSubmit.TabIndex = 2;
+            this.cbAutoSubmit.TabIndex = 140;
             this.cbAutoSubmit.Text = "Placholder + Enter";
             this.cbAutoSubmit.UseVisualStyleBackColor = true;
             // 
@@ -243,7 +243,7 @@
             this.tbPlaceholder.Margin = new System.Windows.Forms.Padding(5);
             this.tbPlaceholder.Name = "tbPlaceholder";
             this.tbPlaceholder.Size = new System.Drawing.Size(459, 38);
-            this.tbPlaceholder.TabIndex = 1;
+            this.tbPlaceholder.TabIndex = 130;
             this.tbPlaceholder.TextChanged += new System.EventHandler(this.tbPlaceholder_TextChanged);
             // 
             // lPlaceholder
@@ -275,7 +275,7 @@
             this.cbLocalHotkey.Margin = new System.Windows.Forms.Padding(5);
             this.cbLocalHotkey.Name = "cbLocalHotkey";
             this.cbLocalHotkey.Size = new System.Drawing.Size(320, 34);
-            this.cbLocalHotkey.TabIndex = 3;
+            this.cbLocalHotkey.TabIndex = 120;
             this.cbLocalHotkey.Text = "Copy instead of auto-type";
             this.cbLocalHotkey.UseVisualStyleBackColor = true;
             // 
@@ -286,7 +286,7 @@
             this.hkcKPOTP.Margin = new System.Windows.Forms.Padding(5);
             this.hkcKPOTP.Name = "hkcKPOTP";
             this.hkcKPOTP.Size = new System.Drawing.Size(459, 38);
-            this.hkcKPOTP.TabIndex = 1;
+            this.hkcKPOTP.TabIndex = 100;
             // 
             // lHotkey
             // 
@@ -354,7 +354,7 @@
             this.cbDBAction.Margin = new System.Windows.Forms.Padding(5);
             this.cbDBAction.Name = "cbDBAction";
             this.cbDBAction.Size = new System.Drawing.Size(601, 39);
-            this.cbDBAction.TabIndex = 75;
+            this.cbDBAction.TabIndex = 110;
             // 
             // bDBSettings
             // 
@@ -364,8 +364,8 @@
             this.bDBSettings.Location = new System.Drawing.Point(0, 93);
             this.bDBSettings.Margin = new System.Windows.Forms.Padding(0);
             this.bDBSettings.Name = "bDBSettings";
-            this.bDBSettings.Size = new System.Drawing.Size(702, 65);
-            this.bDBSettings.TabIndex = 74;
+            this.bDBSettings.Size = new System.Drawing.Size(702, 45);
+            this.bDBSettings.TabIndex = 140;
             this.bDBSettings.Text = "bDBSettings";
             this.bDBSettings.UseVisualStyleBackColor = true;
             this.bDBSettings.Click += new System.EventHandler(this.bDBSettings_Click);
@@ -378,8 +378,8 @@
             this.bExport.Location = new System.Drawing.Point(0, 139);
             this.bExport.Margin = new System.Windows.Forms.Padding(0);
             this.bExport.Name = "bExport";
-            this.bExport.Size = new System.Drawing.Size(702, 65);
-            this.bExport.TabIndex = 73;
+            this.bExport.Size = new System.Drawing.Size(702, 45);
+            this.bExport.TabIndex = 150;
             this.bExport.Text = "bExport";
             this.bExport.UseVisualStyleBackColor = true;
             this.bExport.Click += new System.EventHandler(this.bExport_Click);
@@ -392,8 +392,8 @@
             this.bChangeMasterKey.Location = new System.Drawing.Point(0, 46);
             this.bChangeMasterKey.Margin = new System.Windows.Forms.Padding(0);
             this.bChangeMasterKey.Name = "bChangeMasterKey";
-            this.bChangeMasterKey.Size = new System.Drawing.Size(702, 65);
-            this.bChangeMasterKey.TabIndex = 72;
+            this.bChangeMasterKey.Size = new System.Drawing.Size(702, 45);
+            this.bChangeMasterKey.TabIndex = 130;
             this.bChangeMasterKey.Text = "bChangeMasterKey";
             this.bChangeMasterKey.UseVisualStyleBackColor = true;
             this.bChangeMasterKey.Click += new System.EventHandler(this.bChangeMasterKey_Click);
@@ -405,8 +405,8 @@
             this.bCreateOpen.Margin = new System.Windows.Forms.Padding(0);
             this.bCreateOpen.Name = "bCreateOpen";
             this.bCreateOpen.Size = new System.Drawing.Size(89, 46);
-            this.bCreateOpen.TabIndex = 71;
-            this.bCreateOpen.Text = "C/O";
+            this.bCreateOpen.TabIndex = 120;
+            this.bCreateOpen.Text = "OK";
             this.bCreateOpen.UseVisualStyleBackColor = true;
             this.bCreateOpen.Click += new System.EventHandler(this.bCreateOpen_Click);
             // 
@@ -418,8 +418,8 @@
             this.bMigrate2Entry.Location = new System.Drawing.Point(0, 186);
             this.bMigrate2Entry.Margin = new System.Windows.Forms.Padding(0);
             this.bMigrate2Entry.Name = "bMigrate2Entry";
-            this.bMigrate2Entry.Size = new System.Drawing.Size(702, 65);
-            this.bMigrate2Entry.TabIndex = 70;
+            this.bMigrate2Entry.Size = new System.Drawing.Size(702, 45);
+            this.bMigrate2Entry.TabIndex = 160;
             this.bMigrate2Entry.Text = "bMigrate2Entry";
             this.bMigrate2Entry.UseVisualStyleBackColor = true;
             this.bMigrate2Entry.Click += new System.EventHandler(this.bMigrate2Entry_Click);
@@ -432,8 +432,8 @@
             this.bMigrate2DB.Location = new System.Drawing.Point(0, 232);
             this.bMigrate2DB.Margin = new System.Windows.Forms.Padding(0);
             this.bMigrate2DB.Name = "bMigrate2DB";
-            this.bMigrate2DB.Size = new System.Drawing.Size(702, 65);
-            this.bMigrate2DB.TabIndex = 34;
+            this.bMigrate2DB.Size = new System.Drawing.Size(702, 45);
+            this.bMigrate2DB.TabIndex = 170;
             this.bMigrate2DB.Text = "bMigrate2DB";
             this.bMigrate2DB.UseVisualStyleBackColor = true;
             this.bMigrate2DB.Click += new System.EventHandler(this.bMigrate2DB_Click);
@@ -447,7 +447,7 @@
             this.lbDB.Margin = new System.Windows.Forms.Padding(5);
             this.lbDB.Name = "lbDB";
             this.lbDB.Size = new System.Drawing.Size(613, 269);
-            this.lbDB.TabIndex = 20;
+            this.lbDB.TabIndex = 100;
             this.lbDB.SelectedIndexChanged += new System.EventHandler(this.lbDB_SelectedIndexChanged);
             // 
             // pCheckboxes
@@ -476,7 +476,7 @@
             this.gMigrate.Name = "gMigrate";
             this.gMigrate.Padding = new System.Windows.Forms.Padding(5);
             this.gMigrate.Size = new System.Drawing.Size(1321, 99);
-            this.gMigrate.TabIndex = 5;
+            this.gMigrate.TabIndex = 200;
             this.gMigrate.TabStop = false;
             this.gMigrate.Text = "gMigrate";
             // 
@@ -486,7 +486,7 @@
             this.bMigrate.Margin = new System.Windows.Forms.Padding(5);
             this.bMigrate.Name = "bMigrate";
             this.bMigrate.Size = new System.Drawing.Size(178, 46);
-            this.bMigrate.TabIndex = 1;
+            this.bMigrate.TabIndex = 210;
             this.bMigrate.Text = "bMigrate";
             this.bMigrate.UseVisualStyleBackColor = true;
             this.bMigrate.Click += new System.EventHandler(this.bMigrate_Click);
@@ -499,7 +499,7 @@
             this.cbMigrate.Margin = new System.Windows.Forms.Padding(5);
             this.cbMigrate.Name = "cbMigrate";
             this.cbMigrate.Size = new System.Drawing.Size(713, 39);
-            this.cbMigrate.TabIndex = 0;
+            this.cbMigrate.TabIndex = 200;
             this.cbMigrate.SelectedIndexChanged += new System.EventHandler(this.cbMigrate_SelectedIndexChanged);
             // 
             // cbPreloadOTP
@@ -510,7 +510,7 @@
             this.cbPreloadOTP.Margin = new System.Windows.Forms.Padding(5);
             this.cbPreloadOTP.Name = "cbPreloadOTP";
             this.cbPreloadOTP.Size = new System.Drawing.Size(1321, 36);
-            this.cbPreloadOTP.TabIndex = 4;
+            this.cbPreloadOTP.TabIndex = 190;
             this.cbPreloadOTP.Text = "cbPreloadOTP";
             this.cbPreloadOTP.UseVisualStyleBackColor = true;
             this.cbPreloadOTP.CheckedChanged += new System.EventHandler(this.cbPreloadOTP_CheckedChanged);
@@ -523,7 +523,7 @@
             this.cbUseDBForSeeds.Margin = new System.Windows.Forms.Padding(5);
             this.cbUseDBForSeeds.Name = "cbUseDBForSeeds";
             this.cbUseDBForSeeds.Size = new System.Drawing.Size(1321, 36);
-            this.cbUseDBForSeeds.TabIndex = 3;
+            this.cbUseDBForSeeds.TabIndex = 180;
             this.cbUseDBForSeeds.Text = "cbUseDBForSeeds";
             this.cbUseDBForSeeds.UseVisualStyleBackColor = true;
             this.cbUseDBForSeeds.CheckedChanged += new System.EventHandler(this.cbUseDBForSeeds_CheckedChanged);

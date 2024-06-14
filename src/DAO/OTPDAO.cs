@@ -202,6 +202,20 @@ namespace KeePassOTP
       Tools.RefreshEntriesList(bModified);
     }
 
+    public static void SetOtherOTPDefined(PwEntry pe, bool bDefined)
+    {
+      OTPHandler_Base h = GetOTPHandler(pe);
+      h.SetOtherOTPDefined(pe, bDefined);
+      bool bModified = (h is OTPHandler_DB) ? (h as OTPHandler_DB).DB == Program.MainForm.ActiveDatabase : true;
+      Tools.RefreshEntriesList(bModified);
+    }
+
+    public static bool IsOtherOTPDefined(PwEntry pe)
+    {
+      OTPHandler_Base h = GetOTPHandler(pe);
+      return h.IsOtherOTPDefined(pe);
+    }
+
     internal static PwDatabase GetDB(this PwEntry pe)
     {
       if (pe == null) return null;
@@ -769,6 +783,8 @@ namespace KeePassOTP
       public virtual bool EnsureOTPUsagePossible(PwEntry pe) { return false; }
       public virtual string GetReadableOTP(PwEntry pe) { return string.Empty; }
       public virtual OTPDefinition OTPDefined(PwEntry pe) { return OTPDefinition.None; }
+      public virtual void SetOtherOTPDefined(PwEntry pe, bool bDefined) { }
+      public virtual bool IsOtherOTPDefined(PwEntry pe) { return false; }
       public virtual KPOTP GetOTP(PwEntry pe) { return new KPOTP(); }
       public virtual void SaveOTP(KPOTP myOTP, PwEntry pe) { }
       public virtual void Cleanup() { }
