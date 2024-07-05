@@ -26,6 +26,10 @@
     <value>OTP Setup...</value>
   </item>
   <item>
+    <key>Other2FA</key>
+    <value>Andere 2FA definiert</value>
+  </item>
+  <item>
     <key>OTPCopy</key>
     <value>OTP kopieren</value>
   </item>
