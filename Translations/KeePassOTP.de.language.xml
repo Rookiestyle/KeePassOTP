@@ -193,7 +193,7 @@ Die OTP-Schlüssel sind damit besonders gesichert, allerdings können andere Pro
 Ist diese Option nicht aktiv, dann wird die OTP-Datenbank erst bei der ersten tatsächlichen Verwendung geöffnet.
 Die OTP-Datenbank wird immer geöffnet, wenn die Hauptdatenbank synchronisiert wird - anderenfalls können Änderung an der OTP-Datenbank nicht synchronisiert werden.
 
-&gt;&gt; OTP migration &lt;&lt;
+&gt;&gt; OTP Migration &lt;&lt;
 Abhängig von den obigen Optionen werden OTP-Schlüssel entweder als Feld im jeweiligen Eintrag oder in einer seperaten Datenbank gespeichert.
 '{Options_Migrate2DB}' und '{Options_Migrate2Entries}' können zum Verschieben der OTP-Schlüssel zwischen diesen beiden Orten genutzt werden.</value>
   </item>
