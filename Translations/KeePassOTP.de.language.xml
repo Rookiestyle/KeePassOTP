@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>24</TranslationVersion>
+  <TranslationVersion>25</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Keine Einträge vorhanden</value>
@@ -24,6 +24,10 @@
   <item>
     <key>OTPSetup</key>
     <value>OTP Setup...</value>
+  </item>
+  <item>
+    <key>Other2FA</key>
+    <value>Andere 2FA definiert</value>
   </item>
   <item>
     <key>OTPCopy</key>
@@ -189,7 +193,7 @@ Die OTP-Schlüssel sind damit besonders gesichert, allerdings können andere Pro
 Ist diese Option nicht aktiv, dann wird die OTP-Datenbank erst bei der ersten tatsächlichen Verwendung geöffnet.
 Die OTP-Datenbank wird immer geöffnet, wenn die Hauptdatenbank synchronisiert wird - anderenfalls können Änderung an der OTP-Datenbank nicht synchronisiert werden.
 
-&gt;&gt; OTP migration &lt;&lt;
+&gt;&gt; OTP Migration &lt;&lt;
 Abhängig von den obigen Optionen werden OTP-Schlüssel entweder als Feld im jeweiligen Eintrag oder in einer seperaten Datenbank gespeichert.
 '{Options_Migrate2DB}' und '{Options_Migrate2Entries}' können zum Verschieben der OTP-Schlüssel zwischen diesen beiden Orten genutzt werden.</value>
   </item>
