@@ -479,7 +479,7 @@ namespace KeePassOTP
       m_MainMenuSetup = new ToolStripMenuItem(PluginTranslate.OTPSetup);
       m_MainMenuSetup.Click += OnOTPSetup;
       m_MainMenuSetup.Image = Icon_Setup;
-      m_MainMenuOtherOTPDefined = new ToolStripMenuItem("Other 2FA defined");
+      m_MainMenuOtherOTPDefined = new ToolStripMenuItem(PluginTranslate.Other2FA);
       m_MainMenuOtherOTPDefined.Click += OnToggleOtherOTPDefined;
       //m_MainMenuOtherOTPDefined.Image = Icon_Setup;
       m_MainMenuOtherOTPDefined.CheckOnClick = true;

@@ -52,11 +52,11 @@ namespace PluginTranslation
     /// </summary>
     public static readonly string OTPSetup = @"OTP setup...";
     /// <summary>
-    /// Copy OTP
+    /// Other 2FA defined
     /// </summary>
     public static readonly string Other2FA = @"Other 2FA defined";
     /// <summary>
-    /// Other 2FA
+    /// Copy OTP
     /// </summary>
     public static readonly string OTPCopy = @"Copy OTP";
     /// <summary>
