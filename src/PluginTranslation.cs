@@ -56,7 +56,7 @@ namespace PluginTranslation
     /// </summary>
     public static readonly string Other2FA = @"Other 2FA defined";
     /// <summary>
-    /// Copy OTP
+    /// Other 2FA
     /// </summary>
     public static readonly string OTPCopy = @"Copy OTP";
     /// <summary>
