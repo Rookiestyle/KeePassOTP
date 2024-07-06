@@ -25,6 +25,7 @@
     <key>OTPSetup</key>
     <value>Configurar OTP...</value>
   </item>
+  <item>
     <key>Other2FA</key>
     <value>Outro 2FA definido</value>
   </item>
