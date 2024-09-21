@@ -26,7 +26,7 @@ namespace KeePassOTP
   {
     #region members
     private IPluginHost m_host = null;
-
+    private const string m_sIpcEventName_KPOTP = "kpotp";
     //menu stuff
     private ToolStripMenuItem m_ContextMenu;
     private ToolStripMenuItem m_ContextMenuCopy;
@@ -98,7 +98,17 @@ namespace KeePassOTP
 
       GlobalWindowManager.WindowAdded += GlobalWindowManager_WindowAdded;
 
+      IpcUtilEx.IpcEvent += OnIpcEvent;
+
       return true;
+    }
+
+    private void OnIpcEvent(object sender, IpcEventArgs ipcEventArgs)
+    {
+      if (ipcEventArgs.Name.Equals(m_sIpcEventName_KPOTP, StringComparison.InvariantCultureIgnoreCase))
+      {
+        m_host.MainWindow.BeginInvoke(new Action(() => { PTHotKeyManager_HotKeyPressed(null, null); }));
+      }
     }
 
     private void CleanupColumns()
@@ -553,6 +563,7 @@ namespace KeePassOTP
       PluginDebug.AddInfo("Options page prepared, " + dDB.Count.ToString() + " open databases found", 0);
       options.InitEx(dDB, m_host.Database);
       PluginDebug.AddInfo(dDB.Count.ToString() + " open databases added to options page", 0);
+      e.form.Shown += options.OptionsFormShown;
       Tools.AddPluginToOptionsForm(this, options);
     }
 
@@ -1175,6 +1186,8 @@ namespace KeePassOTP
 
       RemoveTray();
       RemoveMenu();
+
+      IpcUtilEx.IpcEvent -= OnIpcEvent;
 
       PluginDebug.SaveOrShow();
 

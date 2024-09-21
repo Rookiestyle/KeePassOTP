@@ -517,5 +517,20 @@ namespace KeePassOTP
       cbAutoSubmit.Enabled = tbPlaceholder.Text.StartsWith("{") && tbPlaceholder.Text.EndsWith("}");
       cbAutoSubmit.Text = string.Format(PluginTranslate.PlaceholderAutoSubmit, tbPlaceholder.Text);
     }
+
+    internal void OptionsFormShown(object sender, EventArgs e)
+    {
+      llHotKeyUnix.Visible = KeePassLib.Native.NativeLib.IsUnix();
+      llHotKeyUnix.Links.Clear();
+      Control m_linkHotKeyHelp = Tools.GetControl("m_linkHotKeyHelp", sender as Form);
+      string sText = m_linkHotKeyHelp != null ? m_linkHotKeyHelp.Text : "Create system-wide hot keys";
+      llHotKeyUnix.Links.Add(0, sText.Length);
+      llHotKeyUnix.Text = sText;
+    }
+
+    private void llHotKeyUnix_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+      Tools.OpenUrl("https://github.com/Rookiestyle/KeePassOTP/wiki/Unix-Linux-%E2%80%90-Create-system%E2%80%90wide-hot-keys");
+    }
   }
 }

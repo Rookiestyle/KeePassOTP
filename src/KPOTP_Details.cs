@@ -40,7 +40,13 @@ namespace KeePassOTP
       if (_tc == null) return;
 
       InitTab();
+      _tc.Selected += OnTabSelected;
+      
+      DoRefresh();
+    }
 
+    private void OnTabSelected(object sender, TabControlEventArgs e)
+    {
       DoRefresh();
     }
 
@@ -59,7 +65,6 @@ namespace KeePassOTP
       _tpKeePassOTP.Controls.Add(this);
       if (_pef != null)
       {
-        _tc.TabPages[0].Leave += CheckActiveTabStop;
         _tc.TabPages.Insert(5, _tpKeePassOTP);
       }
       else
@@ -78,6 +83,7 @@ namespace KeePassOTP
       var tfa = TFASites.GetTFAData(_pef.EntryStrings.ReadSafe(PwDefs.UrlField));
       DoRefresh(tfa);
     }
+
     private void DoRefresh(TFASites.TFAData tfa)
     {
       if (tfa == null)
@@ -94,13 +100,12 @@ namespace KeePassOTP
 
       this.Enabled = tfa.tfa_possible;
 
-      if (!tfa.tfa_possible) _tc.TabPages.Remove(_tpKeePassOTP);
+      if (!tfa.tfa_possible)
+      {
+        if (_tc.SelectedTab == _tpKeePassOTP) _tc.SelectTab(0);
+        if (_tc.TabPages.Contains(_tpKeePassOTP)) _tc.TabPages.Remove(_tpKeePassOTP);
+      }
       else if (!_tc.TabPages.Contains(_tpKeePassOTP)) _tc.TabPages.Insert(5, _tpKeePassOTP);
-    }
-
-    private void CheckActiveTabStop(object sender, EventArgs e)
-    {
-      DoRefresh();
     }
 
     private void SetupUrl(Label l, LinkLabel ll, string url)

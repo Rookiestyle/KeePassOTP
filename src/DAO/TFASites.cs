@@ -15,7 +15,7 @@ namespace KeePassOTP
   public static class TFASites
   {
     //const string TFA_JSON_FILE = "https://twofactorauth.org/api/v2/tfa.json";
-    const string TFA_JSON_FILE_DEFAULT = "https://2fa.directory/api/v3/tfa.json";
+    const string TFA_JSON_FILE_DEFAULT = "https://api.2fa.directory/v3/tfa.json";
 
     public static string TFA_JSON_FILE
     {
@@ -254,27 +254,34 @@ namespace KeePassOTP
       Dictionary<string, TFAData> dTFAEntries = new Dictionary<string, TFAData>();
       foreach (string tfaentry in lTFAEntries)
       {
-        TFAData tfa = new TFAData();
-        tfa.domain = GetJSonString(tfaentry, "domain");
-        string sDomain = tfa.domain.ToLowerInvariant();
-        if (!sDomain.StartsWith("http://") && !sDomain.StartsWith("https://")) tfa.domain = "https://" + tfa.domain;
+        try
+        {
+          TFAData tfa = new TFAData();
+          tfa.domain = GetJSonString(tfaentry, "domain");
+          string sDomain = tfa.domain.ToLowerInvariant();
+          if (!sDomain.StartsWith("http://") && !sDomain.StartsWith("https://")) tfa.domain = "https://" + tfa.domain;
 
-        tfa.img = GetJSonString(tfaentry, "img");
-        tfa.url = GetJSonString(tfaentry, "url");
-        if (string.IsNullOrEmpty(tfa.url)) tfa.url = tfa.domain;
-        tfa.tfa = GetJSonList(tfaentry, "tfa");
-        tfa.documentation = GetJSonString(tfaentry, "documentation");
-        tfa.recovery = GetJSonString(tfaentry, "recovery");
-        tfa.notes = GetJSonString(tfaentry, "notes");
-        tfa.contact = GetJSonString(tfaentry, "contact");
-        tfa.regions = GetJSonList(tfaentry, "regions");
-        tfa.additional_domains = GetJSonList(tfaentry, "additional_domains");
-        tfa.custom_software = GetJSonList(tfaentry, "custom_software");
-        tfa.custom_hardware = GetJSonList(tfaentry, "custom_hardware");
-        tfa.keywords = GetJSonList(tfaentry, "keywords");
-        string sRegexPattern = CreatePattern(tfa.domain);
-        tfa.RegexUrl = new Regex(sRegexPattern);
-        m_dTFA[sRegexPattern] = tfa;
+          tfa.img = GetJSonString(tfaentry, "img");
+          tfa.url = GetJSonString(tfaentry, "url");
+          if (string.IsNullOrEmpty(tfa.url)) tfa.url = tfa.domain;
+          tfa.tfa = GetJSonList(tfaentry, "tfa");
+          tfa.documentation = GetJSonString(tfaentry, "documentation");
+          tfa.recovery = GetJSonString(tfaentry, "recovery");
+          tfa.notes = GetJSonString(tfaentry, "notes");
+          tfa.contact = GetJSonString(tfaentry, "contact");
+          tfa.regions = GetJSonList(tfaentry, "regions");
+          tfa.additional_domains = GetJSonList(tfaentry, "additional_domains");
+          tfa.custom_software = GetJSonList(tfaentry, "custom_software");
+          tfa.custom_hardware = GetJSonList(tfaentry, "custom_hardware");
+          tfa.keywords = GetJSonList(tfaentry, "keywords");
+          string sRegexPattern = CreatePattern(tfa.domain);
+          tfa.RegexUrl = new Regex(sRegexPattern);
+          m_dTFA[sRegexPattern] = tfa;
+        }
+        catch (Exception exAll)
+        {
+          PluginDebug.AddError("Error reading OTP sites", 0, exAll.Message, tfaentry);
+        }
       }
       DateTime dtEnd = DateTime.Now;
       lock (m_TFAReadLock)
@@ -288,6 +295,7 @@ namespace KeePassOTP
     {
       bool bRepeat = true;
       MatchCollection aMatches = null;
+
       while (bRepeat)
       {
         try
@@ -296,10 +304,14 @@ namespace KeePassOTP
           aMatches = r.Matches(content);
           bRepeat = false;
         }
-        catch (Exception ex) { }
+        catch (Exception ex) {
+          PluginDebug.AddError("Error in ParseJSON", 0, ex.Message);
+        }
       }
       List<string> lResult = new List<string>();
-      foreach (Match m in aMatches) lResult.Add(m.Value);
+
+      lResult = aMatches.Cast<Match>().Select(m => m.Value).ToList();
+
       return lResult;
     }
 

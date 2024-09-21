@@ -68,6 +68,7 @@
             this.tpHelp = new System.Windows.Forms.TabPage();
             this.tbHelp = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.llHotKeyUnix = new System.Windows.Forms.LinkLabel();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.gOtherOptions.SuspendLayout();
@@ -214,6 +215,7 @@
             // 
             // pPlaceholder
             // 
+            this.pPlaceholder.Controls.Add(this.llHotKeyUnix);
             this.pPlaceholder.Controls.Add(this.cbAutoSubmit);
             this.pPlaceholder.Controls.Add(this.tbPlaceholder);
             this.pPlaceholder.Controls.Add(this.lPlaceholder);
@@ -552,6 +554,17 @@
             this.tbHelp.Size = new System.Drawing.Size(1331, 586);
             this.tbHelp.TabIndex = 0;
             // 
+            // llHotKeyUnix
+            // 
+            this.llHotKeyUnix.AutoSize = true;
+            this.llHotKeyUnix.Location = new System.Drawing.Point(0, 48);
+            this.llHotKeyUnix.Name = "llHotKeyUnix";
+            this.llHotKeyUnix.Size = new System.Drawing.Size(179, 32);
+            this.llHotKeyUnix.TabIndex = 141;
+            this.llHotKeyUnix.TabStop = true;
+            this.llHotKeyUnix.Text = "llHotKeyUnix";
+            this.llHotKeyUnix.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llHotKeyUnix_LinkClicked);
+            // 
             // Options
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -629,5 +642,6 @@
         internal System.Windows.Forms.CheckBox cbCheckTFA;
         private System.Windows.Forms.ComboBox cbOTPDisplay;
         internal System.Windows.Forms.CheckBox cbLocalHotkey;
-    }
+    private System.Windows.Forms.LinkLabel llHotKeyUnix;
+  }
 }
