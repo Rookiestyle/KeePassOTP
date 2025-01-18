@@ -196,9 +196,9 @@ Please provide the masterkey for your OTP secrets in the next form.";
     /// </summary>
     public static readonly string MoveError = @"Error when trying to move OTP secrets. Is the OTP database open?";
     /// <summary>
-    /// {0} OTP secret(s) move auccessfully
+    /// {0} OTP secret(s) move successfully
     /// </summary>
-    public static readonly string EntriesMoved = @"{0} OTP secret(s) move auccessfully";
+    public static readonly string EntriesMoved = @"{0} OTP secret(s) move successfully";
     /// <summary>
     /// KeePassOTP will download a list of sites supporting two factor authentication from {0}
     /// This list is then compared it with all URLs defined in the database, your URLs will not be sent.
