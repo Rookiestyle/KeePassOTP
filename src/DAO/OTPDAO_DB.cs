@@ -458,7 +458,7 @@ namespace KeePassOTP
       {
         if (!SetEntry(pe, false)) return;
         bool bDB = StrUtil.StringToBool(m_pe.CustomData.Get(DBNAME));
-        if (!bDB || !OTPDB_Exists);
+        if (!bDB || !OTPDB_Exists) return;
         bool bCreated = false;
         GetOTPEntry(true, out bCreated);
         if (!OTPDB_Opened || (m_peOTP == null)) return;

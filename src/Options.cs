@@ -87,11 +87,11 @@ namespace KeePassOTP
       bChangeMasterKey.Text = KPRes.ChangeMasterKey;
       bDBSettings.Text = KPRes.DatabaseSettings;
       bExport.Text = KPRes.Export;
-      bMigrate2Entry.Text = PluginTranslate.Options_Migrate2Entries;
-      bMigrate2DB.Text = PluginTranslate.Options_Migrate2DB;
-      toolTip1.SetToolTip(bMigrate2DB, PluginTranslate.Options_Migrate2DBHint);
-      bMigrate2Entry.Text = PluginTranslate.Options_Migrate2Entries;
-      toolTip1.SetToolTip(bMigrate2Entry, PluginTranslate.Options_Migrate2EntriesHint);
+      bMigrate2EntryOrDB.Text = PluginTranslate.Options_Migrate2Entries;
+      //bMigrate2DB.Text = PluginTranslate.Options_Migrate2DB;
+      //toolTip1.SetToolTip(bMigrate2DB, PluginTranslate.Options_Migrate2DBHint);
+      bMigrate2EntryOrDB.Text = PluginTranslate.Options_Migrate2Entries;
+      toolTip1.SetToolTip(bMigrate2EntryOrDB, PluginTranslate.Options_Migrate2EntriesHint);
 
       m_dMigration["KeeOTP"] = new MigrationKeeOTP();
       m_dMigration["KeeTrayTOTP"] = new MigrationTraytotp();
@@ -159,8 +159,8 @@ namespace KeePassOTP
       bChangeMasterKey.Enabled = m_handler.OTPDB_Opened;
       bExport.Enabled = m_handler.OTPDB_Opened;
       bDBSettings.Enabled = m_handler.OTPDB_Opened;
-      bMigrate2DB.Enabled = m_handler.OTPDB_Opened;
-      bMigrate2Entry.Enabled = m_handler.OTPDB_Opened;
+      //bMigrate2DB.Enabled = m_handler.OTPDB_Opened;
+      //bMigrate2Entry.Enabled = m_handler.OTPDB_Opened;
     }
 
     private void RefreshHandler(PwDatabase db)
@@ -293,6 +293,18 @@ namespace KeePassOTP
       cbPreloadOTP.Checked = m_dDB[db].Preload;
       m_bReadingConfig = false;
       cbUseDBForSeeds.Checked = m_dDB[db].UseOTPDB;
+      if (cbUseDBForSeeds.Checked)
+      {
+        bMigrate2EntryOrDB.Text = PluginTranslate.Options_Migrate2Entries;
+        toolTip1.SetToolTip(bMigrate2EntryOrDB, PluginTranslate.Options_Migrate2EntriesHint);
+        bMigrate2EntryOrDB.Tag = "2ENTRY";
+      }
+      else
+      {
+        bMigrate2EntryOrDB.Text = PluginTranslate.Options_Migrate2DB;
+        toolTip1.SetToolTip(bMigrate2EntryOrDB, PluginTranslate.Options_Migrate2DBHint);
+        bMigrate2EntryOrDB.Tag = "2DB";
+      }
 
       DBAction_Init(db);
     }
@@ -303,6 +315,7 @@ namespace KeePassOTP
       PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
       RefreshHandler(db);
       DBAction dba = cbDBAction.SelectedItem as DBAction;
+      if (sender is DBAction) dba = (DBAction)sender;
       if (dba == null) return;
       if ((dba.Action == ACTION_CREATE) || !m_handler.OTPDB_Exists)
       {
@@ -347,18 +360,40 @@ namespace KeePassOTP
       if (m_handler.OTPDB_Opened) m_handler.OTPDB_ChangePassword(true);
     }
 
-    private void bMigrate2Entry_Click(object sender, EventArgs e)
+    private void bMigrate2EntryOrDB_Click(object sender, EventArgs e)
     {
+      var bMigrate2Entries = (string)(sender as Button).Tag == "2ENTRY";
       PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
+      if (!bMigrate2Entries && !m_handler.OTPDB_Opened)
+        bCreateOpen_Click(new DBAction(ACTION_OPEN), null);
       RefreshHandler(db);
-      if (m_handler.OTPDB_Opened) ShowResult(m_handler.MigrateOTP2Entry());
+      if (m_handler.OTPDB_Opened)
+      {
+        var iMoved = 0;
+        if (bMigrate2Entries)
+          iMoved = m_handler.MigrateOTP2Entry();
+        else
+          iMoved = m_handler.MigrateOTP2DB();
+        ShowResult(iMoved);
+        if (iMoved > 0)
+        {
+          m_dDB[db].UseOTPDB = !bMigrate2Entries;
+            lbDB_SelectedIndexChanged(null, null);
+        }//if (iMoved >= 0 && bMigrate2Entries && cbUseDBForSeeds.Checked) cbUseDBForSeeds.Checked = false;
+        //else if (iMoved >= 0 && !bMigrate2Entries && !cbUseDBForSeeds.Checked) cbUseDBForSeeds.Checked = true;
+      }
     }
 
     private void bMigrate2DB_Click(object sender, EventArgs e)
     {
       PwDatabase db = m_dDB.ElementAt(lbDB.SelectedIndex).Key;
       RefreshHandler(db);
-      if (m_handler.OTPDB_Opened) ShowResult(m_handler.MigrateOTP2DB());
+      if (m_handler.OTPDB_Opened)
+      {
+        var iMoved = m_handler.MigrateOTP2DB();
+        ShowResult(iMoved);
+        if (iMoved >= 0 && !cbUseDBForSeeds.Checked) cbUseDBForSeeds.Checked = true;
+      }
     }
 
     private void ShowResult(int moved)
