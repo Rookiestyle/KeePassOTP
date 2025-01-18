@@ -168,7 +168,7 @@ Please provide the masterkey for your OTP secrets in the next form.</value>
   </item>
   <item>
     <key>EntriesMoved</key>
-    <value>{0} OTP secret(s) move auccessfully</value>
+    <value>{0} OTP secret(s) move successfully</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
