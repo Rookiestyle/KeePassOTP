@@ -298,17 +298,19 @@ New value: {1}
 All occurrences of {0} need to be replaced by {1} for Auto-Type to work.
 Replace now in currently loaded databases?";
     /// <summary>
-    /// This will deactivate the KeePassOTP database. 
-    /// It will NOT delete the KeePassOTP database.
+    /// This will either deactivate or delete the KeePassOTP database. 
+    /// A deactivated KeePassOTP database can be reactivated anytime.
+    /// A deleted KeePassOTP database can only be restored from a backup of your main database.
     /// 
-    /// Click '{0}' to deactivate AND delete KeePassOTP database.
-    /// Click '{1}' to deactivate but not delete KeePassOTP database.
+    /// Click '{0}' to delete the KeePassOTP database.
+    /// Click '{1}' to deactivate the KeePassOTP database.
     /// </summary>
-    public static readonly string ConfirmOTPDBDelete = @"This will deactivate the KeePassOTP database. 
-It will NOT delete the KeePassOTP database.
+    public static readonly string ConfirmOTPDBDelete = @"This will either deactivate or delete the KeePassOTP database. 
+A deactivated KeePassOTP database can be reactivated anytime.
+A deleted KeePassOTP database can only be restored from a backup of your main database.
 
-Click '{0}' to deactivate AND delete KeePassOTP database.
-Click '{1}' to deactivate but not delete KeePassOTP database.";
+Click '{0}' to delete the KeePassOTP database.
+Click '{1}' to deactivate the KeePassOTP database.";
     /// <summary>
     /// Please confirm deletion of OTP settings.
     /// </summary>

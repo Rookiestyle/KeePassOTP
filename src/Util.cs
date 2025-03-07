@@ -13,6 +13,13 @@ using PluginTools;
 
 namespace KeePassOTP
 {
+  internal struct KeePassOTPTrayTexts
+  {
+    public string Title;
+    public string User;
+    public string EntryGuidHex;
+  }
+
   internal static class Config
   {
     internal enum Tray_ColorCoding

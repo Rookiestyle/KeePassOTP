@@ -25,6 +25,7 @@
     <key>OTPSetup</key>
     <value>OTP setup...</value>
   </item>
+  <item>
     <key>Other2FA</key>
     <value>Other 2FA defined</value>
   </item>
@@ -245,11 +246,12 @@ Replace now in currently loaded databases?</value>
   </item>
   <item>
     <key>ConfirmOTPDBDelete</key>
-    <value>This will deactivate the KeePassOTP database. 
-It will NOT delete the KeePassOTP database.
+    <value>This will either deactivate or delete the KeePassOTP database. 
+A deactivated KeePassOTP database can be reactivated anytime.
+A deleted KeePassOTP database can only be restored from a backup of your main database.
 
-Click '{0}' to deactivate AND delete KeePassOTP database.
-Click '{1}' to deactivate but not delete KeePassOTP database.</value>
+Click '{0}' to delete the KeePassOTP database.
+Click '{1}' to deactivate KeePassOTP database.</value>
   </item>
   <item>
     <key>ConfirmOTPDelete</key>

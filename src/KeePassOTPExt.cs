@@ -743,14 +743,14 @@ namespace KeePassOTP
         foreach (PwEntry pe in tdb.Entries)
         {
           ToolStripMenuItem entry = new ToolStripMenuItem();
-          string[] text = GetTrayText(pe);
-          PluginDebug.AddInfo("Tray setup: Add entry", 0, "Uuid: " + text[2]); // Do NOT add username and entry title to debugfile
-          if (text[0] == string.Empty)
-            entry.Text = StrUtil.EncodeMenuText(string.Format(PluginTranslate.User, text[1]));
-          else if (text[1] == string.Empty)
-            entry.Text = StrUtil.EncodeMenuText(text[0]);
+          var text = GetTrayText(pe);
+          PluginDebug.AddInfo("Tray setup: Add entry", 0, "Uuid: " + text.EntryGuidHex); // Do NOT add username and entry title to debugfile
+          if (text.Title == string.Empty)
+            entry.Text = StrUtil.EncodeMenuText(text.User);
+          else if (text.User == string.Empty)
+            entry.Text = StrUtil.EncodeMenuText(text.Title);
           else
-            entry.Text = StrUtil.EncodeMenuText(text[0] + " (" + text[1] + ")");
+            entry.Text = StrUtil.EncodeMenuText(text.Title + " (" + text.User + ")");
           entry.Name = "KPOTP_" + pe.Uuid.ToHexString();
           entry.Click += OnOTPTray;
           entry.Tag = pe;
@@ -817,18 +817,28 @@ namespace KeePassOTP
       return bAdjusted;
     }
 
-    private string[] GetTrayText(PwEntry pe)
+    private KeePassOTPTrayTexts GetTrayText(PwEntry pe)
     {
-      string title = pe.Strings.ReadSafe(PwDefs.TitleField);
-      string user = pe.Strings.ReadSafe(PwDefs.UserNameField);
-      string sHex = pe.Uuid.ToHexString();
-      if (string.IsNullOrEmpty(title) && string.IsNullOrEmpty(user))
-        return new string[] { string.Format(PluginTranslate.Group, pe.ParentGroup.Name), string.Format(PluginTranslate.Empty, sHex) };
-      if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(user))
-        return new string[] { title, user, sHex };
-      if (string.IsNullOrEmpty(user))
-        return new string[] { string.Format(PluginTranslate.Title, title), string.Empty, sHex };
-      return new string[] { string.Format(PluginTranslate.User, user), string.Empty, sHex };
+      KeePassOTPTrayTexts result = new KeePassOTPTrayTexts();
+      result.Title = pe.Strings.ReadSafe(PwDefs.TitleField);
+      result.User = pe.Strings.ReadSafe(PwDefs.UserNameField);
+      result.EntryGuidHex = pe.Uuid.ToHexString();
+
+      if (!string.IsNullOrEmpty(result.Title) && !string.IsNullOrEmpty(result.User))
+        return result; 
+      
+      if (string.IsNullOrEmpty(result.Title) && string.IsNullOrEmpty(result.User))
+      {
+        result.Title = string.Format(PluginTranslate.Group, pe.ParentGroup.Name);
+        result.User = string.Format(PluginTranslate.Empty, result.EntryGuidHex);
+        return result;
+      }
+      if (string.IsNullOrEmpty(result.User)) //Title is defined, Username is empty
+        return result;
+
+      //Title empty, userename filled
+      result.User = string.Format(PluginTranslate.User, result.User);
+      return result;
     }
 
     private int SortEntries(PwEntry a, PwEntry b)
@@ -836,17 +846,19 @@ namespace KeePassOTP
       if ((a == null) && (b == null)) return 0;
       if (a == null) return -1;
       if (b == null) return 1;
-      string[] textA = GetTrayText(a);
-      string[] textB = GetTrayText(b);
-      int sort1 = string.Compare(textA[0], textB[0]);
-      int sort2 = string.Compare(textA[1], textB[1]);
+      //string[] textA = GetTrayText(a);
+      //string[] textB = GetTrayText(b);
+      var textA = GetTrayText(a);
+      var textB = GetTrayText(b);
+      int sort1 = string.Compare(textA.Title, textB.Title);
+      int sort2 = string.Compare(textA.User, textB.User); ;
       string empty = PluginTranslate.Empty.Replace("{0}", "");
-      if (textA[1].Contains(empty) == textB[1].Contains(empty))
+      if (textA.User.Contains(empty) == textB.User.Contains(empty))
       {
-        if (!textA[1].Contains(empty) && (sort1 != 0)) return sort1;
+        if (!textA.User.Contains(empty) && (sort1 != 0)) return sort1;
         return sort2;
       }
-      else if (textA[1].Contains(empty))
+      else if (textA.User.Contains(empty))
         return 1;
       else
         return -1;

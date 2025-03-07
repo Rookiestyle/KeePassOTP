@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>26</TranslationVersion>
+  <TranslationVersion>27</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KeePassOTP - Keine Einträge</value>
@@ -246,11 +246,12 @@ Soll diese Ersetzung jetzt in allen geladenen Datenbanken durchgeführt werden?<
   </item>
   <item>
     <key>ConfirmOTPDBDelete</key>
-    <value>Diese Aktion deaktiviert die OTP-Datenbank.
-Die OTP-Datenbank wird dadurch NICHT gelöscht.
+    <value>Diese Aktion deaktiviert oder löscht die OTP-Datenbank.
+Sie können eine deaktivierte OTP-Datenbank jederzeit reaktivieren.
+Wenn Sie die OTP-Datenbank löschen, können Sie sie nur aus einem Backup der KeePass-Datenbank wiederherstellen.
 
-Wählen Sie '{0}', um die OTP-Datenbank zu deaktivieren und zu löschen.
-Wählen Sie '{1}', um die OTP-Datenbank zu deaktivieren und zu behalten.</value>
+Wählen Sie '{0}', um die OTP-Datenbank zu löschen.
+Wählen Sie '{1}', um die OTP-Datenbank zu deaktivieren.</value>
   </item>
   <item>
     <key>ConfirmOTPDelete</key>
