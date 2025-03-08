@@ -15,11 +15,11 @@
   </item>
   <item>
     <key>Group</key>
-    <value>组: {0}</value>
+    <value>群组: {0}</value>
   </item>
   <item>
     <key>OTPSetup</key>
-    <value>OTP 设置中...</value>
+    <value>OTP 设置...</value>
   </item>
   <item>
     <key>Other2FA</key>
@@ -51,7 +51,7 @@
   </item>
   <item>
     <key>AdvancedOptions</key>
-    <value>使用高级选项</value>
+    <value>高级选项</value>
   </item>
   <item>
     <key>Format</key>
