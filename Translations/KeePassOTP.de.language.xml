@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>27</TranslationVersion>
+  <TranslationVersion>28</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KeePassOTP - Keine Einträge</value>
@@ -123,7 +123,7 @@
   </item>
   <item>
     <key>OTP_CreateDB_PWHint</key>
-    <value>Alle OTP-Schlüssel werden in einer eigenen Datenbank gespeichert. Diese Datenbank ist Teil der KeePass-Datenbank.
+    <value>Alle OTP-Schlüssel werden in einer eigenen Datenbank gespeichert. Diese Datenbank ist Teil der KeePass-Datenbank und mit einem zusätzlichen Passwort gesichert.
 
 Bitte geben Sie das Passwort für den Zugriff auf Ihre OTP-Schlüssel im nächsten Fenster ein.</value>
   </item>
@@ -146,7 +146,7 @@ Wählen Sie '{1}', um die OTP-Schlüssel zusammen mit den Passwort-Einträgen zu
   </item>
   <item>
     <key>Options_PreloadOTPDB</key>
-    <value>OTP-Datenbank mit Passwort-Datenbank öffnen</value>
+    <value>OTP-Datenbank mit KeePass-Datenbank entsperren</value>
   </item>
   <item>
     <key>Options_Migrate2DB</key>
@@ -167,7 +167,7 @@ Wählen Sie '{1}', um die OTP-Schlüssel zusammen mit den Passwort-Einträgen zu
   <item>
     <key>MoveError</key>
     <value>Fehler beim Verschieben der OTP-Schlüssel.
-Ist die OTP-Datenbank geöffnet?</value>
+Ist die OTP-Datenbank entsperrt?</value>
   </item>
   <item>
     <key>EntriesMoved</key>
@@ -175,7 +175,7 @@ Ist die OTP-Datenbank geöffnet?</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
-    <value>KeePassOTP lädt eine Liste von Seiten, die Zwei-Faktor-Authentifizierung (2FA) unterstützen von {0}. Im Anschluss werden die URLs aus der Datenbank mit dieser Liste abgeglichen. Die URLs werden dabei lokal verarbeitet und NICHT versendet.
+    <value>KeePassOTP lädt eine Liste von Web-Diensten, die Zwei-Faktor-Authentifizierung (2FA) unterstützen von {0}. Im Anschluss werden die URLs aus der Datenbank mit dieser Liste abgeglichen. Die URLs werden dabei lokal verarbeitet und NICHT versendet.
 
 In der OTP-Spalte wird ein Hinweis angezeigt, wenn ein zweiter Faktor unterstützt wird, aber noch nicht eingerichtet ist. Mit einem Doppelklick auf den Hinweis gelangen Sie zur passenden Webseite, um einen zweiten Faktor einzurichten.
 </value>
@@ -183,12 +183,12 @@ In der OTP-Spalte wird ein Hinweis angezeigt, wenn ein zweiter Faktor unterstüt
   <item>
     <key>Options_Help</key>
     <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
-Neue OTP-Schlüssel werden in einer eigenen Datenbank gespeichert, die mit einem zusätzlichen Passwort gesichert ist. Diese Datenbank ist Teil der KeePass-Datenbank, die die Passwort-Einträge enthält.
+Neue OTP-Schlüssel werden in einer eigenen Datenbank gespeichert, die mit einem zusätzlichen Passwort gesichert ist. Diese Datenbank ist Teil der KeePass-Datenbank.
 Die OTP-Schlüssel sind damit besonders gesichert, allerdings können andere Programme und Apps wie bspw. KeePass2Android keine OTPs mehr anzeigen.
 
 &gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
-Öffnet die OTP-Datenbank zusammen mit der KeePass-Datenbank.
-Falls Sie diese Option abwählen, wird die OTP-Datenbank erst bei der ersten Verwendung geöffnet. Die OTP-Datenbank wird immer geöffnet, wenn die KeePass-Datenbank synchronisiert wird, um Änderungen an den OTP-Daten ebenfalls synchronisieren zu können.
+Entsperrt die OTP-Datenbank zusammen mit der KeePass-Datenbank.
+Falls Sie diese Option abwählen, wird die OTP-Datenbank erst bei der ersten Verwendung entsperrt. Die OTP-Datenbank wird immer entsperrt, wenn die KeePass-Datenbank synchronisiert wird, um Änderungen an den OTP-Daten ebenfalls synchronisieren zu können.
 
 &gt;&gt; OTP-Migration &lt;&lt;
 OTP-Schlüssel werden entweder als Feld im jeweiligen Eintrag oder in einer eigenen Datenbank gespeichert.
