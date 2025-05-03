@@ -124,9 +124,24 @@ namespace KeePassOTP
       if (bCleanup && m_EntryOTPDAOHandler.TryGetValue(path, out h) && (h != null))
         h.Cleanup();
       //Remove entries
-      m_dEntryOTPData = m_dEntryOTPData.Where(x => x.Value.db.IOConnectionInfo.Path != path).ToDictionary(p => p.Key, p => p.Value);
-      //Remove entries of closed databases, db.IOConnection.Path is empty then since db is closed
-      m_dEntryOTPData = m_dEntryOTPData.Where(x => !string.IsNullOrEmpty(x.Value.db.IOConnectionInfo.Path)).ToDictionary(p => p.Key, p => p.Value);
+      var dEntryOTPDataNew = new Dictionary<PwEntry, EntryOTP>();
+      foreach (var e in m_dEntryOTPData)
+      {
+        //Check for invalid entries
+        if (e.Key == null) continue;
+        if (e.Value.db == null) continue;
+        if (e.Value.db.IOConnectionInfo == null) continue;
+
+        //Remove entries of current db
+        if (e.Value.db.IOConnectionInfo.Path == path) continue;
+
+        //Remove entries of closed databases, db.IOConnection.Path is empty then since db is closed
+        if (string.IsNullOrEmpty(e.Value.db.IOConnectionInfo.Path)) continue;
+        
+        //Valid entry of still open db which is not the one we want to remove currently
+        dEntryOTPDataNew[e.Key] = e.Value;
+      }
+      
       return m_EntryOTPDAOHandler.Remove(path);
     }
 
