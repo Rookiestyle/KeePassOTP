@@ -141,6 +141,7 @@ namespace KeePassOTP
         //Valid entry of still open db which is not the one we want to remove currently
         dEntryOTPDataNew[e.Key] = e.Value;
       }
+      m_dEntryOTPData = dEntryOTPDataNew;
       
       return m_EntryOTPDAOHandler.Remove(path);
     }
@@ -256,13 +257,17 @@ namespace KeePassOTP
 
     internal static void UpdateOTPBuffer(PwEntry pe, EntryOTP otp)
     {
-      //Empty db path = db is closed
-      if ((otp.db == null) || string.IsNullOrEmpty(otp.db.IOConnectionInfo.Path))
+      if (pe == null) return;
+      lock (m_dEntryOTPData) //Lock for thread safety, cf. GetTimingsAsync
       {
-        m_dEntryOTPData.Remove(pe);
-        return;
+        //Empty db path = db is closed
+        if ((otp.db == null) || otp.db.IOConnectionInfo == null || string.IsNullOrEmpty(otp.db.IOConnectionInfo.Path))
+        {
+          m_dEntryOTPData.Remove(pe);
+          return;
+        }
+        m_dEntryOTPData[pe] = otp;
       }
-      m_dEntryOTPData[pe] = otp;
     }
 
     private static void OTPDAO_FileOpened(object sender, FileOpenedEventArgs e)
