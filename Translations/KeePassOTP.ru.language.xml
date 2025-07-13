@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <!--
+    Increment the TranslationVersion every time the translation file is updated
+	Also update the version.info file
+  -->
+  <TranslationVersion>1</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KeePassOTP — записей нет</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>Автоввод OTP ([Ctrl] для копирования)</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>N/A UUID: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>Группа: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>Настроить OTP…</value>
+  </item>
+  <item>
+    <key>Other2FA</key>
+    <value>Другой метод 2FA</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>Копировать OTP</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>ОШИБКА</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>Заголовок: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>Пользователь: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>OTP-ключ</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Ключ: </value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>Дополнительные параметры</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>Формат: </value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>Настройки OTP</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>Тип:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>Длина:</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>Хеш:</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>Срок действия:</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>Счётчик:</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Коррекция времени (не для HOTP)</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Смещение: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>Без коррекции</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>Сервер из записи</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>Собственный сервер времени</value>
+  </item>
+  <item>
+    <key>SetupTFA</key>
+    <value>Настроить…</value>
+  </item>
+  <item>
+    <key>TFADefined</key>
+    <value>Доступно</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>Открыть базу OTP — {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>Все OTP-ключи сохраняются в отдельной базе данных. Эта база является частью базы KeePass и защищена дополнительным паролем.
+
+Пожалуйста, введите пароль для доступа к вашим OTP-ключам в следующем окне.</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>Выберите «{0}», чтобы продолжить.
+Выберите «{1}», чтобы сохранить OTP-ключи вместе с записями паролей.</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>Показывать уведомление при наличии поддержки второго фактора</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>Настройки OTP (на каждую базу)</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>Хранить OTP-ключи отдельно</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>Разблокировать OTP-базу с базой KeePass</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>Запись -&gt; База</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>Переместить OTP-ключи в отдельную OTP-базу</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>База -&gt; Запись</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>Переместить OTP-ключи в запись с паролем</value>
+  </item>
+  <item>
+   <key>MoveError</key>
+   <value>Ошибка при перемещении OTP-ключей.
+База OTP разблокирована?</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} OTP-ключ(ей) было перемещено</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP загружает список веб-сервисов, поддерживающих двухфакторную аутентификацию (2FA) с ресурса {0}. Затем происходит локальное сравнение URL-адресов из базы с этим списком. Данные обрабатываются локально и НЕ отправляются.
+
+В столбце OTP отображается подсказка, если поддерживается второй фактор, но ещё не настроен. Дважды щёлкнув по подсказке, вы перейдёте на сайт для его настройки.</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
+Новые OTP-ключи сохраняются в отдельной базе данных, защищённой дополнительным паролем. Эта база является частью базы KeePass.
+OTP-ключи защищены особенно надёжно, однако сторонние программы и приложения, например KeePass2Android, не смогут отображать OTP.
+
+&gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
+Разблокирует OTP-базу вместе с базой KeePass.
+Если отключить эту опцию, OTP-база будет разблокироваться только при первом использовании. При синхронизации базы KeePass база OTP всё равно будет разблокирована, чтобы синхронизировать изменения.
+
+&gt;&gt; Миграция OTP &lt;&lt;
+OTP-ключи могут храниться либо в поле соответствующей записи, либо в отдельной базе данных.
+Команды «{Options_Migrate2DB}» и «{Options_Migrate2Entries}» позволяют перемещать ключи между этими двумя хранилищами.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>Миграция из / в другие плагины</value>
+   </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>Удалить настройки {0} после успешной миграции?</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{0} из {1} записей успешно мигрированы</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>Горячая клавиша KeePassOTP:</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>База данных была синхронизирована.
+Разблокируйте базу OTP, чтобы можно было синхронизировать данные OTP.
+
+Если база OTP не будет разблокирована, синхронизация OTP-данных невозможна.
+Это может привести к потере данных.</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>Открытие базы OTP…</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>Синхронизация базы OTP…</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>Сохранение базы OTP…</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>Показать QR-код…</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>Плейсхолдер KeePassOTP был изменён, предыдущий плейсхолдер больше не действителен.
+
+Старый плейсхолдер: {0}
+Новый плейсхолдер: {1}
+
+Чтобы автозаполнение OTP продолжало работать, {0} должен быть заменён на {1}.
+Выполнить замену во всех загруженных базах данных?</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDBDelete</key>
+    <value>Это действие отключит или удалит OTP-базу данных.
+Вы можете повторно активировать отключённую OTP-базу в любое время.
+Если база будет удалена, её можно будет восстановить только из резервной копии KeePass.
+
+Выберите «{0}», чтобы удалить базу.
+Выберите «{1}», чтобы отключить её.</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDelete</key>
+    <value>Удалить настройки OTP?</value>
+  </item>
+  <item>
+    <key>OTPBackupDone</key>
+    <value>Не удалось разблокировать OTP-базу, и она была перезаписана.
+Резервная копия сохранена как вложение в следующей записи:
+{0}
+
+Резервную копию можно открыть в любое время для доступа к данным.
+Восстановление необходимо выполнить вручную.</value>
+  </item>
+  <item>
+    <key>Placeholder</key>
+    <value>Плейсхолдер:</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>Ошибка при обработке данных</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>Ошибка при обработке данных
+	
+Ожидалось записей: 1
+Фактически записей: {0}</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+    <value>Пожалуйста, выберите запись для использования</value>
+  </item>
+  <item>
+    <key>SelectEntriesForExport</key>
+    <value>Пожалуйста, выберите записи для экспорта</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+    <value>Издатель</value>
+  </item>
+  <item>
+    <key>CheckingTFA</key>
+    <value>Проверка 2FA</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCode</key>
+    <value>Сканировать QR-код с экрана</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCodeExplain</key>
+    <value>KeePassOTP ищет QR-код на экране.
+KeePass будет свёрнут максимум на {0} секунд.
+
+Это уведомление больше не будет показываться.</value>
+  </item>
+  <item>
+    <key>OTP_Setup_DragDrop</key>
+    <value>Перетащите QR-код сюда</value>
+  </item>
+  <item>
+    <key>OTPRenewal</key>
+    <value>OTP в буфере обмена:</value>
+  </item>
+  <item>
+    <key>OTPRenewal_Inactive</key>
+    <value>Не обновлять</value>
+  </item>
+  <item>
+    <key>OTPRenewal_RespectClipboardTimeout</key>
+    <value>Обновлять, пока буфер обмена не очищен</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Однократное обновление при истечении срока</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>Отображение в столбце OTP:</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Коды восстановления</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>URL настройки</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>URL восстановления</value>
+  </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>Внутренняя горячая клавиша</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>Эта горячая клавиша работает только в KeePass и копирует одноразовый пароль (OTP) в буфер обмена.</value>
+  </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Следующий OTP:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>Н/Д</value>
+  </item>
+  <item>
+    <key>DeselectAll</key>
+    <value>Снять выделение со всех</value>
+  </item>
+  <item>
+    <key>UserName</key>
+    <value>Имя пользователя</value>
+  </item>
+</Translation>
