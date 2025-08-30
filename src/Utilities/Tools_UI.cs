@@ -1,4 +1,5 @@
-﻿namespace PluginTools
+﻿//Version 1.0
+namespace PluginTools
 {
   public static partial class Tools
   {

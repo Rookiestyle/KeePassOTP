@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Version 1.0
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
@@ -205,6 +206,7 @@ namespace PluginTools
 
     private static void OnPluginTabsSelected(object sender, TabControlEventArgs e)
     {
+      if (e.TabPageIndex == -1) return;
       m_OptionsShown |= (e.TabPage.Name == m_TabPageName);
       m_PluginContainerShown |= (m_OptionsShown || (e.TabPage.Name == c_tabRookiestyle));
     }

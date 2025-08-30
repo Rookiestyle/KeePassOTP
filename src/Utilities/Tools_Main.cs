@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Version 1.0
+using System;
 using System.Windows.Forms;
 using KeePass.UI;
 
