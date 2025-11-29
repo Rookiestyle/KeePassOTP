@@ -80,6 +80,10 @@
   <item>
     <key>OTPTimestep</key>
     <value>Duração:</value>
+	</item>
+  <item>
+    <key>ShowInTray</key>
+    <value>Mostrar OTP em {0}</value>
   </item>
   <item>
     <key>OTPCounter</key>
@@ -95,7 +99,7 @@
   </item>
   <item>
     <key>TimeDiff</key>
-    <value>Diff: </value>
+    <value>Dif: </value>
   </item>
   <item>
     <key>TimeCorrectionOff</key>
@@ -145,7 +149,7 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
   </item>
   <item>
     <key>Options_PreloadOTPDB</key>
-    <value>Abrir automaticamente banco de dados OTP quando o banco de dados principal for aberto</value>
+    <value>Abrir automaticamente o banco de dados OTP quando o banco de dados principal for aberto</value>
   </item>
   <item>
     <key>Options_Migrate2DB</key>
@@ -173,23 +177,23 @@ Forneça a chave mestra para seus segredos OTP no próximo formulário.</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
-    <value>KeePassOTP baixará uma lista de sites que suportam a autenticação de dois fatores em {0}
-Esta lista é então comparada com todos os URLs definidos no banco de dados, seus URLs não serão enviados.
+    <value>KeePassOTP fará download de uma lista de sites que suportam autenticação de dois fatores de {0}
+Esta lista é então comparada com todas as URLs definidas no banco de dados, suas URLs não serão enviadas.
 
-A coluna OTP mostrará se 2FA é possível, mas ainda não está configurado.
+A coluna OTP mostrará se 2FA é possível, mas ainda não configurado.
 Clicar duas vezes nesta dica abrirá a página de configuração 2FA.</value>
   </item>
   <item>
     <key>Options_Help</key>
     <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
 Armazena novos segredos OTP em um banco de dados separado que pode ser criptografado usando uma chave mestra diferente.
-Este banco de dados será armazenado no banco de dados principal contendo as entradas como tal.
-Embora isso aumente a segurança ao adicionar uma segunda chave mestra para seus segredos OTP, potencialmente impedirá que outras portas como KeePass2Android mostrem diretamente o OTP.
+Este banco de dados será armazenado no banco de dados principal que contém as entradas como tais.
+Embora isso aumente a segurança ao adicionar uma segunda chave mestra para seus segredos OTP, isso potencialmente impedirá que outras portas, como KeePass2Android, mostrem diretamente o OTP.
 
 &gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
 Abra o banco de dados OTP ao abrir o banco de dados principal.
-Desative esta opção para abrir o banco de dados OTP somente sob demanda =&gt; Assim que um OTP for realmente solicitado
-O banco de dados OTP será aberto sempre que o banco de dados principal for sincronizado - caso contrário, as alterações no banco de dados OTP não seriam sincronizadas e as alterações locais seriam perdidas.
+Desative esta opção para abrir o banco de dados OTP somente sob demanda => Assim que uma OTP for realmente solicitada
+O banco de dados OTP será aberto sempre que o banco de dados principal for sincronizado - caso contrário, as alterações do banco de dados OTP não seriam sincronizadas e as alterações locais seriam perdidas.
 
 &gt;&gt; Migração OTP &lt;&lt;
 Dependendo das opções acima, os segredos OTP são armazenados na respectiva entrada ou em um banco de dados separado.
@@ -216,7 +220,7 @@ Dependendo das opções acima, os segredos OTP são armazenados na respectiva en
     <value>O banco de dados foi sincronizado.
 Desbloqueie o banco de dados OTP para garantir a sincronização adequada dos dados OTP.
 
-Se o banco de dados OTP não estiver desbloqueado, os dados OTP não podem ser sincronizados e podem resultar em perda de dados.</value>
+Se o banco de dados OTP não estiver desbloqueado, os dados OTP não poderão ser sincronizados e poderão resultar em perda de dados.</value>
   </item>
   <item>
     <key>OTPDB_Opening</key>
@@ -236,21 +240,22 @@ Se o banco de dados OTP não estiver desbloqueado, os dados OTP não podem ser s
   </item>
   <item>
     <key>MigratePlaceholder</key>
-    <value>O marcador KeePassOTP foi alterado e o marcador anterior não é mais válido.
+    <value>O espaço reservado KeePassOTP foi alterado e o espaço reservado anterior não é mais válido.
 
 Valor antigo: {0}
 Novo valor: {1}
 
-Todas as ocorrências de {0} precisam ser substituídas por {1} para que a digitação automática funcione.
+Todas as ocorrências de {0} precisam ser substituídas por {1} para que a Digitação Automática funcione.
 Substituir agora nos bancos de dados carregados atualmente?</value>
   </item>
   <item>
     <key>ConfirmOTPDBDelete</key>
-    <value>Isso desativará o banco de dados KeePassOTP.
-Isso NÃO excluirá o banco de dados KeePassOTP.
+    <value>Isso desativará ou excluirá o banco de dados KeePassOTP. 
+Um banco de dados KeePassOTP desativado pode ser reativado a qualquer momento.
+Um banco de dados KeePassOTP excluído só pode ser restaurado a partir de um backup do seu banco de dados principal.
 
-Clique em '{0}' para desativar E excluir o banco de dados KeePassOTP.
-Clique em '{1}' para desativar, mas não excluir o banco de dados KeePassOTP.</value>
+Clique em '{0}' para excluir o banco de dados KeePassOTP.
+Clique em '{1}' para desativar o banco de dados KeePassOTP.</value>
   </item>
   <item>
     <key>ConfirmOTPDelete</key>
@@ -258,7 +263,7 @@ Clique em '{1}' para desativar, mas não excluir o banco de dados KeePassOTP.</v
   </item>
   <item>
     <key>OTPBackupDone</key>
-    <value>O desbloqueio do banco de dados OTP existente falhou e seu conteúdo foi sobrescrito.
+    <value>O desbloqueio do banco de dados OTP existente falhou e seu conteúdo foi substituído.
 Um backup foi salvo como anexo na seguinte entrada:
 {0}
 
@@ -267,7 +272,7 @@ A restauração dos dados precisa ser feita manualmente.</value>
   </item>
   <item>
     <key>Placeholder</key>
-    <value>Marcador:</value>
+    <value>Espaço reservado:</value>
   </item>
   <item>
     <key>PlaceholderAutoSubmit</key>
@@ -306,8 +311,8 @@ Quantidade encontrada de entradas OTP: {0}</value>
   </item>
   <item>
     <key>ReadScreenForQRCodeExplain</key>
-    <value>O KeePassOTP agora tentará encontrar e ler o código QR OTP da sua tela.
-O próprio KeePass soltará em segundo plano por {0} segundos máximos para simplificar a leitura do código QR OTP.
+    <value>KeePassOTP agora tentará encontrar e ler o código QR OTP na tela.
+O próprio KeePass ficará em segundo plano por no máximo {0} segundos para simplificar a leitura do código QR OTP.
 
 Esta mensagem não será mostrada novamente.</value>
   </item>
@@ -353,7 +358,7 @@ Esta mensagem não será mostrada novamente.</value>
   </item>
   <item>
     <key>LocalHotkeyTooltip</key>
-    <value>O atalho irá funcionar somente no interior do KeePass e em vez de auto-digitar, ele copiará o valor OTP para a área de transferência</value>                                                                                                                               
+    <value>A tecla de atalho funcionará apenas no KeePass e, em vez de Digitação Automática, copiará o valor OTP para a área de transferência</value>                                                                                                                               
   </item>
   <item>
     <key>CurrentOTP</key>
