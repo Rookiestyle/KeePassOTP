@@ -68,6 +68,8 @@ namespace KeePassOTP
       cbAdvanced.Text = PluginTranslate.AdvancedOptions;
       pbSearchScreen.Image = Resources.qr_code_screencapture;
       pbSearchScreen.Text = PluginTranslate.ReadScreenForQRCode;
+      gTray.Text = KPRes.TrayIcon;
+      cbShowInTray.Text = string.Format(PluginTranslate.ShowInTray, KPRes.TrayIcon);
 
       lQRCodeDragDropLabel.Text = PluginTranslate.OTP_Setup_DragDrop;
       lQRCodeScanScreenLabel.Text = PluginTranslate.ReadScreenForQRCode;
@@ -118,6 +120,7 @@ namespace KeePassOTP
       tbYandexPin.Text = OTP.YandexPin;
       tbIssuer.Text = OTP.Issuer;
       tbLabel.Text = OTP.Label;
+      cbShowInTray.Checked = OTP.ShowInTray;
 
       SetRecoveryCodes(OTP.RecoveryCodes);
 
@@ -185,6 +188,8 @@ namespace KeePassOTP
         finally { m_NoUpdate = false; }
       }
       else OTP.OTPSeed = new ProtectedString(true, tbOTPSeed.Text);
+
+      OTP.ShowInTray = cbShowInTray.Checked;
 
       int iFormat; int iLength; int iHash; int iType;
       string sTimestep;

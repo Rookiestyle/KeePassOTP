@@ -5,6 +5,7 @@ using KeePass;
 using KeePass.Resources;
 using KeePassLib;
 using KeePassLib.Security;
+using KeePassLib.Utility;
 using PluginTools;
 
 namespace KeePassOTP
@@ -74,6 +75,7 @@ namespace KeePassOTP
           pe.Strings.Remove(Config.OTPFIELD);
           pe.CustomData.Remove(Config.TIMECORRECTION);
           pe.Strings.Remove(Config.RECOVERY);
+          pe.CustomData.Remove(Config.OTPSHOWINTRAY);
         }
         else
         {
@@ -88,6 +90,7 @@ namespace KeePassOTP
             pe.CustomData.Remove(Config.TIMECORRECTION);
           else
             pe.CustomData.Set(Config.TIMECORRECTION, myOTP.TimeCorrectionUrl);
+          pe.CustomData.Set(Config.OTPSHOWINTRAY, KeePassLib.Utility.StrUtil.BoolToString(myOTP.ShowInTray));
         }
         pe.Touch(true, false);
       }
@@ -166,6 +169,10 @@ namespace KeePassOTP
           {
             myOTP.TimeCorrectionUrlOwn = false;
             myOTP.TimeCorrectionUrl = timeCorrection;
+          }
+          if (pe.CustomData.Exists(Config.OTPSHOWINTRAY))
+          {
+            myOTP.ShowInTray = StrUtil.StringToBool(pe.CustomData.Get(Config.OTPSHOWINTRAY));
           }
         }
         myOTP.RecoveryCodes = pe.Strings.GetSafe(Config.RECOVERY);

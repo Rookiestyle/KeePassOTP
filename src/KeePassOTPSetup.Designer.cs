@@ -88,6 +88,8 @@ namespace KeePassOTP
             this.lLength = new System.Windows.Forms.Label();
             this.lType = new System.Windows.Forms.Label();
             this.cbAdvanced = new System.Windows.Forms.CheckBox();
+            this.gTray = new System.Windows.Forms.GroupBox();
+            this.cbShowInTray = new System.Windows.Forms.CheckBox();
             this.gSeed.SuspendLayout();
             this.tcSetup.SuspendLayout();
             this.tpSetup.SuspendLayout();
@@ -99,6 +101,7 @@ namespace KeePassOTP
             this.gIssuerLabel.SuspendLayout();
             this.gTime.SuspendLayout();
             this.gOTP.SuspendLayout();
+            this.gTray.SuspendLayout();
             this.SuspendLayout();
             // 
             // gSeed
@@ -109,21 +112,21 @@ namespace KeePassOTP
             this.gSeed.Controls.Add(this.tbOTPSeed);
             this.gSeed.Controls.Add(this.lSeed);
             this.gSeed.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gSeed.Location = new System.Drawing.Point(3, 3);
-            this.gSeed.Margin = new System.Windows.Forms.Padding(5);
+            this.gSeed.Location = new System.Drawing.Point(2, 2);
+            this.gSeed.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gSeed.Name = "gSeed";
-            this.gSeed.Padding = new System.Windows.Forms.Padding(5);
-            this.gSeed.Size = new System.Drawing.Size(912, 196);
+            this.gSeed.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.gSeed.Size = new System.Drawing.Size(458, 101);
             this.gSeed.TabIndex = 100;
             this.gSeed.TabStop = false;
             this.gSeed.Text = "Seed data";
             // 
             // pbTOTPLifetime
             // 
-            this.pbTOTPLifetime.Location = new System.Drawing.Point(174, 136);
-            this.pbTOTPLifetime.Margin = new System.Windows.Forms.Padding(5);
+            this.pbTOTPLifetime.Location = new System.Drawing.Point(87, 70);
+            this.pbTOTPLifetime.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pbTOTPLifetime.Name = "pbTOTPLifetime";
-            this.pbTOTPLifetime.Size = new System.Drawing.Size(580, 3);
+            this.pbTOTPLifetime.Size = new System.Drawing.Size(290, 2);
             this.pbTOTPLifetime.Step = 1;
             this.pbTOTPLifetime.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pbTOTPLifetime.TabIndex = 13;
@@ -133,10 +136,10 @@ namespace KeePassOTP
             // 
             this.otpPreviewNext.AutoSize = true;
             this.otpPreviewNext.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.otpPreviewNext.Location = new System.Drawing.Point(174, 144);
-            this.otpPreviewNext.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.otpPreviewNext.Location = new System.Drawing.Point(87, 74);
+            this.otpPreviewNext.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.otpPreviewNext.Name = "otpPreviewNext";
-            this.otpPreviewNext.Size = new System.Drawing.Size(63, 31);
+            this.otpPreviewNext.Size = new System.Drawing.Size(34, 17);
             this.otpPreviewNext.TabIndex = 12;
             this.otpPreviewNext.Text = "N/A";
             // 
@@ -145,28 +148,28 @@ namespace KeePassOTP
             this.otpPreview.AutoSize = true;
             this.otpPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.otpPreview.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.otpPreview.Location = new System.Drawing.Point(172, 88);
-            this.otpPreview.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.otpPreview.Location = new System.Drawing.Point(86, 45);
+            this.otpPreview.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.otpPreview.Name = "otpPreview";
-            this.otpPreview.Size = new System.Drawing.Size(83, 42);
+            this.otpPreview.Size = new System.Drawing.Size(45, 24);
             this.otpPreview.TabIndex = 11;
             this.otpPreview.Text = "N/A";
             // 
             // tbOTPSeed
             // 
-            this.tbOTPSeed.Location = new System.Drawing.Point(178, 40);
-            this.tbOTPSeed.Margin = new System.Windows.Forms.Padding(5);
+            this.tbOTPSeed.Location = new System.Drawing.Point(89, 21);
+            this.tbOTPSeed.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tbOTPSeed.Name = "tbOTPSeed";
-            this.tbOTPSeed.Size = new System.Drawing.Size(708, 38);
+            this.tbOTPSeed.Size = new System.Drawing.Size(356, 22);
             this.tbOTPSeed.TabIndex = 101;
             this.tbOTPSeed.Leave += new System.EventHandler(this.OnValueChanged);
             // 
             // lSeed
             // 
-            this.lSeed.Location = new System.Drawing.Point(11, 46);
-            this.lSeed.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lSeed.Location = new System.Drawing.Point(6, 24);
+            this.lSeed.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lSeed.Name = "lSeed";
-            this.lSeed.Size = new System.Drawing.Size(160, 31);
+            this.lSeed.Size = new System.Drawing.Size(80, 16);
             this.lSeed.TabIndex = 4;
             this.lSeed.Text = "Seed:";
             // 
@@ -174,10 +177,10 @@ namespace KeePassOTP
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOK.Location = new System.Drawing.Point(562, 607);
-            this.buttonOK.Margin = new System.Windows.Forms.Padding(5);
+            this.buttonOK.Location = new System.Drawing.Point(281, 367);
+            this.buttonOK.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(178, 46);
+            this.buttonOK.Size = new System.Drawing.Size(89, 24);
             this.buttonOK.TabIndex = 901;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -186,10 +189,10 @@ namespace KeePassOTP
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(770, 607);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(5);
+            this.buttonCancel.Location = new System.Drawing.Point(385, 367);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(178, 46);
+            this.buttonCancel.Size = new System.Drawing.Size(89, 24);
             this.buttonCancel.TabIndex = 902;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -201,20 +204,23 @@ namespace KeePassOTP
             this.tcSetup.Controls.Add(this.tpRecovery);
             this.tcSetup.Controls.Add(this.tpAdvanced);
             this.tcSetup.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tcSetup.Location = new System.Drawing.Point(9, 8);
+            this.tcSetup.Location = new System.Drawing.Point(4, 4);
+            this.tcSetup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tcSetup.Name = "tcSetup";
             this.tcSetup.SelectedIndex = 0;
-            this.tcSetup.Size = new System.Drawing.Size(938, 599);
+            this.tcSetup.Size = new System.Drawing.Size(470, 358);
             this.tcSetup.TabIndex = 1;
             // 
             // tpSetup
             // 
+            this.tpSetup.Controls.Add(this.gTray);
             this.tpSetup.Controls.Add(this.gQRHelp);
             this.tpSetup.Controls.Add(this.gSeed);
-            this.tpSetup.Location = new System.Drawing.Point(10, 48);
+            this.tpSetup.Location = new System.Drawing.Point(4, 25);
+            this.tpSetup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tpSetup.Name = "tpSetup";
-            this.tpSetup.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSetup.Size = new System.Drawing.Size(918, 541);
+            this.tpSetup.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpSetup.Size = new System.Drawing.Size(462, 329);
             this.tpSetup.TabIndex = 0;
             this.tpSetup.Text = "tabPage1";
             this.tpSetup.UseVisualStyleBackColor = true;
@@ -226,9 +232,11 @@ namespace KeePassOTP
             this.gQRHelp.Controls.Add(this.pbSearchScreen);
             this.gQRHelp.Controls.Add(this.lQRCodeDragDropLabel);
             this.gQRHelp.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gQRHelp.Location = new System.Drawing.Point(3, 199);
+            this.gQRHelp.Location = new System.Drawing.Point(2, 103);
+            this.gQRHelp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gQRHelp.Name = "gQRHelp";
-            this.gQRHelp.Size = new System.Drawing.Size(912, 333);
+            this.gQRHelp.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gQRHelp.Size = new System.Drawing.Size(458, 172);
             this.gQRHelp.TabIndex = 413;
             this.gQRHelp.TabStop = false;
             this.gQRHelp.Text = "gQRHelp";
@@ -237,10 +245,10 @@ namespace KeePassOTP
             // 
             this.pbQR.ErrorImage = null;
             this.pbQR.InitialImage = null;
-            this.pbQR.Location = new System.Drawing.Point(17, 50);
-            this.pbQR.Margin = new System.Windows.Forms.Padding(5);
+            this.pbQR.Location = new System.Drawing.Point(8, 26);
+            this.pbQR.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pbQR.Name = "pbQR";
-            this.pbQR.Size = new System.Drawing.Size(124, 124);
+            this.pbQR.Size = new System.Drawing.Size(62, 64);
             this.pbQR.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbQR.TabIndex = 413;
             this.pbQR.TabStop = false;
@@ -252,10 +260,10 @@ namespace KeePassOTP
             // 
             this.lQRCodeScanScreenLabel.AutoSize = true;
             this.lQRCodeScanScreenLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lQRCodeScanScreenLabel.Location = new System.Drawing.Point(192, 241);
-            this.lQRCodeScanScreenLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lQRCodeScanScreenLabel.Location = new System.Drawing.Point(96, 124);
+            this.lQRCodeScanScreenLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lQRCodeScanScreenLabel.Name = "lQRCodeScanScreenLabel";
-            this.lQRCodeScanScreenLabel.Size = new System.Drawing.Size(60, 31);
+            this.lQRCodeScanScreenLabel.Size = new System.Drawing.Size(31, 17);
             this.lQRCodeScanScreenLabel.TabIndex = 416;
             this.lQRCodeScanScreenLabel.Text = "N/A";
             this.lQRCodeScanScreenLabel.Click += new System.EventHandler(this.bSearchScreen_Click);
@@ -264,10 +272,10 @@ namespace KeePassOTP
             // 
             this.pbSearchScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSearchScreen.InitialImage = null;
-            this.pbSearchScreen.Location = new System.Drawing.Point(17, 190);
-            this.pbSearchScreen.Margin = new System.Windows.Forms.Padding(5);
+            this.pbSearchScreen.Location = new System.Drawing.Point(10, 98);
+            this.pbSearchScreen.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.pbSearchScreen.Name = "pbSearchScreen";
-            this.pbSearchScreen.Size = new System.Drawing.Size(124, 124);
+            this.pbSearchScreen.Size = new System.Drawing.Size(62, 64);
             this.pbSearchScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbSearchScreen.TabIndex = 415;
             this.pbSearchScreen.TabStop = false;
@@ -278,10 +286,10 @@ namespace KeePassOTP
             // 
             this.lQRCodeDragDropLabel.AutoSize = true;
             this.lQRCodeDragDropLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lQRCodeDragDropLabel.Location = new System.Drawing.Point(192, 102);
-            this.lQRCodeDragDropLabel.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lQRCodeDragDropLabel.Location = new System.Drawing.Point(96, 53);
+            this.lQRCodeDragDropLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lQRCodeDragDropLabel.Name = "lQRCodeDragDropLabel";
-            this.lQRCodeDragDropLabel.Size = new System.Drawing.Size(60, 31);
+            this.lQRCodeDragDropLabel.Size = new System.Drawing.Size(31, 17);
             this.lQRCodeDragDropLabel.TabIndex = 414;
             this.lQRCodeDragDropLabel.Text = "N/A";
             this.lQRCodeDragDropLabel.UseMnemonic = false;
@@ -290,10 +298,11 @@ namespace KeePassOTP
             // tpRecovery
             // 
             this.tpRecovery.Controls.Add(this.tbRecovery);
-            this.tpRecovery.Location = new System.Drawing.Point(10, 48);
+            this.tpRecovery.Location = new System.Drawing.Point(4, 25);
+            this.tpRecovery.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tpRecovery.Name = "tpRecovery";
-            this.tpRecovery.Padding = new System.Windows.Forms.Padding(3);
-            this.tpRecovery.Size = new System.Drawing.Size(918, 511);
+            this.tpRecovery.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpRecovery.Size = new System.Drawing.Size(462, 329);
             this.tpRecovery.TabIndex = 1;
             this.tpRecovery.Text = "Recovery";
             this.tpRecovery.UseVisualStyleBackColor = true;
@@ -301,11 +310,12 @@ namespace KeePassOTP
             // tbRecovery
             // 
             this.tbRecovery.AcceptsReturn = true;
-            this.tbRecovery.Location = new System.Drawing.Point(32, 28);
+            this.tbRecovery.Location = new System.Drawing.Point(16, 14);
+            this.tbRecovery.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbRecovery.Multiline = true;
             this.tbRecovery.Name = "tbRecovery";
             this.tbRecovery.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbRecovery.Size = new System.Drawing.Size(836, 481);
+            this.tbRecovery.Size = new System.Drawing.Size(420, 250);
             this.tbRecovery.TabIndex = 201;
             // 
             // tpAdvanced
@@ -314,10 +324,11 @@ namespace KeePassOTP
             this.tpAdvanced.Controls.Add(this.gTime);
             this.tpAdvanced.Controls.Add(this.gOTP);
             this.tpAdvanced.Controls.Add(this.cbAdvanced);
-            this.tpAdvanced.Location = new System.Drawing.Point(10, 48);
+            this.tpAdvanced.Location = new System.Drawing.Point(4, 25);
+            this.tpAdvanced.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tpAdvanced.Name = "tpAdvanced";
-            this.tpAdvanced.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAdvanced.Size = new System.Drawing.Size(918, 511);
+            this.tpAdvanced.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tpAdvanced.Size = new System.Drawing.Size(462, 280);
             this.tpAdvanced.TabIndex = 2;
             this.tpAdvanced.Text = "tpAdvanced";
             this.tpAdvanced.UseVisualStyleBackColor = true;
@@ -333,9 +344,11 @@ namespace KeePassOTP
             this.gIssuerLabel.Controls.Add(this.lLabel);
             this.gIssuerLabel.Controls.Add(this.lIssuer);
             this.gIssuerLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gIssuerLabel.Location = new System.Drawing.Point(3, 506);
+            this.gIssuerLabel.Location = new System.Drawing.Point(2, 263);
+            this.gIssuerLabel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gIssuerLabel.Name = "gIssuerLabel";
-            this.gIssuerLabel.Size = new System.Drawing.Size(912, 174);
+            this.gIssuerLabel.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gIssuerLabel.Size = new System.Drawing.Size(458, 90);
             this.gIssuerLabel.TabIndex = 905;
             this.gIssuerLabel.TabStop = false;
             this.gIssuerLabel.Text = "groupBox1";
@@ -344,10 +357,10 @@ namespace KeePassOTP
             // 
             this.bLabelFromEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bLabelFromEntry.AutoEllipsis = true;
-            this.bLabelFromEntry.Location = new System.Drawing.Point(656, 95);
-            this.bLabelFromEntry.Margin = new System.Windows.Forms.Padding(5);
+            this.bLabelFromEntry.Location = new System.Drawing.Point(330, 49);
+            this.bLabelFromEntry.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.bLabelFromEntry.Name = "bLabelFromEntry";
-            this.bLabelFromEntry.Size = new System.Drawing.Size(230, 46);
+            this.bLabelFromEntry.Size = new System.Drawing.Size(115, 24);
             this.bLabelFromEntry.TabIndex = 105;
             this.bLabelFromEntry.Text = "OK";
             this.bLabelFromEntry.UseVisualStyleBackColor = true;
@@ -357,10 +370,10 @@ namespace KeePassOTP
             // 
             this.bIssuerFromEntry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.bIssuerFromEntry.AutoEllipsis = true;
-            this.bIssuerFromEntry.Location = new System.Drawing.Point(656, 40);
-            this.bIssuerFromEntry.Margin = new System.Windows.Forms.Padding(5);
+            this.bIssuerFromEntry.Location = new System.Drawing.Point(330, 21);
+            this.bIssuerFromEntry.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.bIssuerFromEntry.Name = "bIssuerFromEntry";
-            this.bIssuerFromEntry.Size = new System.Drawing.Size(230, 46);
+            this.bIssuerFromEntry.Size = new System.Drawing.Size(115, 24);
             this.bIssuerFromEntry.TabIndex = 103;
             this.bIssuerFromEntry.Text = "OK";
             this.bIssuerFromEntry.UseVisualStyleBackColor = true;
@@ -368,35 +381,39 @@ namespace KeePassOTP
             // 
             // tbLabel
             // 
-            this.tbLabel.Location = new System.Drawing.Point(178, 100);
+            this.tbLabel.Location = new System.Drawing.Point(89, 52);
+            this.tbLabel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbLabel.Name = "tbLabel";
-            this.tbLabel.Size = new System.Drawing.Size(458, 38);
+            this.tbLabel.Size = new System.Drawing.Size(231, 22);
             this.tbLabel.TabIndex = 104;
             this.tbLabel.TextChanged += new System.EventHandler(this.UpdateIssuerLabel);
             // 
             // tbIssuer
             // 
-            this.tbIssuer.Location = new System.Drawing.Point(180, 45);
+            this.tbIssuer.Location = new System.Drawing.Point(90, 23);
+            this.tbIssuer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbIssuer.Name = "tbIssuer";
-            this.tbIssuer.Size = new System.Drawing.Size(456, 38);
+            this.tbIssuer.Size = new System.Drawing.Size(230, 22);
             this.tbIssuer.TabIndex = 102;
             this.tbIssuer.TextChanged += new System.EventHandler(this.UpdateIssuerLabel);
             // 
             // lLabel
             // 
             this.lLabel.AutoSize = true;
-            this.lLabel.Location = new System.Drawing.Point(14, 107);
+            this.lLabel.Location = new System.Drawing.Point(7, 55);
+            this.lLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lLabel.Name = "lLabel";
-            this.lLabel.Size = new System.Drawing.Size(93, 32);
+            this.lLabel.Size = new System.Drawing.Size(44, 16);
             this.lLabel.TabIndex = 1;
             this.lLabel.Text = "label2";
             // 
             // lIssuer
             // 
             this.lIssuer.AutoSize = true;
-            this.lIssuer.Location = new System.Drawing.Point(16, 52);
+            this.lIssuer.Location = new System.Drawing.Point(8, 27);
+            this.lIssuer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lIssuer.Name = "lIssuer";
-            this.lIssuer.Size = new System.Drawing.Size(93, 32);
+            this.lIssuer.Size = new System.Drawing.Size(44, 16);
             this.lIssuer.TabIndex = 0;
             this.lIssuer.Text = "label1";
             // 
@@ -409,40 +426,40 @@ namespace KeePassOTP
             this.gTime.Controls.Add(this.tbTOTPTimeCorrectionURL);
             this.gTime.Controls.Add(this.lURL);
             this.gTime.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gTime.Location = new System.Drawing.Point(3, 312);
-            this.gTime.Margin = new System.Windows.Forms.Padding(5);
+            this.gTime.Location = new System.Drawing.Point(2, 163);
+            this.gTime.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gTime.Name = "gTime";
-            this.gTime.Padding = new System.Windows.Forms.Padding(5);
-            this.gTime.Size = new System.Drawing.Size(912, 194);
+            this.gTime.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.gTime.Size = new System.Drawing.Size(458, 100);
             this.gTime.TabIndex = 401;
             this.gTime.TabStop = false;
             this.gTime.Text = "Time correction - TOTP && Steam only";
             // 
             // totpTimeCorrectionValue
             // 
-            this.totpTimeCorrectionValue.Location = new System.Drawing.Point(174, 152);
-            this.totpTimeCorrectionValue.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.totpTimeCorrectionValue.Location = new System.Drawing.Point(87, 78);
+            this.totpTimeCorrectionValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.totpTimeCorrectionValue.Name = "totpTimeCorrectionValue";
-            this.totpTimeCorrectionValue.Size = new System.Drawing.Size(160, 31);
+            this.totpTimeCorrectionValue.Size = new System.Drawing.Size(80, 16);
             this.totpTimeCorrectionValue.TabIndex = 11;
             this.totpTimeCorrectionValue.Text = "N/A";
             // 
             // lTime
             // 
-            this.lTime.Location = new System.Drawing.Point(11, 152);
-            this.lTime.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lTime.Location = new System.Drawing.Point(6, 78);
+            this.lTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lTime.Name = "lTime";
-            this.lTime.Size = new System.Drawing.Size(160, 31);
+            this.lTime.Size = new System.Drawing.Size(80, 16);
             this.lTime.TabIndex = 10;
             this.lTime.Text = "Time correction:";
             // 
             // lTimeType
             // 
             this.lTimeType.AutoSize = true;
-            this.lTimeType.Location = new System.Drawing.Point(11, 53);
-            this.lTimeType.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lTimeType.Location = new System.Drawing.Point(6, 27);
+            this.lTimeType.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lTimeType.Name = "lTimeType";
-            this.lTimeType.Size = new System.Drawing.Size(86, 32);
+            this.lTimeType.Size = new System.Drawing.Size(42, 16);
             this.lTimeType.TabIndex = 8;
             this.lTimeType.Text = "Type:";
             // 
@@ -450,26 +467,26 @@ namespace KeePassOTP
             // 
             this.totpTimeCorrectionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.totpTimeCorrectionType.FormattingEnabled = true;
-            this.totpTimeCorrectionType.Location = new System.Drawing.Point(178, 45);
-            this.totpTimeCorrectionType.Margin = new System.Windows.Forms.Padding(5);
+            this.totpTimeCorrectionType.Location = new System.Drawing.Point(89, 23);
+            this.totpTimeCorrectionType.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.totpTimeCorrectionType.Name = "totpTimeCorrectionType";
-            this.totpTimeCorrectionType.Size = new System.Drawing.Size(708, 39);
+            this.totpTimeCorrectionType.Size = new System.Drawing.Size(356, 24);
             this.totpTimeCorrectionType.TabIndex = 402;
             // 
             // tbTOTPTimeCorrectionURL
             // 
-            this.tbTOTPTimeCorrectionURL.Location = new System.Drawing.Point(178, 98);
-            this.tbTOTPTimeCorrectionURL.Margin = new System.Windows.Forms.Padding(5);
+            this.tbTOTPTimeCorrectionURL.Location = new System.Drawing.Point(89, 51);
+            this.tbTOTPTimeCorrectionURL.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tbTOTPTimeCorrectionURL.Name = "tbTOTPTimeCorrectionURL";
-            this.tbTOTPTimeCorrectionURL.Size = new System.Drawing.Size(708, 38);
+            this.tbTOTPTimeCorrectionURL.Size = new System.Drawing.Size(356, 22);
             this.tbTOTPTimeCorrectionURL.TabIndex = 403;
             // 
             // lURL
             // 
-            this.lURL.Location = new System.Drawing.Point(11, 102);
-            this.lURL.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lURL.Location = new System.Drawing.Point(6, 53);
+            this.lURL.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lURL.Name = "lURL";
-            this.lURL.Size = new System.Drawing.Size(160, 36);
+            this.lURL.Size = new System.Drawing.Size(80, 19);
             this.lURL.TabIndex = 6;
             this.lURL.Text = "URL:";
             // 
@@ -490,30 +507,30 @@ namespace KeePassOTP
             this.gOTP.Controls.Add(this.lLength);
             this.gOTP.Controls.Add(this.lType);
             this.gOTP.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gOTP.Location = new System.Drawing.Point(3, 39);
-            this.gOTP.Margin = new System.Windows.Forms.Padding(5);
+            this.gOTP.Location = new System.Drawing.Point(2, 22);
+            this.gOTP.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.gOTP.Name = "gOTP";
-            this.gOTP.Padding = new System.Windows.Forms.Padding(5);
-            this.gOTP.Size = new System.Drawing.Size(912, 273);
+            this.gOTP.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.gOTP.Size = new System.Drawing.Size(458, 141);
             this.gOTP.TabIndex = 302;
             this.gOTP.TabStop = false;
             this.gOTP.Text = "OTP settings";
             // 
             // lYandexPin
             // 
-            this.lYandexPin.Location = new System.Drawing.Point(444, 37);
-            this.lYandexPin.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lYandexPin.Location = new System.Drawing.Point(222, 19);
+            this.lYandexPin.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lYandexPin.Name = "lYandexPin";
-            this.lYandexPin.Size = new System.Drawing.Size(213, 36);
+            this.lYandexPin.Size = new System.Drawing.Size(106, 19);
             this.lYandexPin.TabIndex = 5222;
             this.lYandexPin.Text = "Pin:";
             // 
             // tbYandexPin
             // 
-            this.tbYandexPin.Location = new System.Drawing.Point(676, 31);
-            this.tbYandexPin.Margin = new System.Windows.Forms.Padding(5);
+            this.tbYandexPin.Location = new System.Drawing.Point(338, 16);
+            this.tbYandexPin.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tbYandexPin.Name = "tbYandexPin";
-            this.tbYandexPin.Size = new System.Drawing.Size(175, 38);
+            this.tbYandexPin.Size = new System.Drawing.Size(90, 22);
             this.tbYandexPin.TabIndex = 304;
             // 
             // cbOTPFormat
@@ -525,52 +542,52 @@ namespace KeePassOTP
             "BASE64",
             "HEX",
             "UTF8"});
-            this.cbOTPFormat.Location = new System.Drawing.Point(178, 90);
-            this.cbOTPFormat.Margin = new System.Windows.Forms.Padding(5);
+            this.cbOTPFormat.Location = new System.Drawing.Point(89, 46);
+            this.cbOTPFormat.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbOTPFormat.Name = "cbOTPFormat";
-            this.cbOTPFormat.Size = new System.Drawing.Size(212, 39);
+            this.cbOTPFormat.Size = new System.Drawing.Size(108, 24);
             this.cbOTPFormat.TabIndex = 305;
             // 
             // lFormat
             // 
-            this.lFormat.Location = new System.Drawing.Point(14, 96);
-            this.lFormat.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lFormat.Location = new System.Drawing.Point(7, 50);
+            this.lFormat.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lFormat.Name = "lFormat";
-            this.lFormat.Size = new System.Drawing.Size(160, 36);
+            this.lFormat.Size = new System.Drawing.Size(80, 19);
             this.lFormat.TabIndex = 9;
             this.lFormat.Text = "Format:";
             // 
             // tbTOTPTimestep
             // 
-            this.tbTOTPTimestep.Location = new System.Drawing.Point(676, 31);
-            this.tbTOTPTimestep.Margin = new System.Windows.Forms.Padding(5);
+            this.tbTOTPTimestep.Location = new System.Drawing.Point(338, 16);
+            this.tbTOTPTimestep.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tbTOTPTimestep.Name = "tbTOTPTimestep";
-            this.tbTOTPTimestep.Size = new System.Drawing.Size(175, 38);
+            this.tbTOTPTimestep.Size = new System.Drawing.Size(90, 22);
             this.tbTOTPTimestep.TabIndex = 304;
             // 
             // lTimestep
             // 
-            this.lTimestep.Location = new System.Drawing.Point(444, 37);
-            this.lTimestep.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lTimestep.Location = new System.Drawing.Point(222, 19);
+            this.lTimestep.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lTimestep.Name = "lTimestep";
-            this.lTimestep.Size = new System.Drawing.Size(213, 36);
+            this.lTimestep.Size = new System.Drawing.Size(106, 19);
             this.lTimestep.TabIndex = 7;
             this.lTimestep.Text = "Timestep:";
             // 
             // tbHOTPCounter
             // 
-            this.tbHOTPCounter.Location = new System.Drawing.Point(676, 31);
-            this.tbHOTPCounter.Margin = new System.Windows.Forms.Padding(5);
+            this.tbHOTPCounter.Location = new System.Drawing.Point(338, 16);
+            this.tbHOTPCounter.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.tbHOTPCounter.Name = "tbHOTPCounter";
-            this.tbHOTPCounter.Size = new System.Drawing.Size(175, 38);
+            this.tbHOTPCounter.Size = new System.Drawing.Size(90, 22);
             this.tbHOTPCounter.TabIndex = 304;
             // 
             // lCounter
             // 
-            this.lCounter.Location = new System.Drawing.Point(444, 40);
-            this.lCounter.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lCounter.Location = new System.Drawing.Point(222, 21);
+            this.lCounter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lCounter.Name = "lCounter";
-            this.lCounter.Size = new System.Drawing.Size(213, 36);
+            this.lCounter.Size = new System.Drawing.Size(106, 19);
             this.lCounter.TabIndex = 7;
             this.lCounter.Text = "counter:";
             // 
@@ -582,10 +599,10 @@ namespace KeePassOTP
             "SHA1",
             "SHA256",
             "SHA512"});
-            this.cbOTPHashFunc.Location = new System.Drawing.Point(178, 208);
-            this.cbOTPHashFunc.Margin = new System.Windows.Forms.Padding(5);
+            this.cbOTPHashFunc.Location = new System.Drawing.Point(89, 107);
+            this.cbOTPHashFunc.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbOTPHashFunc.Name = "cbOTPHashFunc";
-            this.cbOTPHashFunc.Size = new System.Drawing.Size(212, 39);
+            this.cbOTPHashFunc.Size = new System.Drawing.Size(108, 24);
             this.cbOTPHashFunc.TabIndex = 307;
             // 
             // cbOTPLength
@@ -598,10 +615,10 @@ namespace KeePassOTP
             "8",
             "9",
             "10"});
-            this.cbOTPLength.Location = new System.Drawing.Point(178, 149);
-            this.cbOTPLength.Margin = new System.Windows.Forms.Padding(5);
+            this.cbOTPLength.Location = new System.Drawing.Point(89, 77);
+            this.cbOTPLength.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbOTPLength.Name = "cbOTPLength";
-            this.cbOTPLength.Size = new System.Drawing.Size(212, 39);
+            this.cbOTPLength.Size = new System.Drawing.Size(108, 24);
             this.cbOTPLength.TabIndex = 306;
             // 
             // cbOTPType
@@ -613,36 +630,36 @@ namespace KeePassOTP
             "TOTP",
             "Steam",
             "Yandex"});
-            this.cbOTPType.Location = new System.Drawing.Point(178, 31);
-            this.cbOTPType.Margin = new System.Windows.Forms.Padding(5);
+            this.cbOTPType.Location = new System.Drawing.Point(89, 16);
+            this.cbOTPType.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbOTPType.Name = "cbOTPType";
-            this.cbOTPType.Size = new System.Drawing.Size(212, 39);
+            this.cbOTPType.Size = new System.Drawing.Size(108, 24);
             this.cbOTPType.TabIndex = 303;
             // 
             // lHash
             // 
-            this.lHash.Location = new System.Drawing.Point(11, 211);
-            this.lHash.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lHash.Location = new System.Drawing.Point(6, 109);
+            this.lHash.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lHash.Name = "lHash";
-            this.lHash.Size = new System.Drawing.Size(160, 36);
+            this.lHash.Size = new System.Drawing.Size(80, 19);
             this.lHash.TabIndex = 2;
             this.lHash.Text = "OTP hash:";
             // 
             // lLength
             // 
-            this.lLength.Location = new System.Drawing.Point(11, 152);
-            this.lLength.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lLength.Location = new System.Drawing.Point(6, 78);
+            this.lLength.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lLength.Name = "lLength";
-            this.lLength.Size = new System.Drawing.Size(160, 36);
+            this.lLength.Size = new System.Drawing.Size(80, 19);
             this.lLength.TabIndex = 1;
             this.lLength.Text = "OTP length:";
             // 
             // lType
             // 
-            this.lType.Location = new System.Drawing.Point(11, 37);
-            this.lType.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lType.Location = new System.Drawing.Point(6, 19);
+            this.lType.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lType.Name = "lType";
-            this.lType.Size = new System.Drawing.Size(160, 36);
+            this.lType.Size = new System.Drawing.Size(80, 19);
             this.lType.TabIndex = 0;
             this.lType.Text = "OTP type:";
             // 
@@ -652,31 +669,54 @@ namespace KeePassOTP
             this.cbAdvanced.Checked = true;
             this.cbAdvanced.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbAdvanced.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cbAdvanced.Location = new System.Drawing.Point(3, 3);
-            this.cbAdvanced.Margin = new System.Windows.Forms.Padding(5);
+            this.cbAdvanced.Location = new System.Drawing.Point(2, 2);
+            this.cbAdvanced.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.cbAdvanced.Name = "cbAdvanced";
-            this.cbAdvanced.Size = new System.Drawing.Size(912, 36);
+            this.cbAdvanced.Size = new System.Drawing.Size(458, 20);
             this.cbAdvanced.TabIndex = 301;
             this.cbAdvanced.Text = "cbAdvanced";
             this.cbAdvanced.UseVisualStyleBackColor = true;
             this.cbAdvanced.CheckedChanged += new System.EventHandler(this.cbAdvanced_CheckedChanged);
             // 
+            // gTray
+            // 
+            this.gTray.Controls.Add(this.cbShowInTray);
+            this.gTray.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gTray.Location = new System.Drawing.Point(2, 275);
+            this.gTray.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.gTray.Name = "gTray";
+            this.gTray.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.gTray.Size = new System.Drawing.Size(458, 51);
+            this.gTray.TabIndex = 414;
+            this.gTray.TabStop = false;
+            this.gTray.Text = "Tray";
+            // 
+            // cbShowInTray
+            // 
+            this.cbShowInTray.AutoSize = true;
+            this.cbShowInTray.Location = new System.Drawing.Point(10, 21);
+            this.cbShowInTray.Name = "cbShowInTray";
+            this.cbShowInTray.Size = new System.Drawing.Size(115, 20);
+            this.cbShowInTray.TabIndex = 0;
+            this.cbShowInTray.Text = "cbShowInTray";
+            this.cbShowInTray.UseVisualStyleBackColor = true;
+            // 
             // KeePassOTPSetup
             // 
             this.AcceptButton = this.buttonOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(956, 666);
+            this.ClientSize = new System.Drawing.Size(478, 398);
             this.Controls.Add(this.tcSetup);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "KeePassOTPSetup";
-            this.Padding = new System.Windows.Forms.Padding(9, 8, 9, 8);
+            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "KeePassOTPSetup";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
@@ -699,6 +739,8 @@ namespace KeePassOTP
             this.gTime.PerformLayout();
             this.gOTP.ResumeLayout(false);
             this.gOTP.PerformLayout();
+            this.gTray.ResumeLayout(false);
+            this.gTray.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -747,5 +789,7 @@ namespace KeePassOTP
         private System.Windows.Forms.Label lIssuer;
         private System.Windows.Forms.Button bLabelFromEntry;
         private System.Windows.Forms.Button bIssuerFromEntry;
-    }
+    private System.Windows.Forms.GroupBox gTray;
+    internal System.Windows.Forms.CheckBox cbShowInTray;
+  }
 }

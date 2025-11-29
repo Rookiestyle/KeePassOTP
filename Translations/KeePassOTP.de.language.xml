@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>28</TranslationVersion>
+  <TranslationVersion>29</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KeePassOTP - Keine Einträge</value>
@@ -80,6 +80,10 @@
   <item>
     <key>OTPTimestep</key>
     <value>Gültigkeit:</value>
+  </item>
+  <item>
+    <key>ShowInTray</key>
+    <value>OTP im {0} anzeigen</value>
   </item>
   <item>
     <key>OTPCounter</key>

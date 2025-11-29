@@ -13,11 +13,20 @@ using PluginTools;
 
 namespace KeePassOTP
 {
-  internal struct KeePassOTPTrayTexts
+  internal class KeePassOTPTrayTexts
   {
     public string Title;
     public string User;
     public string EntryGuidHex;
+    public string MenuText
+    {
+      get
+      {
+        if (Title == string.Empty) return StrUtil.EncodeMenuText(User);
+        if (User == string.Empty) return StrUtil.EncodeMenuText(Title);
+        return StrUtil.EncodeMenuText(Title + " (" + User + ")");
+      }
+    }
   }
 
   internal static class Config
@@ -35,6 +44,7 @@ namespace KeePassOTP
     }
     internal const string DefaultPlaceholder = "{KPOTP}";
     internal const string OTPFIELD = "otp";
+    internal const string OTPSHOWINTRAY = "KeePassOTP.ShowInTray";
     internal const string OTHEROTP = "KeePassOTP.OtherOTPMethod";
     internal const string TIMECORRECTION = "KeePassOTP.TimeCorrection";
     internal const string RECOVERY = "KeePassOTP.RecoveryCodes";

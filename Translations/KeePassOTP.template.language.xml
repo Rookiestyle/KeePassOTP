@@ -82,6 +82,10 @@
     <value>Timestep:</value>
   </item>
   <item>
+    <key>ShowInTray</key>
+    <value>Show OTP in {0}</value>
+  </item>
+  <item>
     <key>OTPCounter</key>
     <value>Counter:</value>
   </item>
@@ -251,7 +255,7 @@ A deactivated KeePassOTP database can be reactivated anytime.
 A deleted KeePassOTP database can only be restored from a backup of your main database.
 
 Click '{0}' to delete the KeePassOTP database.
-Click '{1}' to deactivate KeePassOTP database.</value>
+Click '{1}' to deactivate the KeePassOTP database.</value>
   </item>
   <item>
     <key>ConfirmOTPDelete</key>

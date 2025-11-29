@@ -561,9 +561,15 @@ namespace KeePassOTP
 
         Touch(m_peOTP);
         if (myOTP.OTPSeed.IsEmpty && !IsOtherOTPDefined(m_pe))
+        {
           m_pe.CustomData.Remove(DBNAME);
+          m_pe.CustomData.Remove(Config.OTPSHOWINTRAY);
+        }
         else
+        {
           m_pe.CustomData.Set(DBNAME, StrUtil.BoolToString(true));
+          m_pe.CustomData.Set(Config.OTPSHOWINTRAY, StrUtil.BoolToString(myOTP.ShowInTray));
+        }
         FlagChanged(false);
         FlagChanged(true);
 
@@ -746,6 +752,10 @@ namespace KeePassOTP
         {
           myOTP.TimeCorrectionUrlOwn = false;
           myOTP.TimeCorrectionUrl = timeCorrection;
+        }
+        if (m_pe.CustomData.Exists(Config.OTPSHOWINTRAY))
+        {
+          myOTP.ShowInTray = StrUtil.StringToBool(m_pe.CustomData.Get(Config.OTPSHOWINTRAY));
         }
         return myOTP;
       }

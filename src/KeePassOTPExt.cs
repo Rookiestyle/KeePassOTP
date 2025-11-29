@@ -685,6 +685,13 @@ namespace KeePassOTP
       m_TrayMenu.Dispose();
     }
 
+    private bool ShowOTPInTray(PwEntry pe)
+    {
+      if (pe == null) return false;
+      if (!pe.CustomData.Exists(Config.OTPSHOWINTRAY)) return true;
+      return StrUtil.StringToBool(pe.CustomData.Get(Config.OTPSHOWINTRAY));
+    }
+
     private void OnTrayOpening(object sender, EventArgs e)
     {
       PluginDebug.AddInfo("Tray setup: Start", 0);
@@ -700,11 +707,13 @@ namespace KeePassOTP
         {
           tdb.Entries = db.RootGroup.GetEntries(true).Where(
             x => x.CustomData.Exists(OTPDAO.OTPHandler_DB.DBNAME)
-              && StrUtil.StringToBool(x.CustomData.Get(OTPDAO.OTPHandler_DB.DBNAME))).ToList();
+              && StrUtil.StringToBool(x.CustomData.Get(OTPDAO.OTPHandler_DB.DBNAME))
+              && ShowOTPInTray(x)).ToList();
         }
         else
         {
-          tdb.Entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)).ToList();
+          tdb.Entries = db.RootGroup.GetEntries(true).Where(x => x.Strings.Exists(Config.OTPFIELD)
+                                                                 && ShowOTPInTray(x)).ToList();
         }
         if (!Program.Config.Integration.AutoTypeExpiredCanMatch) // Remove expired entries
         {
@@ -745,12 +754,7 @@ namespace KeePassOTP
           ToolStripMenuItem entry = new ToolStripMenuItem();
           var text = GetTrayText(pe);
           PluginDebug.AddInfo("Tray setup: Add entry", 0, "Uuid: " + text.EntryGuidHex); // Do NOT add username and entry title to debugfile
-          if (text.Title == string.Empty)
-            entry.Text = StrUtil.EncodeMenuText(text.User);
-          else if (text.User == string.Empty)
-            entry.Text = StrUtil.EncodeMenuText(text.Title);
-          else
-            entry.Text = StrUtil.EncodeMenuText(text.Title + " (" + text.User + ")");
+          entry.Text = text.MenuText;
           entry.Name = "KPOTP_" + pe.Uuid.ToHexString();
           entry.Click += OnOTPTray;
           entry.Tag = pe;
@@ -836,7 +840,7 @@ namespace KeePassOTP
       if (string.IsNullOrEmpty(result.User)) //Title is defined, Username is empty
         return result;
 
-      //Title empty, userename filled
+      //Title empty, username filled
       result.User = string.Format(PluginTranslate.User, result.User);
       return result;
     }

@@ -108,6 +108,10 @@ namespace PluginTranslation
     /// </summary>
     public static readonly string OTPTimestep = @"Timestep:";
     /// <summary>
+    /// Show entry in {0}
+    /// </summary>
+    public static readonly string ShowInTray = @"Show OTP in {0}";
+    /// <summary>
     /// Counter:
     /// </summary>
     public static readonly string OTPCounter = @"Counter:";

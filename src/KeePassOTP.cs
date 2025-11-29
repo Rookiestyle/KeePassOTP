@@ -149,6 +149,8 @@ namespace KeePassOTP
 
     public ProtectedString RecoveryCodes = ProtectedString.EmptyEx;
 
+    public bool ShowInTray = true;
+
     static KPOTP()
     {
       miConfigureWebClient = typeof(IOConnection).GetMethod("ConfigureWebClient",
@@ -694,6 +696,7 @@ namespace KeePassOTP
       if ((otp1 == null) && (otp2 == null)) return false;
       if ((otp1 == null) || (otp2 == null)) return true;
 
+      if (otp1.ShowInTray != otp2.ShowInTray) return false;
       if (!otp1.OTPSeed.Equals(otp2.OTPSeed, false)) return false;
       if (otp1.SanitizeChanged || otp2.SanitizeChanged) return false;
       if (otp1.Encoding != otp2.Encoding) return false;
