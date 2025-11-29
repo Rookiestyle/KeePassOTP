@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>17</TranslationVersion>
+  <TranslationVersion>18</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Sem entradas disponíveis</value>
@@ -381,3 +381,4 @@ Esta mensagem não será mostrada novamente.</value>
     <value>Usuário:</value>
   </item>
 </Translation>
+
