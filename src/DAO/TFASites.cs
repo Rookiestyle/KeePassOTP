@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using KeePass.DataExchange;
@@ -14,8 +16,7 @@ namespace KeePassOTP
 {
   public static class TFASites
   {
-    //const string TFA_JSON_FILE = "https://twofactorauth.org/api/v2/tfa.json";
-    const string TFA_JSON_FILE_DEFAULT = "https://api.2fa.directory/v3/tfa.json";
+    const string TFA_JSON_FILE_DEFAULT = "https://api.2fa.directory/v4/all.json";
 
     public static string TFA_JSON_FILE
     {
@@ -35,20 +36,23 @@ namespace KeePassOTP
     internal class TFAData
     {
       public string domain;
-      public string img;
       public string url;
       public List<string> tfa = new List<string>();
       public string documentation;
       public string recovery;
       public string notes;
-      public string contact;
-      public List<string> regions;
-      public List<string> additional_domains;
       public List<string> custom_software;
       public List<string> custom_hardware;
-      public List<string> keywords;
       public bool tfa_possible { get { return tfa.Count > 0; } }
       public Regex RegexUrl = null;
+
+      public override string ToString()
+      {
+        if (domain != null && url != null) return "D: " + domain + " | U: " + url;
+        if (domain != null) return "D: " + domain;
+        if (url != null) return "U: " + url;
+        return base.ToString();
+      }
     }
 
     private enum TFALoadProcess
@@ -171,35 +175,10 @@ namespace KeePassOTP
 
     private static void RetryReadOTPSites(object s)
     {
-      ReadOTPSites(true);
+      ReadOTPSites(s);
       m_RetryReadOTPSites.Enabled = false;
     }
 
-    private static string GetJSonString(string sSearch, string v)
-    {
-      //Case 1: Simple string
-      Regex r = new Regex(@"""" + v + @""":""(.*?)""");
-      var aMatches = r.Matches(sSearch);
-      if (aMatches != null && aMatches.Count > 0)
-      {
-        return aMatches[0].Groups[1].Value;
-      }
-
-      //Case 2: Multiple values
-      r = new Regex(@"""" + v + @""":\[(.*?)\]");
-      aMatches = r.Matches(sSearch);
-      if (aMatches == null) return string.Empty;
-      if (aMatches.Count < 1) return string.Empty;
-      return aMatches[0].Groups[1].Value;
-    }
-
-    private static List<string> GetJSonList(string sSearch, string v)
-    {
-      string s = GetJSonString(sSearch, v);
-      if (string.IsNullOrEmpty(s)) return new List<string>();
-
-      return s.Split(new string[] { "\",\"", "\"" }, StringSplitOptions.RemoveEmptyEntries).ToList();
-    }
     private static void ReadOTPSites(object s)
     {
       lock (m_TFAReadLock)
@@ -212,107 +191,157 @@ namespace KeePassOTP
       m_dTFA.Clear();
       List<string> lTFAEntries = new List<string>();
       bool bException = false;
-      IOConnectionInfo ioc = IOConnectionInfo.FromPath(TFA_JSON_FILE);
-      bool bExists = false;
-      bool bNoInternet = false;
-      string sError = "File not found or no internet connection";
+      bool bErrorNoExists = false;
+      bool bErrorNoInternet = false;
+      bool bOutdated = false;
+      List<string> lMsg = new List<string>();
+      string sContent = GetTFAFileLocal(out bOutdated, lMsg);
+      string sError = string.Empty;
+      if (string.IsNullOrEmpty(sContent) || bOutdated)
+        sContent = GetTFAFileRemote(TFA_JSON_FILE, sContent, out sError, out bErrorNoExists, out bErrorNoInternet, lMsg);
+
+      JsonObject jsonTFA = null;
       try
       {
-        bExists = IOConnection.FileExists(ioc, true);
-        byte[] b = IOConnection.ReadFile(ioc);
-        if (b != null)
+        jsonTFA = new JsonObject(new CharStream(sContent));
+      }
+      catch (Exception ex) 
+      {
+        jsonTFA = null;
+        if (!string.IsNullOrEmpty(sContent) && !bOutdated)
         {
-          string content = StrUtil.Utf8.GetString(b);
-          lTFAEntries = ParseJSON(content);
+          sContent = GetTFAFileRemote(TFA_JSON_FILE, sContent, out sError, out bErrorNoExists, out bErrorNoInternet, lMsg);
+          try { jsonTFA = new JsonObject(new CharStream(sContent)); } catch { jsonTFA = null; }
         }
       }
-      catch (System.Net.WebException exWeb)
+      if (jsonTFA == null || jsonTFA.Items.Count < 1)
       {
-        sError = exWeb.Message;
-        PluginDebug.AddError("Error reading OTP sites", 0, "Error: " + sError);
-        bException = true;
-        bNoInternet = exWeb.Response == null || exWeb.Status == System.Net.WebExceptionStatus.NameResolutionFailure;
-      }
-      catch (Exception ex)
-      {
-        sError = ex.Message;
-        PluginDebug.AddError("Error reading OTP sites", 0, "Error: " + ex.Message);
-        bException = true;
-      }
-      if (lTFAEntries == null || lTFAEntries.Count < 1)
-      {
-        if (!bExists || bNoInternet)
+        if (bErrorNoExists || bErrorNoInternet)
         {
-          lock (m_TFAReadLock) { m_LoadState = bNoInternet ? TFALoadProcess.Error : TFALoadProcess.FileNotFound; }
+          lock (m_TFAReadLock) { m_LoadState = bErrorNoInternet ? TFALoadProcess.Error : TFALoadProcess.FileNotFound; }
           if (!(bool)s) Tools.ShowError("Error reading OTP sites: " + sError + "\n\n" + TFA_JSON_FILE);
         }
         else lock (m_TFAReadLock) { m_LoadState = TFALoadProcess.FileNotFound; }
-        if (!bException) PluginDebug.AddError("Error reading OTP sites", 0);
+        PluginDebug.AddError("Error reading OTP sites", 0, lMsg.ToArray());
         return;
       }
       DateTime dtStart = DateTime.Now;
-      Dictionary<string, TFAData> dTFAEntries = new Dictionary<string, TFAData>();
-      foreach (string tfaentry in lTFAEntries)
+      foreach (var item in jsonTFA.Items)
       {
         try
         {
-          TFAData tfa = new TFAData();
-          tfa.domain = GetJSonString(tfaentry, "domain");
-          string sDomain = tfa.domain.ToLowerInvariant();
-          if (!sDomain.StartsWith("http://") && !sDomain.StartsWith("https://")) tfa.domain = "https://" + tfa.domain;
+          var tfa = new TFAData();
+          JsonObject o = item.Value as JsonObject;
+          tfa.domain = item.Key;
+          if (!tfa.domain.StartsWith("http://") && !tfa.domain.StartsWith("https://")) tfa.domain = "https://" + tfa.domain;
+          tfa.documentation = GetJsonString(o, "documentation");
+          tfa.tfa = GetJsonStringList(o, "methods");// o.GetValue<string[]>("method").ToList();
+          if (tfa.tfa.Count == 0) continue;
 
-          tfa.img = GetJSonString(tfaentry, "img");
-          tfa.url = GetJSonString(tfaentry, "url");
+          tfa.url = GetJsonString(o, "url");
           if (string.IsNullOrEmpty(tfa.url)) tfa.url = tfa.domain;
-          tfa.tfa = GetJSonList(tfaentry, "tfa");
-          tfa.documentation = GetJSonString(tfaentry, "documentation");
-          tfa.recovery = GetJSonString(tfaentry, "recovery");
-          tfa.notes = GetJSonString(tfaentry, "notes");
-          tfa.contact = GetJSonString(tfaentry, "contact");
-          tfa.regions = GetJSonList(tfaentry, "regions");
-          tfa.additional_domains = GetJSonList(tfaentry, "additional_domains");
-          tfa.custom_software = GetJSonList(tfaentry, "custom_software");
-          tfa.custom_hardware = GetJSonList(tfaentry, "custom_hardware");
-          tfa.keywords = GetJSonList(tfaentry, "keywords");
-          string sRegexPattern = CreatePattern(tfa.domain);
-          tfa.RegexUrl = new Regex(sRegexPattern);
-          m_dTFA[sRegexPattern] = tfa;
+          tfa.recovery = GetJsonString(o, "recovery");
+          tfa.notes = GetJsonString(o, "notes");
+          tfa.custom_software = GetJsonStringList(o, "custom-software");
+          tfa.custom_hardware = GetJsonStringList(o, "custom-hardware");
+          string sPattern = CreatePattern(tfa.domain);
+          tfa.RegexUrl = new Regex(sPattern);
+
+          m_dTFA[sPattern] = tfa;
         }
-        catch (Exception exAll)
-        {
-          PluginDebug.AddError("Error reading OTP sites", 0, exAll.Message, tfaentry);
-        }
+        catch (Exception ex) { }
       }
       DateTime dtEnd = DateTime.Now;
       lock (m_TFAReadLock)
       {
         m_LoadState = TFALoadProcess.Loaded;
-        PluginDebug.AddInfo("OTP sites read", 0, "Required time: " + (dtEnd - dtStart).ToString(), "Number of sites: " + m_dTFA.Count.ToString());
+        lMsg.Add("Required time: " + (dtEnd - dtStart).ToString());
+        lMsg.Add("Number of sites: " + m_dTFA.Count.ToString());
+        PluginDebug.AddInfo("OTP sites read", 0, lMsg.ToArray());
       }
     }
 
-    private static List<string> ParseJSON(string content)
+    private static string GetJsonString(JsonObject o, string sField)
     {
-      bool bRepeat = true;
-      MatchCollection aMatches = null;
+      if (o == null) return string.Empty;
+      var s = o.GetValue<string>(sField);
+      return string.IsNullOrEmpty(s) ? string.Empty : s;
+    }
+    private static List<string> GetJsonStringList(JsonObject o, string sField)
+    {
+      if (o == null) return new List<string>();
+      var a = o.GetValueArray<string>(sField);
+      if (a == null) return new List<string>();
+      return a.ToList();
+    }
 
-      while (bRepeat)
+    private static string _sLocalFile = string.Empty;
+    static TFASites()
+    {
+      _sLocalFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "KeePassOTP", "tfa_sites.json"); ;
+    }
+
+    private static string GetTFAFileLocal(out bool bOutdated, List<string> lMsg)
+    {
+      bOutdated = false;
+      if (Config.MaxAgeLocalFile == Config.DONT_USE_LOCAL_FILE)
       {
-        try
+        lMsg.Add("Local file disabled");
+        return string.Empty;
+      }
+      lMsg.Add("Check local file: " + _sLocalFile);
+      if (!File.Exists(_sLocalFile))
+      {
+        lMsg.Add("Local file does not exist");
+        return string.Empty;
+      }
+      var dtLastWrite = File.GetLastWriteTimeUtc(_sLocalFile);
+      lMsg.Add("Local file exists, last change (UTC): " + dtLastWrite);
+      var tsAge = DateTime.UtcNow - dtLastWrite;
+      if (Config.MaxAgeLocalFile == Config.ALWAYS_USE_LOCAL_FILE)
+      {
+        lMsg.Add("Local file must be used");
+      }
+      else
+      {
+        bOutdated = tsAge.TotalDays >= 2;
+        lMsg.Add("File usable: " + (bOutdated ? "No, outdated" : "Yes"));
+      }
+      return File.ReadAllText(_sLocalFile);
+    }
+
+    private static string GetTFAFileRemote(string sFile, string sLocalContent, out string sError, out bool bErrorNoExists, out bool bErrorNoInternet, List<string> lMsg)
+    {
+      IOConnectionInfo ioc = IOConnectionInfo.FromPath(sFile);
+      bErrorNoExists = false;
+      bErrorNoInternet = false;
+      sError = "File not found or no internet connection";
+      string sContent = string.Empty;
+      lMsg.Add("Read remote tfa file: " + sFile);
+      try
+      {
+        bErrorNoInternet = !IOConnection.FileExists(ioc, true);
+        byte[] b = IOConnection.ReadFile(ioc);
+        if (b != null)
         {
-          Regex r = new Regex(@"\[(.*?)\](?=(,\[|\]))", RegexOptions.Singleline);
-          aMatches = r.Matches(content);
-          bRepeat = false;
-        }
-        catch (Exception ex) {
-          PluginDebug.AddError("Error in ParseJSON", 0, ex.Message);
+          sContent = StrUtil.Utf8.GetString(b);
         }
       }
-      List<string> lResult = new List<string>();
-
-      lResult = aMatches.Cast<Match>().Select(m => m.Value).ToList();
-
-      return lResult;
+      catch (Exception ex)
+      {
+        sError = ex.Message;
+        lMsg.Add("Error: " + sError);
+        if (ex is WebException)
+          bErrorNoInternet = (ex as WebException).Response == null || (ex as WebException).Status == WebExceptionStatus.NameResolutionFailure;
+      }
+      if (!string.IsNullOrEmpty(sContent)) 
+      {
+        Directory.CreateDirectory(UrlUtil.GetFileDirectory(_sLocalFile, false, true));
+        File.WriteAllText(_sLocalFile, sContent);
+        lMsg.Add("Updated local file");
+        return sContent;
+      }
+      return sLocalContent;
     }
 
     private static string CreatePattern(string url)

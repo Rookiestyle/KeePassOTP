@@ -51,9 +51,12 @@ namespace KeePassOTP
     internal const string DBKeySources = "KeePassOTP.KeySources";
     internal const string DBUsage = "KeePassOTP.UseDBForOTPSeeds";
     internal const string DBPreload = "KeePassOTP.PreloadOTP";
+    internal const int DONT_USE_LOCAL_FILE = -1;
+    internal const int ALWAYS_USE_LOCAL_FILE = -2;
 
     internal const int TOTPSoonExpiring = 5;
 
+    private const string Config_MaxAgeLocalFile = "KeePassOTP.MaxAgeLocalFile";
     private const string Config_CheckTFA = "KeePassOTP.CheckTFA";
     private const string Config_Hotkey = "KeePassOTP.Hotkey";
     private const string Config_HotkeyIsLocal = "KeePassOTP.HotkeyIsLocal";
@@ -73,6 +76,15 @@ namespace KeePassOTP
     internal static void Cleanup()
     {
       PTHotKeyManager.UnregisterHotKey(HotkeyID);
+    }
+
+    internal static int MaxAgeLocalFile
+    {
+      get
+      {
+        return (int)Program.Config.CustomConfig.GetLong(Config_MaxAgeLocalFile, 7);
+      }
+      set { Program.Config.CustomConfig.SetLong(Config_MaxAgeLocalFile, value); }
     }
 
     internal static Tray_ColorCoding TrayColorCodeMode
