@@ -500,7 +500,7 @@ namespace KeePassOTP
         {
           if (otp.kpotp.Valid)
           {
-            otp.ReadableOTP = otp.kpotp.ReadableOTP(otp.kpotp.GetOTP());
+            otp.ReadableOTP = KPOTP.ReadableOTP(otp.kpotp);
             otp.ValidTo = DateTime.UtcNow.AddSeconds(otp.kpotp.RemainingSeconds);
           }
           else if (otp.Loaded)

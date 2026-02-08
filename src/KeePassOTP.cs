@@ -207,7 +207,13 @@ namespace KeePassOTP
       return result + (string.IsNullOrEmpty(m_url) || m_timeCorrectionUrls.ContainsKey(m_url) ? string.Empty : "*");
     }
 
-    public string ReadableOTP(string otp)
+    public static string ReadableOTP(KPOTP otp)
+    {
+      if (otp == null || !otp.Valid) return string.Empty;
+      return ReadableOTP(otp.GetOTP());
+    }
+
+    public static string ReadableOTP(string otp)
     {
       if (string.IsNullOrEmpty(otp)) return string.Empty;
       bool bFinal = otp.IndexOf("*") < 0;

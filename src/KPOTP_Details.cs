@@ -90,7 +90,7 @@ namespace KeePassOTP
       {
         tfa = new TFASites.TFAData();
       }
-      SetupUrl(lSetupURL, llSetupUrl, tfa.url);
+      SetupUrl(lSetupURL, llSetupUrl, string.IsNullOrEmpty(tfa.url) ? tfa.domain : tfa.url);
       SetupUrl(lDocURL, llDocURL, tfa.documentation);
       SetupUrl(lRecoveryURL, llRecoveryURL, tfa.recovery);
       tbNotes.Text = tfa.notes;

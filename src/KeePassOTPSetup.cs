@@ -259,7 +259,7 @@ namespace KeePassOTP
       }
       totpTimeCorrectionValue.Text = OTP.OTPTimeCorrection.ToString();
 
-      string otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(false, true)) : PluginTranslate.Error;
+      string otpValue = OTP.Valid ? KPOTP.ReadableOTP(OTP.GetOTP(false, true)) : PluginTranslate.Error;
       otpPreview.Text = PluginTranslate.CurrentOTP + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable : otpValue);
       if ((OTP.Type != KPOTPType.HOTP) && OTP.RemainingSeconds <= Config.TOTPSoonExpiring)
       {
@@ -274,7 +274,7 @@ namespace KeePassOTP
 
       OTP.RecoveryCodes = GetRecoveryCodes();
 
-      otpValue = OTP.Valid ? OTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
+      otpValue = OTP.Valid ? KPOTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
       otpPreviewNext.Text = PluginTranslate.NextOTP + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable : otpValue);
     }
 
