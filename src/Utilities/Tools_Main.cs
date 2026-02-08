@@ -22,6 +22,7 @@ namespace PluginTools
       KeePassLanguageIso6391 = KeePass.Program.Translation.Properties.Iso6391Code;
       if (string.IsNullOrEmpty(KeePassLanguageIso6391)) KeePassLanguageIso6391 = "en";
       m_sPluginClassname = typeof(Tools).Assembly.GetName().Name + "Ext";
+      PluginURL = "https://github.com/rookiestyle/" + typeof(Tools).Assembly.GetName().Name.ToLowerInvariant() + "/ ";
     }
 
     public static void OpenUrl(string sURL)

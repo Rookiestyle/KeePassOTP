@@ -5,17 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using KeePass;
-using KeePass.DataExchange;
 using KeePass.Forms;
 using KeePass.Plugins;
-using KeePass.Resources;
 using KeePass.UI;
 using KeePass.Util;
 using KeePass.Util.Spr;
 using KeePassLib;
-using KeePassLib.Collections;
 using KeePassLib.Security;
-using KeePassLib.Serialization;
 using KeePassLib.Utility;
 using PluginTools;
 using PluginTranslation;
@@ -45,6 +41,7 @@ namespace KeePassOTP
     private ToolStripMenuItem m_TrayMenu;
     private ToolStripMenuItem m_Options;
     private ToolStripMenuItem m_GoogleAuthenticatorExport;
+    private ListView m_lvEntries;
     private static Image Icon_Setup = GfxUtil.ScaleImage(Resources.KeePassOTP_setup, 16, 16);
 
     private MethodInfo m_miAutoType = null;
@@ -100,7 +97,43 @@ namespace KeePassOTP
 
       IpcUtilEx.IpcEvent += OnIpcEvent;
 
+      m_lvEntries = Tools.GetControl("m_lvEntries") as ListView;
+      HookKeyDownEvent(); 
+
       return true;
+    }
+
+    private void HookKeyDownEvent()
+    {
+      if (m_lvEntries == null) return;
+      //m_lKeyDownOld = m_lvEntries.GetEventHandlers("KeyDown");
+      //m_lvEntries.RemoveEventHandlers("KeyDown", m_lKeyDownOld);
+      m_lvEntries.KeyDown += OnLvEntriesKeyDown;
+    }
+
+    private void OnLvEntriesKeyDown(object sender, KeyEventArgs e)
+    {
+      Keys kc = e.KeyCode;
+      bool bShift = e.Shift;
+
+      if (e.Alt || !e.Control || kc != Keys.T) return;
+
+      PwEntry pe = m_host.MainWindow.GetSelectedEntry(true);
+      if ((pe != null) && OTPDAO.OTPDefined(pe) != OTPDAO.OTPDefinition.None && OTPDAO.EnsureOTPUsagePossible(pe))
+      {
+        var sOTP = KPOTP.ReadableOTP(OTPDAO.GetOTP(pe));
+        if (bShift)
+        {
+          if (!VistaTaskDialog.ShowMessageBox(null, sOTP,
+              PluginTranslate.PluginName, VtdIcon.Information, m_host.MainWindow))
+          {
+            MessageService.ShowInfo(sOTP);
+          }
+        }
+        else CopyOTP(pe);
+        UIUtil.SetHandled(e, true);
+        //return; DO NOT return, if KeePass OTP is defined as well, show it also
+      }
     }
 
     private void OnIpcEvent(object sender, IpcEventArgs ipcEventArgs)
