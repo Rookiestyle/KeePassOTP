@@ -1,5 +1,6 @@
 ﻿//Version 1.0
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -58,7 +59,7 @@ namespace PluginTools
         if (tsmi == null) continue;
         lItems.AddRange(FindToolStripMenuItems(tsmi.DropDownItems, key, searchAllChildren));
       }
-      return lItems.ToArray();
+      return lItems.Distinct().ToArray();
     }
   }
 }
