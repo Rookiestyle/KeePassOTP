@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using KeePass.Forms;
+using KeePass.Resources;
 
 namespace PluginTools
 {
@@ -145,8 +146,8 @@ namespace PluginTools
         lv.Name = sListViewName;
         lv.Dock = DockStyle.Fill;
         lv.View = View.Details;
-        lv.Columns.Add("Plugin");
-        lv.Columns.Add("Version");
+        lv.Columns.Add(KPRes.Plugin);
+        lv.Columns.Add(KPRes.Version);
         lv.CheckBoxes = true;
         tpOverview.Layout += TpOverview_Layout;
         Label lInfo = new Label();
