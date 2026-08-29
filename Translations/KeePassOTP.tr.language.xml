@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Translation>
+  <!-- 
+    Increment the TranslationVersion every time the translation file is updated
+	Also update the version.info file
+  -->
+  <TranslationVersion>1</TranslationVersion>
+  <item>
+    <key>OTPCopyTrayNoEntries</key>
+    <value>KPOTP - Kullanılabilir kayıt yok</value>
+  </item>
+  <item>
+    <key>OTPCopyTrayEntries</key>
+    <value>KPOTP otomatik doldurma (Kopyalamak için [Ctrl])</value>
+  </item>
+  <item>
+    <key>Empty</key>
+    <value>Uygulanamaz UUID: {0}</value>
+  </item>
+  <item>
+    <key>Group</key>
+    <value>grup: {0}</value>
+  </item>
+  <item>
+    <key>OTPSetup</key>
+    <value>OTP kur...</value>
+  </item>
+  <item>
+    <key>Other2FA</key>
+    <value>Diğer 2FA tanımlı</value>
+  </item>
+  <item>
+    <key>OTPCopy</key>
+    <value>OTP kopyala</value>
+  </item>
+  <item>
+    <key>Error</key>
+    <value>HATA</value>
+  </item>
+  <item>
+    <key>Title</key>
+    <value>Başlık: {0}</value>
+  </item>
+  <item>
+    <key>User</key>
+    <value>Kullanıcı: {0}</value>
+  </item>
+  <item>
+    <key>SeedSettings</key>
+    <value>Anahtar ayarları</value>
+  </item>
+  <item>
+    <key>Seed</key>
+    <value>Anahtar: </value>
+  </item>
+  <item>
+    <key>AdvancedOptions</key>
+    <value>Gelişmiş seçenekleri kullan</value>
+  </item>
+  <item>
+    <key>Format</key>
+    <value>Format: </value>
+  </item>
+  <item>
+    <key>OTPSettings</key>
+    <value>OTP ayarları</value>
+  </item>
+  <item>
+    <key>OTPType</key>
+    <value>Tür:</value>
+  </item>
+  <item>
+    <key>OTPLength</key>
+    <value>Uzunluk:</value>
+  </item>
+  <item>
+    <key>OTPHash</key>
+    <value>Hash:</value>
+  </item>
+  <item>
+    <key>OTPTimestep</key>
+    <value>Zaman aralığı:</value>
+  </item>
+  <item>
+    <key>ShowInTray</key>
+    <value>OTP'yi {0} içinde göster</value>
+  </item>
+  <item>
+    <key>OTPCounter</key>
+    <value>Sayaç:</value>
+  </item>
+  <item>
+    <key>TimeCorrection</key>
+    <value>Zaman düzeltmesi - HOTP için geçerli değil</value>
+  </item>
+  <item>
+    <key>URL</key>
+    <value>URL: </value>
+  </item>
+  <item>
+    <key>TimeDiff</key>
+    <value>Fark: </value>
+  </item>
+  <item>
+    <key>TimeCorrectionOff</key>
+    <value>Zaman düzeltmesi yok</value>
+  </item>
+  <item>
+    <key>TimeCorrectionEntry</key>
+    <value>Kaydın URL'sini kullan</value>
+  </item>
+  <item>
+    <key>TimeCorrectionFixed</key>
+    <value>Sabit URL kullan</value>
+  </item>
+  <item>
+    <key>SetupTFA</key>
+    <value>2FA kur</value>
+  </item>
+  <item>
+    <key>TFADefined</key>
+    <value>2FA tanımlı</value>
+  </item>
+  <item>
+    <key>OTP_OpenDB</key>
+    <value>OTP veritabanını aç - {0}</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_PWHint</key>
+    <value>Tüm gizli anahtarlar, kayıtları içeren ana veritabanının içinde yer alan ayrı bir veritabanında saklanacaktır.
+
+Lütfen bir sonraki formda OTP gizli anahtarlarınız için ana anahtarı girin.</value>
+  </item>
+  <item>
+    <key>OTP_CreateDB_Question_Addendum</key>
+    <value>Devam etmek için '{0}' seçeneğine veya OTP gizli anahtarlarını ilgili kayıtların içinde saklamak için '{1}' seçeneğine tıklayın.</value>
+  </item>
+  <item>
+    <key>Options_CheckTFA</key>
+    <value>2FA kullanımının mümkün olup olmadığını belirt</value>
+  </item>
+  <item>
+    <key>Options_OTPSettings</key>
+    <value>OTP ayarları (veritabanına özel)</value>
+  </item>
+  <item>
+    <key>Options_UseOTPDB</key>
+    <value>OTP gizli anahtarlarını ayrı bir veritabanında sakla</value>
+  </item>
+  <item>
+    <key>Options_PreloadOTPDB</key>
+    <value>Ana veritabanı açıldığında OTP veritabanını otomatik aç</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DB</key>
+    <value>Kayıttan -&gt; veritabanına</value>
+  </item>
+  <item>
+    <key>Options_Migrate2DBHint</key>
+    <value>OTP gizli anahtarlarını ayrı veritabanına taşı</value>
+  </item>
+  <item>
+    <key>Options_Migrate2Entries</key>
+    <value>Veritabanından -&gt; kayda</value>
+  </item>
+  <item>
+    <key>Options_Migrate2EntriesHint</key>
+    <value>OTP gizli anahtarlarını ilgili kayıtlara taşı</value>
+  </item>
+  <item>
+    <key>MoveError</key>
+    <value>OTP gizli anahtarları taşınırken hata oluştu. OTP veritabanı açık mı?</value>
+  </item>
+  <item>
+    <key>EntriesMoved</key>
+    <value>{0} OTP gizli anahtarı başarıyla taşındı</value>
+  </item>
+  <item>
+    <key>Options_Check2FA_Help</key>
+    <value>KeePassOTP, iki faktörlü doğrulamayı destekleyen sitelerin bir listesini {0} adresinden indirecektir. 
+Bu liste daha sonra veritabanında tanımlı tüm URL'ler ile karşılaştırılır; URL'leriniz dışarıya gönderilmez.
+
+OTP sütunu, 2FA'nın mümkün olduğu ancak henüz yapılandırılmadığı durumları gösterir. 
+Bu ipucuna çift tıklamak 2FA kurulum sayfasını açar.</value>
+  </item>
+  <item>
+    <key>Options_Help</key>
+    <value>&gt;&gt; Ayrı OTP veritabanı kullan &lt;&lt;
+Yeni OTP gizli anahtarlarını, farklı bir ana anahtar kullanılarak şifrelenebilen ayrı bir veritabanında saklar.
+Bu veritabanı, kayıtları içeren ana veritabanının içinde saklanacaktır.
+Bu durum, OTP gizli anahtarlarınız için ikinci bir ana anahtar ekleyerek güvenliği artırsa da KeePass2Android gibi diğer bağlantı noktalarının (portların) OTP'yi doğrudan göstermesini engelleyebilir.
+
+&gt;&gt; OTP veritabanını önceden yükle &lt;&lt;
+Ana veritabanı açıldığında OTP veritabanını aç.
+OTP veritabanını yalnızca istendiğinde açmak için bu seçeneği devreden çıkarın =&gt; Yalnızca bir OTP gerçekten istendiğinde
+OTP veritabanı, ana veritabanı her eşitlendiğinde açılır. Aksi takdirde OTP veritabanındaki değişiklikler eşitlenemez ve yerel değişiklikler kaybolabilir.
+
+&gt;&gt; OTP taşıma &lt;&lt;
+Yukarıdaki seçeneklere bağlı olarak OTP gizli anahtarları ya ilgili kayıt içinde ya da ayrı bir veritabanında saklanır.
+OTP gizli anahtarlarını bu iki konum arasında taşımak için '{Options_Migrate2DB}' ve '{Options_Migrate2Entries}' seçenekleri kullanılabilir.</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins</key>
+    <value>Diğer eklentilerden / eklentilere taşı</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Delete</key>
+    <value>Başarıyla taşınan kayıtlar için {0} ayarları kaldırılsın mı?</value>
+  </item>
+  <item>
+    <key>MigrateOtherPlugins_Result</key>
+    <value>{1} kayıttan {0} tanesi başarıyla taşındı</value>
+  </item>
+  <item>
+    <key>Hotkey</key>
+    <value>KeePassOTP kısayol tuşu:</value>
+  </item>
+  <item>
+    <key>HintSyncRequiresUnlock</key>
+    <value>Veritabanı eşitlendi.
+OTP verilerinin doğru şekilde eşitlenmesini sağlamak için lütfen OTP veritabanının kilidini açın.
+
+OTP veritabanının kilidi açılmazsa OTP verileri eşitlenemez ve veri kaybı yaşanabilir.</value>
+  </item>
+  <item>
+    <key>OTPDB_Opening</key>
+    <value>OTP veritabanı açılıyor...</value>
+  </item>
+  <item>
+    <key>OTPDB_Sync</key>
+    <value>OTP veritabanı eşitleniyor...</value>
+  </item>
+  <item>
+    <key>OTPDB_Save</key>
+    <value>OTP veritabanı kaydediliyor...</value>
+  </item>
+  <item>
+    <key>OTPQRCode</key>
+    <value>QR kodunu göster...</value>
+  </item>
+  <item>
+    <key>MigratePlaceholder</key>
+    <value>KeePassOTP yer tutucusu değiştirildi ve önceki yer tutucu artık geçerli değil.
+
+Eski değer: {0}
+Yeni değer: {1}
+
+Otomatik Doldurmanın çalışabilmesi için tüm {0} örneklerinin {1} ile değiştirilmesi gerekiyor.
+Yüklü olan veritabanlarında şimdi değiştirilsin mi?</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDBDelete</key>
+    <value>Bu işlem KeePassOTP veritabanını devre dışı bırakacak ya da silecektir. 
+Devre dışı bırakılan bir KeePassOTP veritabanı istenildiği zaman yeniden etkinleştirilebilir.
+Silinen bir KeePassOTP veritabanı ise yalnızca ana veritabanınızın yedeğinden geri yüklenebilir.
+
+KeePassOTP veritabanını silmek için '{0}' seçeneğine tıklayın.
+KeePassOTP veritabanını devre dışı bırakmak için '{1}' seçeneğine tıklayın.</value>
+  </item>
+  <item>
+    <key>ConfirmOTPDelete</key>
+    <value>Lütfen OTP ayarlarının silinmesini onaylayın.</value>
+  </item>
+  <item>
+    <key>OTPBackupDone</key>
+    <value>Mevcut OTP veritabanının kilidi açılamadı ve içeriği üzerine yazıldı.
+Yedek, aşağıdaki kayıtta eklenti olarak kaydedildi:
+{0}
+
+Önceki içeriği denetlemek için istediğiniz zaman açabilirsiniz.
+Verileri geri yükleme işleminin elle yapılması gerekir.</value>
+  </item>
+  <item>
+    <key>Placeholder</key>
+    <value>Yer tutucu:</value>
+  </item>
+  <item>
+    <key>PlaceholderAutoSubmit</key>
+    <value>{0} + Enter</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImport</key>
+    <value>Veri ayrıştırma hatası</value>
+  </item>
+  <item>
+    <key>ErrorGoogleAuthImportCount</key>
+    <value>Veri ayrıştırma hatası
+
+Beklenen OTP kaydı sayısı: 1
+Bulunan OTP kaydı sayısı: {0}</value>
+  </item>
+  <item>
+    <key>SelectSingleEntry</key>
+    <value>Lütfen kullanılacak tek bir kaydı seçin</value>
+  </item>
+  <item>
+    <key>SelectEntriesForExport</key>
+    <value>Lütfen dışa aktarılacak kayıtları seçin</value>
+  </item>
+  <item>
+    <key>Issuer</key>
+    <value>Sağlayıcı</value>
+  </item>
+  <item>
+    <key>CheckingTFA</key>
+    <value>2FA denetleniyor</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCode</key>
+    <value>Ekrandan OTP QR kodunu oku</value>
+  </item>
+  <item>
+    <key>ReadScreenForQRCodeExplain</key>
+    <value>KeePassOTP şimdi ekranınızdaki OTP QR kodunu bulmaya ve okumaya çalışacak.
+OTP QR kodunun okunmasını kolaylaştırmak için KeePass en fazla {0} saniyeliğine arka plana küçülecektir.
+
+Bu ileti bir daha gösterilmeyecek.</value>
+  </item>
+  <item>
+    <key>OTP_Setup_DragDrop</key>
+    <value>Geçerli bir OTP QR kodunu sürükleyip bırakın</value>
+  </item>
+  <item>
+    <key>OTPRenewal</key>
+    <value>Kopyalanan OTP'yi yenile</value>
+  </item>
+  <item>
+    <key>OTPRenewal_Inactive</key>
+    <value>Asla</value>
+  </item>
+  <item>
+    <key>OTPRenewal_RespectClipboardTimeout</key>
+    <value>Pano temizlenene kadar yenile</value>
+  </item>
+  <item>
+    <key>OTPRenewal_PreventShortDuration</key>
+    <value>Süresi dolmak üzereyse yenile</value>
+  </item>
+  <item>
+    <key>OTPDisplayMode_label</key>
+    <value>OTP görüntüleme modu:</value>
+  </item>
+  <item>
+    <key>RecoveryCodes</key>
+    <value>Kurtarma kodları</value>
+  </item>
+  <item>
+    <key>TFA_SetupURL</key>
+    <value>Kurulum</value>
+  </item>
+  <item>
+    <key>TFA_RecoveryURL</key>
+    <value>Kurtarma</value>
+  </item>
+  <item>
+    <key>LocalHotkey</key>
+    <value>Yerel kısayol tuşu</value>
+  </item>
+  <item>
+    <key>LocalHotkeyTooltip</key>
+    <value>Kısayol tuşu yalnızca KeePass içinde çalışır ve Otomatik Doldurma yerine OTP değerini panoya kopyalar</value>
+  </item>
+  <item>
+    <key>CurrentOTP</key>
+    <value>OTP:</value>
+  </item>
+  <item>
+    <key>NextOTP</key>
+    <value>Sonraki:</value>
+  </item>
+  <item>
+    <key>NotAvailable</key>
+    <value>Uygulanabilir Değil</value>
+  </item>
+  <item>
+    <key>DeselectAll</key>
+    <value>Tüm seçimleri kaldır</value>
+  </item>
+  <item>
+    <key>UserName</key>
+    <value>Kullanıcı:</value>
+  </item>
+</Translation>
