@@ -46,16 +46,8 @@
     <value>User: {0}</value>
   </item>
   <item>
-    <key>SeedSettings</key>
-    <value>Seed settings</value>
-  </item>
-  <item>
     <key>Seed</key>
-    <value>Seed: </value>
-  </item>
-  <item>
-    <key>AdvancedOptions</key>
-    <value>Use advanced options</value>
+    <value>Secret Key / otpauth URL: </value>
   </item>
   <item>
     <key>Format</key>

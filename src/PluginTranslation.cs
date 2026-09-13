@@ -72,17 +72,9 @@ namespace PluginTranslation
     /// </summary>
     public static readonly string User = @"User: {0}";
     /// <summary>
-    /// Seed settings
+    /// Secret Key / otpauth URL: 
     /// </summary>
-    public static readonly string SeedSettings = @"Seed settings";
-    /// <summary>
-    /// Seed: 
-    /// </summary>
-    public static readonly string Seed = @"Seed: ";
-    /// <summary>
-    /// Use advanced options
-    /// </summary>
-    public static readonly string AdvancedOptions = @"Use advanced options";
+    public static readonly string Seed = @"Secret Key / otpauth URL: ";
     /// <summary>
     /// Format: 
     /// </summary>

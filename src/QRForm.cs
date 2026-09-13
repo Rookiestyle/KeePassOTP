@@ -78,6 +78,8 @@ namespace KeePassOTP
       tbAuthstring.ReadOnly = true;
 
       lAuthstring.Text = PluginTranslate.Seed;
+      ToolTip tt= new ToolTip();
+      tt.SetToolTip(lAuthstring, lAuthstring.Text);
 
       if (_aQR != null && _aQR.Length > 0) bNext_Click(null, null);
 

@@ -46,16 +46,8 @@
     <value>Benutzer: {0}</value>
   </item>
   <item>
-    <key>SeedSettings</key>
-    <value>OTP-Schlüssel</value>
-  </item>
-  <item>
     <key>Seed</key>
-    <value>Schlüssel: </value>
-  </item>
-  <item>
-    <key>AdvancedOptions</key>
-    <value>Weitere Einstellungen</value>
+    <value>OTP-Schlüssel / otpauth-URL: </value>
   </item>
   <item>
     <key>Format</key>

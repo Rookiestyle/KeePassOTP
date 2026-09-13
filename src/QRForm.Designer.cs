@@ -104,13 +104,13 @@ namespace KeePassOTP
             this.pIssuerLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pIssuerLabel.Location = new System.Drawing.Point(0, 521);
             this.pIssuerLabel.Name = "pIssuerLabel";
-            this.pIssuerLabel.Size = new System.Drawing.Size(818, 194);
+            this.pIssuerLabel.Size = new System.Drawing.Size(818, 226);
             this.pIssuerLabel.TabIndex = 2;
             // 
             // cbToggleAuthstring
             // 
             this.cbToggleAuthstring.Appearance = System.Windows.Forms.Appearance.Button;
-            this.cbToggleAuthstring.Location = new System.Drawing.Point(719, 102);
+            this.cbToggleAuthstring.Location = new System.Drawing.Point(719, 145);
             this.cbToggleAuthstring.Margin = new System.Windows.Forms.Padding(5);
             this.cbToggleAuthstring.Name = "cbToggleAuthstring";
             this.cbToggleAuthstring.Size = new System.Drawing.Size(71, 54);
@@ -122,10 +122,10 @@ namespace KeePassOTP
             // 
             // tbAuthstring
             // 
-            this.tbAuthstring.Location = new System.Drawing.Point(117, 111);
+            this.tbAuthstring.Location = new System.Drawing.Point(19, 150);
             this.tbAuthstring.Margin = new System.Windows.Forms.Padding(5);
             this.tbAuthstring.Name = "tbAuthstring";
-            this.tbAuthstring.Size = new System.Drawing.Size(592, 38);
+            this.tbAuthstring.Size = new System.Drawing.Size(670, 38);
             this.tbAuthstring.TabIndex = 206;
             // 
             // lAuthstring

@@ -343,7 +343,7 @@ namespace KeePassOTP
 
     private void SetEnabled(bool e, params ToolStripMenuItem[] m)
     {
-      for (int i = 0; i < m.Length; i++) m[i].Enabled = e;
+      for (int i = 0; i < m.Length; i++) m[i].Visible = e;
     }
 
     private void SetFont(Font f, params ToolStripMenuItem[] m)
