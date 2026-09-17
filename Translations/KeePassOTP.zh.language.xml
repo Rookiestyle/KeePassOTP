@@ -4,14 +4,14 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>6</TranslationVersion>
+  <TranslationVersion>7</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的条目</value>
   </item>
   <item>
     <key>OTPCopyTrayEntries</key>
-    <value>KPOTP 自动输入 ([Ctrl] 复制)</value>
+    <value>KPOTP 自动输入（[Ctrl] 复制）</value>
   </item>
   <item>
     <key>Empty</key>
@@ -19,15 +19,15 @@
   </item>
   <item>
     <key>Group</key>
-    <value>群组: {0}</value>
+    <value>群组：{0}</value>
   </item>
   <item>
     <key>OTPSetup</key>
-    <value>OTP 设置...</value>
+    <value>OTP 设置…</value>
   </item>
   <item>
     <key>Other2FA</key>
-    <value>其他 2FA 定义</value>
+    <value>已定义其他 2FA</value>
   </item>
   <item>
     <key>OTPCopy</key>
@@ -39,11 +39,11 @@
   </item>
   <item>
     <key>Title</key>
-    <value>标题: {0}</value>
+    <value>标题：{0}</value>
   </item>
   <item>
     <key>User</key>
-    <value>用户: {0}</value>
+    <value>用户：{0}</value>
   </item>
   <item>
     <key>SeedSettings</key>
@@ -51,15 +51,15 @@
   </item>
   <item>
     <key>Seed</key>
-    <value>密钥: </value>
+    <value>密钥： </value>
   </item>
   <item>
     <key>AdvancedOptions</key>
-    <value>高级选项</value>
+    <value>使用高级选项</value>
   </item>
   <item>
     <key>Format</key>
-    <value>格式: </value>
+    <value>格式： </value>
   </item>
   <item>
     <key>OTPSettings</key>
@@ -67,35 +67,39 @@
   </item>
   <item>
     <key>OTPType</key>
-    <value>类型:</value>
+    <value>类型：</value>
   </item>
   <item>
     <key>OTPLength</key>
-    <value>长度:</value>
+    <value>长度：</value>
   </item>
   <item>
     <key>OTPHash</key>
-    <value>哈希:</value>
+    <value>哈希：</value>
   </item>
   <item>
     <key>OTPTimestep</key>
-    <value>OTP 时间:</value>
+    <value>时间步长：</value>
+  </item>
+  <item>
+    <key>ShowInTray</key>
+    <value>在{0}中显示 OTP</value>
   </item>
   <item>
     <key>OTPCounter</key>
-    <value>计数器:</value>
+    <value>计数器：</value>
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>时间校正 - 不适用于 HOTP</value>
+    <value>时间校正（不适用于 HOTP）</value>
   </item>
   <item>
     <key>URL</key>
-    <value>网址: </value>
+    <value>网址： </value>
   </item>
   <item>
     <key>TimeDiff</key>
-    <value>时差: </value>
+    <value>时差： </value>
   </item>
   <item>
     <key>TimeCorrectionOff</key>
@@ -115,7 +119,7 @@
   </item>
   <item>
     <key>TFADefined</key>
-    <value>2FA 定义</value>
+    <value>已定义 2FA</value>
   </item>
   <item>
     <key>OTP_OpenDB</key>
@@ -123,9 +127,9 @@
   </item>
   <item>
     <key>OTP_CreateDB_PWHint</key>
-    <value>所有 OTP 密钥将存储在一个单独的数据库中，该数据库将包含条目所在的主数据库中。
+    <value>所有 OTP 密钥都将存储在一个独立的数据库中，该数据库将包含在存放这些条目的主数据库内。
 
-请在下一个表单中提供您的 OTP 密钥库主密码。</value>
+请在下一个表单中提供用于 OTP 密钥的主密钥。</value>
   </item>
   <item>
     <key>OTP_CreateDB_Question_Addendum</key>
@@ -137,11 +141,11 @@
   </item>
   <item>
     <key>Options_OTPSettings</key>
-    <value>OTP 设置 (数据库特定)</value>
+    <value>OTP 设置（数据库特定）</value>
   </item>
   <item>
     <key>Options_UseOTPDB</key>
-    <value>在单独的数据库中保存 OTP 密钥</value>
+    <value>将 OTP 密钥保存在独立的数据库中</value>
   </item>
   <item>
     <key>Options_PreloadOTPDB</key>
@@ -153,7 +157,7 @@
   </item>
   <item>
     <key>Options_Migrate2DBHint</key>
-    <value>将 OTP 密钥移动到单独的数据库</value>
+    <value>将 OTP 密钥移动到独立数据库</value>
   </item>
   <item>
     <key>Options_Migrate2Entries</key>
@@ -169,7 +173,7 @@
   </item>
   <item>
     <key>EntriesMoved</key>
-    <value>{0} 个 OTP 密钥成功移动</value>
+    <value>已成功移动 {0} 个 OTP 密钥</value>
   </item>
   <item>
     <key>Options_Check2FA_Help</key>
@@ -182,14 +186,14 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
   <item>
     <key>Options_Help</key>
     <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
-在一个单独的数据库中存储新的 OTP 密钥，该数据库可以使用不同的主密钥进行加密。
-该数据库将在包含条目的主数据库中存储。
-虽然这通过为您的 OTP 密钥添加第二个主密钥提高了安全性，但它可能会导致其他端口，如 KeePass2Android 无法直接显示 OTP。
+将新的 OTP 密钥存储在独立的数据库中，该数据库可使用不同的主密钥进行加密。
+该数据库将保存在存放这些条目的主数据库内。
+这虽然通过为 OTP 密钥增加第二把主密钥提升了安全性，但会导致 KeePass2Android 等其他客户端无法直接显示 OTP。
 
 &gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
-在打开主数据库时打开 OTP 数据库。
-禁用此选项仅在按需打开 OTP 数据库 =&gt; 一旦实际请求 OTP。
-OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的更改将不会同步，本地更改将丢失。
+打开主数据库时一同打开 OTP 数据库。
+停用此选项后，仅在需要时才打开 OTP 数据库 =&gt; 即实际请求 OTP 时。
+每次同步主数据库时都会打开 OTP 数据库 - 否则 OTP 数据库的更改将无法同步，本地更改也会丢失。
 
 &gt;&gt; OTP 迁移 &lt;&lt;
 根据上述选项，OTP 密钥要么存储在各自的条目中，要么存储在单独的数据库中。
@@ -197,19 +201,19 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
   </item>
   <item>
     <key>MigrateOtherPlugins</key>
-    <value>从 / 移动到其他插件</value>
+    <value>与其他插件之间迁移</value>
   </item>
   <item>
     <key>MigrateOtherPlugins_Delete</key>
-    <value>删除 {0} 个成功迁移条目的设置？</value>
+    <value>是否删除已成功迁移条目的 {0} 设置？</value>
   </item>
   <item>
     <key>MigrateOtherPlugins_Result</key>
-    <value>{0} 个条目中有 {1} 个成功迁移</value>
+    <value>{1} 个条目中有 {0} 个成功迁移</value>
   </item>
   <item>
     <key>Hotkey</key>
-    <value>KeePassOTP 快捷键:</value>
+    <value>KeePassOTP 热键：</value>
   </item>
   <item>
     <key>HintSyncRequiresUnlock</key>
@@ -220,38 +224,38 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
   </item>
   <item>
     <key>OTPDB_Opening</key>
-    <value>正在打开 OTP 数据库...</value>
+    <value>正在打开 OTP 数据库…</value>
   </item>
   <item>
     <key>OTPDB_Sync</key>
-    <value>正在同步 OTP 数据库...</value>
+    <value>正在同步 OTP 数据库…</value>
   </item>
   <item>
     <key>OTPDB_Save</key>
-    <value>正在保存 OTP 数据库...</value>
+    <value>正在保存 OTP 数据库…</value>
   </item>
   <item>
     <key>OTPQRCode</key>
-    <value>显示二维码...</value>
+    <value>显示二维码…</value>
   </item>
   <item>
     <key>MigratePlaceholder</key>
     <value>KeePassOTP 占位符已更改，之前的占位符不再有效。
 
-旧值: {0}
-新值: {1}
+旧值：{0}
+新值：{1}
 
 必须将 {0} 的所有出现替换为 {1} 才能使用自动输入。
 现在在当前加载的数据库中替换？</value>
   </item>
   <item>
     <key>ConfirmOTPDBDelete</key>
-    <value>这将禁用或删除 KeePassOTP 数据库。
-被禁用的 KeePassOTP 数据库可以随时重新激活。
-被删除的 KeePassOTP 数据库只能从主数据库的备份中恢复。
+    <value>这将停用或删除 KeePassOTP 数据库。
+已停用的 KeePassOTP 数据库可以随时重新启用。
+已删除的 KeePassOTP 数据库只能从主数据库的备份中恢复。
 
 单击 '{0}' 删除 KeePassOTP 数据库。
-单击 '{1}' 禁用 KeePassOTP 数据库。</value>
+单击 '{1}' 停用 KeePassOTP 数据库。</value>
   </item>
   <item>
     <key>ConfirmOTPDelete</key>
@@ -260,7 +264,7 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
   <item>
     <key>OTPBackupDone</key>
     <value>解锁现有的 OTP 数据库失败，其内容已被覆盖。
-备份已作为附件保存至以下条目:
+备份已作为附件保存至以下条目：
 {0}
 
 随时打开以检查先前的内容。
@@ -268,7 +272,7 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
   </item>
   <item>
     <key>Placeholder</key>
-    <value>占位符:</value>
+    <value>占位符：</value>
   </item>
   <item>
     <key>PlaceholderAutoSubmit</key>
@@ -282,12 +286,12 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
     <key>ErrorGoogleAuthImportCount</key>
     <value>解析数据时出错
 
-预期的 OTP 条目数量: 1
-发现的 OTP 条目数量: {0}</value>
+预期的 OTP 条目数量：1
+发现的 OTP 条目数量：{0}</value>
   </item>
   <item>
     <key>SelectSingleEntry</key>
-    <value>请选定单个条目以使用</value>
+    <value>请选择要使用的单个条目</value>
   </item>
   <item>
     <key>SelectEntriesForExport</key>
@@ -295,7 +299,7 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
   </item>
   <item>
     <key>Issuer</key>
-    <value>发行人</value>
+    <value>颁发者</value>
   </item>
   <item>
     <key>CheckingTFA</key>
@@ -307,8 +311,8 @@ OTP 数据库将在每次主数据库同步时打开 - 否则 OTP 数据库的�
   </item>
   <item>
     <key>ReadScreenForQRCodeExplain</key>
-    <value>KeePassOTP 现在将尝试查找并读取您屏幕上的 OTP QR 代码。
-KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP QR 代码。
+    <value>KeePassOTP 现在将尝试查找并读取您屏幕上的 OTP 二维码。
+KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP 二维码。
 
 此消息将不再显示。</value>
   </item>
@@ -326,7 +330,7 @@ KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP QR 代码�
   </item>
   <item>
     <key>OTPRenewal_RespectClipboardTimeout</key>
-    <value>当剪贴板清空时更新</value>
+    <value>持续更新直到剪贴板被清空</value>
   </item>
   <item>
     <key>OTPRenewal_PreventShortDuration</key>
@@ -334,7 +338,7 @@ KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP QR 代码�
   </item>
   <item>
     <key>OTPDisplayMode_label</key>
-    <value>OTP 显示模式:</value>
+    <value>OTP 显示模式：</value>
   </item>
   <item>
     <key>RecoveryCodes</key>
@@ -354,7 +358,7 @@ KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP QR 代码�
   </item>
   <item>
     <key>LocalHotkeyTooltip</key>
-    <value>热键仅在 KeePass 中有效，而不是自动输入，它将 OTP 值复制到剪贴板</value>
+    <value>该热键仅在 KeePass 内有效；它不执行自动输入，而是将 OTP 值复制到剪贴板</value>
   </item>
   <item>
     <key>CurrentOTP</key>
@@ -362,7 +366,7 @@ KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP QR 代码�
   </item>
   <item>
     <key>NextOTP</key>
-    <value>下一个:</value>
+    <value>下一个：</value>
   </item>
   <item>
     <key>NotAvailable</key>
@@ -374,6 +378,6 @@ KeePass 本身将降至后台，最长 {0} 秒，以简化读取 OTP QR 代码�
   </item>
   <item>
     <key>UserName</key>
-    <value>用户:</value>
+    <value>用户：</value>
   </item>
 </Translation>
