@@ -4,10 +4,10 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>7</TranslationVersion>
+  <TranslationVersion>9</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
-    <value>KPOTP - 没有可用的条目</value>
+    <value>KPOTP - 没有可用的记录</value>
   </item>
   <item>
     <key>OTPCopyTrayEntries</key>
@@ -23,7 +23,7 @@
   </item>
   <item>
     <key>OTPSetup</key>
-    <value>OTP 设置…</value>
+    <value>OTP 设置……</value>
   </item>
   <item>
     <key>Other2FA</key>
@@ -107,7 +107,7 @@
   </item>
   <item>
     <key>TimeCorrectionEntry</key>
-    <value>使用条目的网址</value>
+    <value>使用记录的网址</value>
   </item>
   <item>
     <key>TimeCorrectionFixed</key>
@@ -127,13 +127,13 @@
   </item>
   <item>
     <key>OTP_CreateDB_PWHint</key>
-    <value>所有 OTP 密钥都将存储在一个独立的数据库中，该数据库将包含在存放这些条目的主数据库内。
+    <value>所有 OTP 密钥都将存储在一个独立的数据库中，该数据库将包含在存放这些记录的主数据库内。
 
-请在下一个表单中提供用于 OTP 密钥的主密钥。</value>
+请在下一个对话框中提供用于 OTP 密钥的主密钥。</value>
   </item>
   <item>
     <key>OTP_CreateDB_Question_Addendum</key>
-    <value>单击 '{0}' 继续，或单击 '{1}' 将 OTP 密钥存储在各自的条目中。</value>
+    <value>单击 '{0}' 继续，或单击 '{1}' 将 OTP 密钥存储在各自的记录中。</value>
   </item>
   <item>
     <key>Options_CheckTFA</key>
@@ -153,7 +153,7 @@
   </item>
   <item>
     <key>Options_Migrate2DB</key>
-    <value>条目 -&gt; 数据库</value>
+    <value>记录 -&gt; 数据库</value>
   </item>
   <item>
     <key>Options_Migrate2DBHint</key>
@@ -161,11 +161,11 @@
   </item>
   <item>
     <key>Options_Migrate2Entries</key>
-    <value>数据库 -&gt; 条目</value>
+    <value>数据库 -&gt; 记录</value>
   </item>
   <item>
     <key>Options_Migrate2EntriesHint</key>
-    <value>将 OTP 密钥移动到各自的条目中</value>
+    <value>将 OTP 密钥移动到各自的记录中</value>
   </item>
   <item>
     <key>MoveError</key>
@@ -187,7 +187,7 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
     <key>Options_Help</key>
     <value>&gt;&gt; {Options_UseOTPDB} &lt;&lt;
 将新的 OTP 密钥存储在独立的数据库中，该数据库可使用不同的主密钥进行加密。
-该数据库将保存在存放这些条目的主数据库内。
+该数据库将保存在存放这些记录的主数据库内。
 这虽然通过为 OTP 密钥增加第二把主密钥提升了安全性，但会导致 KeePass2Android 等其他客户端无法直接显示 OTP。
 
 &gt;&gt; {Options_PreloadOTPDB} &lt;&lt;
@@ -196,7 +196,7 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
 每次同步主数据库时都会打开 OTP 数据库 - 否则 OTP 数据库的更改将无法同步，本地更改也会丢失。
 
 &gt;&gt; OTP 迁移 &lt;&lt;
-根据上述选项，OTP 密钥要么存储在各自的条目中，要么存储在单独的数据库中。
+根据上述选项，OTP 密钥要么存储在各自的记录中，要么存储在单独的数据库中。
 '{Options_Migrate2DB}' 和 '{Options_Migrate2Entries}' 可用于在这两个位置之间移动 OTP 密钥。</value>
   </item>
   <item>
@@ -205,11 +205,11 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
   </item>
   <item>
     <key>MigrateOtherPlugins_Delete</key>
-    <value>是否删除已成功迁移条目的 {0} 设置？</value>
+    <value>是否删除已成功迁移记录的 {0} 设置？</value>
   </item>
   <item>
     <key>MigrateOtherPlugins_Result</key>
-    <value>{1} 个条目中有 {0} 个成功迁移</value>
+    <value>{1} 条记录中有 {0} 条成功迁移</value>
   </item>
   <item>
     <key>Hotkey</key>
@@ -224,19 +224,19 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
   </item>
   <item>
     <key>OTPDB_Opening</key>
-    <value>正在打开 OTP 数据库…</value>
+    <value>正在打开 OTP 数据库……</value>
   </item>
   <item>
     <key>OTPDB_Sync</key>
-    <value>正在同步 OTP 数据库…</value>
+    <value>正在同步 OTP 数据库……</value>
   </item>
   <item>
     <key>OTPDB_Save</key>
-    <value>正在保存 OTP 数据库…</value>
+    <value>正在保存 OTP 数据库……</value>
   </item>
   <item>
     <key>OTPQRCode</key>
-    <value>显示二维码…</value>
+    <value>显示二维码……</value>
   </item>
   <item>
     <key>MigratePlaceholder</key>
@@ -264,7 +264,7 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
   <item>
     <key>OTPBackupDone</key>
     <value>解锁现有的 OTP 数据库失败，其内容已被覆盖。
-备份已作为附件保存至以下条目：
+备份已作为附件保存至以下记录：
 {0}
 
 随时打开以检查先前的内容。
@@ -286,16 +286,16 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
     <key>ErrorGoogleAuthImportCount</key>
     <value>解析数据时出错
 
-预期的 OTP 条目数量：1
-发现的 OTP 条目数量：{0}</value>
+预期的 OTP 记录数量：1
+发现的 OTP 记录数量：{0}</value>
   </item>
   <item>
     <key>SelectSingleEntry</key>
-    <value>请选择要使用的单个条目</value>
+    <value>请选择要使用的单个记录</value>
   </item>
   <item>
     <key>SelectEntriesForExport</key>
-    <value>请选择要导出的条目</value>
+    <value>请选择要导出的记录</value>
   </item>
   <item>
     <key>Issuer</key>
