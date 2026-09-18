@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>8</TranslationVersion>
+  <TranslationVersion>9</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的记录</value>
@@ -23,7 +23,7 @@
   </item>
   <item>
     <key>OTPSetup</key>
-    <value>OTP 设置…</value>
+    <value>OTP 设置……</value>
   </item>
   <item>
     <key>Other2FA</key>
@@ -224,19 +224,19 @@ OTP 列将显示是否可以进行 2FA 但尚未配置。
   </item>
   <item>
     <key>OTPDB_Opening</key>
-    <value>正在打开 OTP 数据库…</value>
+    <value>正在打开 OTP 数据库……</value>
   </item>
   <item>
     <key>OTPDB_Sync</key>
-    <value>正在同步 OTP 数据库…</value>
+    <value>正在同步 OTP 数据库……</value>
   </item>
   <item>
     <key>OTPDB_Save</key>
-    <value>正在保存 OTP 数据库…</value>
+    <value>正在保存 OTP 数据库……</value>
   </item>
   <item>
     <key>OTPQRCode</key>
-    <value>显示二维码…</value>
+    <value>显示二维码……</value>
   </item>
   <item>
     <key>MigratePlaceholder</key>
