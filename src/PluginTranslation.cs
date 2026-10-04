@@ -108,9 +108,9 @@ namespace PluginTranslation
     /// </summary>
     public static readonly string OTPCounter = @"Counter:";
     /// <summary>
-    /// Time correction - not applicable for HOTP
+    /// Time correction
     /// </summary>
-    public static readonly string TimeCorrection = @"Time correction - not applicable for HOTP";
+    public static readonly string TimeCorrection = @"Time correction";
     /// <summary>
     /// URL: 
     /// </summary>

@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>1</TranslationVersion>
+  <TranslationVersion>2</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Kullanılabilir kayıt yok</value>
@@ -91,7 +91,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>Zaman düzeltmesi - HOTP için geçerli değil</value>
+    <value>Zaman düzeltmesi</value>
   </item>
   <item>
     <key>URL</key>

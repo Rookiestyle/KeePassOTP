@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>9</TranslationVersion>
+  <TranslationVersion>10</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - 没有可用的记录</value>
@@ -91,7 +91,7 @@
   </item>
   <item>
     <key>TimeCorrection</key>
-    <value>时间校正（不适用于 HOTP）</value>
+    <value>时间校正</value>
   </item>
   <item>
     <key>URL</key>
