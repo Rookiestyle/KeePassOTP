@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using RookieUI;
 
 namespace KeePassOTP
 {
@@ -51,21 +52,21 @@ namespace KeePassOTP
       this.tbOTPSeed = new System.Windows.Forms.TextBox();
       this.lSeed = new System.Windows.Forms.Label();
       this.tpAdvanced = new System.Windows.Forms.TabPage();
-      this.gTime = new System.Windows.Forms.GroupBox();
+      this.gTime = new CollapsibleGroupBox();
       this.totpTimeCorrectionValue = new System.Windows.Forms.Label();
       this.lTime = new System.Windows.Forms.Label();
       this.lTimeType = new System.Windows.Forms.Label();
       this.totpTimeCorrectionType = new System.Windows.Forms.ComboBox();
       this.tbTOTPTimeCorrectionURL = new System.Windows.Forms.TextBox();
       this.lURL = new System.Windows.Forms.Label();
-      this.gIssuerLabel = new System.Windows.Forms.GroupBox();
+      this.gIssuerLabel = new CollapsibleGroupBox();
       this.bLabelFromEntry = new System.Windows.Forms.Button();
       this.bIssuerFromEntry = new System.Windows.Forms.Button();
       this.tbLabel = new System.Windows.Forms.TextBox();
       this.tbIssuer = new System.Windows.Forms.TextBox();
       this.lLabel = new System.Windows.Forms.Label();
       this.lIssuer = new System.Windows.Forms.Label();
-      this.gOTP = new System.Windows.Forms.GroupBox();
+      this.gOTP = new CollapsibleGroupBox();
       this.lYandexPin = new System.Windows.Forms.Label();
       this.tbYandexPin = new System.Windows.Forms.TextBox();
       this.cbOTPFormat = new System.Windows.Forms.ComboBox();
@@ -80,7 +81,7 @@ namespace KeePassOTP
       this.lHash = new System.Windows.Forms.Label();
       this.lLength = new System.Windows.Forms.Label();
       this.lType = new System.Windows.Forms.Label();
-      this.gRecovery = new System.Windows.Forms.GroupBox();
+      this.gRecovery = new CollapsibleGroupBox();
       this.tbRecovery = new System.Windows.Forms.TextBox();
       this.directoryEntry1 = new System.DirectoryServices.DirectoryEntry();
       this.tcSetup.SuspendLayout();
@@ -266,6 +267,7 @@ namespace KeePassOTP
       // 
       // gTime
       // 
+      this.gTime.Collapsed = false;
       this.gTime.Controls.Add(this.totpTimeCorrectionValue);
       this.gTime.Controls.Add(this.lTime);
       this.gTime.Controls.Add(this.lTimeType);
@@ -339,6 +341,7 @@ namespace KeePassOTP
       // 
       // gIssuerLabel
       // 
+      this.gIssuerLabel.Collapsed = false;
       this.gIssuerLabel.Controls.Add(this.bLabelFromEntry);
       this.gIssuerLabel.Controls.Add(this.bIssuerFromEntry);
       this.gIssuerLabel.Controls.Add(this.tbLabel);
@@ -417,6 +420,7 @@ namespace KeePassOTP
       // 
       // gOTP
       // 
+      this.gOTP.Collapsed = false;
       this.gOTP.Controls.Add(this.lYandexPin);
       this.gOTP.Controls.Add(this.tbYandexPin);
       this.gOTP.Controls.Add(this.cbOTPFormat);
@@ -433,7 +437,7 @@ namespace KeePassOTP
       this.gOTP.Controls.Add(this.lType);
       this.gOTP.Dock = System.Windows.Forms.DockStyle.Top;
       this.gOTP.Location = new System.Drawing.Point(2, 102);
-      this.gOTP.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+      this.gOTP.Margin = new System.Windows.Forms.Padding(2, 3, 2, 30);
       this.gOTP.Name = "gOTP";
       this.gOTP.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
       this.gOTP.Size = new System.Drawing.Size(480, 141);
@@ -590,6 +594,7 @@ namespace KeePassOTP
       // 
       // gRecovery
       // 
+      this.gRecovery.Collapsed = false;
       this.gRecovery.Controls.Add(this.tbRecovery);
       this.gRecovery.Dock = System.Windows.Forms.DockStyle.Top;
       this.gRecovery.Location = new System.Drawing.Point(2, 2);
@@ -662,21 +667,18 @@ namespace KeePassOTP
     internal System.Windows.Forms.TextBox tbOTPSeed;
     private System.Windows.Forms.Label lSeed;
     private System.Windows.Forms.TabPage tpAdvanced;
-    private System.Windows.Forms.GroupBox gIssuerLabel;
     private System.Windows.Forms.Button bLabelFromEntry;
     private System.Windows.Forms.Button bIssuerFromEntry;
     private System.Windows.Forms.TextBox tbLabel;
     private System.Windows.Forms.TextBox tbIssuer;
     private System.Windows.Forms.Label lLabel;
     private System.Windows.Forms.Label lIssuer;
-    private System.Windows.Forms.GroupBox gTime;
     private System.Windows.Forms.Label totpTimeCorrectionValue;
     private System.Windows.Forms.Label lTime;
     private System.Windows.Forms.Label lTimeType;
     private System.Windows.Forms.ComboBox totpTimeCorrectionType;
     internal System.Windows.Forms.TextBox tbTOTPTimeCorrectionURL;
     private System.Windows.Forms.Label lURL;
-    private System.Windows.Forms.GroupBox gOTP;
     private System.Windows.Forms.Label lYandexPin;
     internal System.Windows.Forms.TextBox tbYandexPin;
     internal System.Windows.Forms.ComboBox cbOTPFormat;
@@ -691,8 +693,11 @@ namespace KeePassOTP
     private System.Windows.Forms.Label lHash;
     private System.Windows.Forms.Label lLength;
     private System.Windows.Forms.Label lType;
-    private System.Windows.Forms.GroupBox gRecovery;
     private System.DirectoryServices.DirectoryEntry directoryEntry1;
     internal System.Windows.Forms.TextBox tbRecovery;
+    private CollapsibleGroupBox gIssuerLabel;
+    private CollapsibleGroupBox gTime;
+    private CollapsibleGroupBox gOTP;
+    private CollapsibleGroupBox gRecovery;
   }
 }

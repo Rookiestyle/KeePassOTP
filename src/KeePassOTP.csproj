@@ -64,7 +64,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CheckedGroupBox.cs" />
+    <Compile Include="CollapsibleGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DAO\OTPDAO_DB.cs" />
     <Compile Include="DAO\OTPDAO_Entry.cs" />
     <Compile Include="DAO\OTPDAO.cs" />

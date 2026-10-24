@@ -4,18 +4,20 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Reflection;
 using System.Text;
+using System.Web.SessionState;
 using System.Windows.Forms;
 using KeePass;
 using KeePass.Resources;
+using KeePass.UI;
 using KeePassLib;
 using KeePassLib.Security;
 using KeePassLib.Utility;
 using PluginTools;
 using PluginTranslation;
+using RookieUI;
 
 namespace KeePassOTP
 {
-
   public partial class KeePassOTPSetup : Form, KeePass.UI.IGwmWindow
   {
     public bool CanCloseWithoutDataLoss { get { return !SettingsChanged(); } }
@@ -38,10 +40,7 @@ namespace KeePassOTP
       // The InitializeComponent() call is required for Windows Forms designer support.
       //
       InitializeComponent();
-
-      //
-      // TODO: Add constructor code after the InitializeComponent() call.
-      //
+      gRecovery.Collapsed = GetRecoveryCodes() == ProtectedString.EmptyEx;
     }
 
     public void InitEx(PwEntry pe)
@@ -105,6 +104,7 @@ namespace KeePassOTP
       m_timer.Start();
 
       ActiveControl = tbOTPSeed;
+      tbOTPSeed.Select(0, 0);
     }
 
     private void InitSettings()
@@ -247,7 +247,13 @@ namespace KeePassOTP
       }
       totpTimeCorrectionValue.Text = OTP.OTPTimeCorrection.ToString();
 
-      string otpValue = OTP.Valid ? KPOTP.ReadableOTP(OTP.GetOTP(false, true)) : PluginTranslate.Error;
+      string otpValue = PluginTranslate.Error;
+      pbTOTPLifetime.Visible = OTP.Valid;
+      if (OTP.Valid)
+      {
+        otpValue = KPOTP.ReadableOTP(OTP.GetOTP(false, true));
+      }
+      else if (OTP.OTPSeed.IsEmpty) otpValue = KPRes.Unknown;
       otpPreview.Text = PluginTranslate.CurrentOTP + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable : otpValue);
       if ((OTP.Type != KPOTPType.HOTP) && OTP.RemainingSeconds <= Config.TOTPSoonExpiring)
       {
@@ -262,7 +268,12 @@ namespace KeePassOTP
 
       OTP.RecoveryCodes = GetRecoveryCodes();
 
-      otpValue = OTP.Valid ? KPOTP.ReadableOTP(OTP.GetOTP(true, true)) : PluginTranslate.Error;
+      otpValue = PluginTranslate.Error;
+      if (OTP.Valid)
+      {
+        otpValue = KPOTP.ReadableOTP(OTP.GetOTP(true, true));
+      }
+      else if (OTP.OTPSeed.IsEmpty) otpValue = KPRes.Unknown;
       otpPreviewNext.Text = PluginTranslate.NextOTP + " " + (string.IsNullOrEmpty(otpValue) ? PluginTranslate.NotAvailable : otpValue);
     }
 
@@ -301,13 +312,26 @@ namespace KeePassOTP
       foreach (var c in controls)
       {
         c.Enabled = bEnabled;
-        if (bEnabled) c.Visible = bEnabled;
+        if (bEnabled) c.Visible = bEnabled && !IsParentGroupBoxCollapsed(c);
       }
+    }
+
+    private bool IsParentGroupBoxCollapsed(Control c)
+    {
+      if (c == null) return false;
+      var p = c.Parent;
+      while (p != null)
+      {
+        if (p is CollapsibleGroupBox)
+          return (p as CollapsibleGroupBox).Collapsed;
+        p = p.Parent;
+      }
+      return false;
     }
 
     private void SetVisible(bool bEnabled, params Control[] controls)
     {
-      foreach (var c in controls) c.Visible = bEnabled;
+      foreach (var c in controls) c.Visible = bEnabled && !IsParentGroupBoxCollapsed(c);
     }
 
     private void AdjustFields_TOTP()
