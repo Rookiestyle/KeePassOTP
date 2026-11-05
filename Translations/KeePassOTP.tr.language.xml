@@ -4,7 +4,7 @@
     Increment the TranslationVersion every time the translation file is updated
 	Also update the version.info file
   -->
-  <TranslationVersion>2</TranslationVersion>
+  <TranslationVersion>3</TranslationVersion>
   <item>
     <key>OTPCopyTrayNoEntries</key>
     <value>KPOTP - Kullanılabilir kayıt yok</value>
@@ -46,16 +46,8 @@
     <value>Kullanıcı: {0}</value>
   </item>
   <item>
-    <key>SeedSettings</key>
-    <value>Anahtar ayarları</value>
-  </item>
-  <item>
     <key>Seed</key>
-    <value>Anahtar: </value>
-  </item>
-  <item>
-    <key>AdvancedOptions</key>
-    <value>Gelişmiş seçenekleri kullan</value>
+    <value>Gizli Anahtar / otpauth URL: </value>
   </item>
   <item>
     <key>Format</key>
