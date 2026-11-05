@@ -46,16 +46,8 @@
     <value>Kullanıcı: {0}</value>
   </item>
   <item>
-    <key>SeedSettings</key>
-    <value>Anahtar ayarları</value>
-  </item>
-  <item>
     <key>Seed</key>
-    <value>Anahtar: </value>
-  </item>
-  <item>
-    <key>AdvancedOptions</key>
-    <value>Gelişmiş seçenekleri kullan</value>
+    <value>Gizli Anahtar / otpauth URL: </value>
   </item>
   <item>
     <key>Format</key>
