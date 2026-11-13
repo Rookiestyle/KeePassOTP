@@ -128,3 +128,4 @@ See the [one click plugin update wiki](https://github.com/Rookiestyle/EarlyUpdat
 
 - KeePass version 2.42
 - .NET framework version 4.0
+

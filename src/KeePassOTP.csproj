@@ -168,6 +168,11 @@
       <Version>0.16.6</Version>
       <ExcludeFromPlgx />
     </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <ExcludeFromPlgx />
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\KeePassOTP_setup.png" />
